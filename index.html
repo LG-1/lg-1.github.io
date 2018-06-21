@@ -98,7 +98,7 @@
     root: '/',
     scheme: 'Mist',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -258,6 +258,149 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/06/21/feature-engineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/21/feature-engineering/" itemprop="url">机器学习中的特征工程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-21T17:50:00+08:00">
+                2018-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>前言<br>即将翻译一本机器学习中特征工程处理方法的书<br>并在此间学习</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><h2 id="重要概念"><a href="#重要概念" class="headerlink" title="重要概念"></a>重要概念</h2><h2 id="稍复杂例子"><a href="#稍复杂例子" class="headerlink" title="稍复杂例子"></a>稍复杂例子</h2><h2 id="特征选择"><a href="#特征选择" class="headerlink" title="特征选择"></a>特征选择</h2><h2 id="本书轮廓"><a href="#本书轮廓" class="headerlink" title="本书轮廓"></a>本书轮廓</h2><h1 id="说明性例子：预测缺血性中风的风险"><a href="#说明性例子：预测缺血性中风的风险" class="headerlink" title="说明性例子：预测缺血性中风的风险"></a>说明性例子：预测缺血性中风的风险</h1><h2 id="分割"><a href="#分割" class="headerlink" title="分割"></a>分割</h2><h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><h2 id="探索"><a href="#探索" class="headerlink" title="探索"></a>探索</h2><h2 id="跨集合预测模型"><a href="#跨集合预测模型" class="headerlink" title="跨集合预测模型"></a>跨集合预测模型</h2><h2 id="其它考量"><a href="#其它考量" class="headerlink" title="其它考量"></a>其它考量</h2><h1 id="预测建模过程综述"><a href="#预测建模过程综述" class="headerlink" title="预测建模过程综述"></a>预测建模过程综述</h1><h2 id="说明性示例：OkCupid配置文件数据"><a href="#说明性示例：OkCupid配置文件数据" class="headerlink" title="说明性示例：OkCupid配置文件数据"></a>说明性示例：OkCupid配置文件数据</h2><h2 id="测量性能"><a href="#测量性能" class="headerlink" title="测量性能"></a>测量性能</h2><h3 id="回归指标"><a href="#回归指标" class="headerlink" title="回归指标"></a>回归指标</h3><h3 id="分类指标"><a href="#分类指标" class="headerlink" title="分类指标"></a>分类指标</h3><h3 id="特定上下文指标"><a href="#特定上下文指标" class="headerlink" title="特定上下文指标"></a>特定上下文指标</h3><h2 id="数据分割"><a href="#数据分割" class="headerlink" title="数据分割"></a>数据分割</h2><h2 id="重抽样"><a href="#重抽样" class="headerlink" title="重抽样"></a>重抽样</h2><h3 id="V折交叉验证及其变体"><a href="#V折交叉验证及其变体" class="headerlink" title="V折交叉验证及其变体"></a>V折交叉验证及其变体</h3><h3 id="蒙特卡罗交叉验证"><a href="#蒙特卡罗交叉验证" class="headerlink" title="蒙特卡罗交叉验证"></a>蒙特卡罗交叉验证</h3><h3 id="引导"><a href="#引导" class="headerlink" title="引导"></a>引导</h3><h3 id="滚动来源预测"><a href="#滚动来源预测" class="headerlink" title="滚动来源预测"></a>滚动来源预测</h3><h3 id="重采样中的方差与偏差"><a href="#重采样中的方差与偏差" class="headerlink" title="重采样中的方差与偏差"></a>重采样中的方差与偏差</h3><h3 id="重抽样过程中应该注意什么"><a href="#重抽样过程中应该注意什么" class="headerlink" title="重抽样过程中应该注意什么"></a>重抽样过程中应该注意什么</h3><h2 id="调整参数和过拟合"><a href="#调整参数和过拟合" class="headerlink" title="调整参数和过拟合"></a>调整参数和过拟合</h2><h2 id="模型优化和调整"><a href="#模型优化和调整" class="headerlink" title="模型优化和调整"></a>模型优化和调整</h2><h2 id="基于训练集比较模型"><a href="#基于训练集比较模型" class="headerlink" title="基于训练集比较模型"></a>基于训练集比较模型</h2><h2 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h2><h1 id="探索性可视化"><a href="#探索性可视化" class="headerlink" title="探索性可视化"></a>探索性可视化</h1><h2 id="芝加哥地铁数据简介"><a href="#芝加哥地铁数据简介" class="headerlink" title="芝加哥地铁数据简介"></a>芝加哥地铁数据简介</h2><h2 id="数值数据可视化：基于芝加哥地铁数据"><a href="#数值数据可视化：基于芝加哥地铁数据" class="headerlink" title="数值数据可视化：基于芝加哥地铁数据"></a>数值数据可视化：基于芝加哥地铁数据</h2><h3 id="箱型图，小提琴图和直方图"><a href="#箱型图，小提琴图和直方图" class="headerlink" title="箱型图，小提琴图和直方图"></a>箱型图，小提琴图和直方图</h3><h3 id="通过分面，颜色和形状增强可视化效果"><a href="#通过分面，颜色和形状增强可视化效果" class="headerlink" title="通过分面，颜色和形状增强可视化效果"></a>通过分面，颜色和形状增强可视化效果</h3><h3 id="散点图"><a href="#散点图" class="headerlink" title="散点图"></a>散点图</h3><h3 id="热图"><a href="#热图" class="headerlink" title="热图"></a>热图</h3><h3 id="线图"><a href="#线图" class="headerlink" title="线图"></a>线图</h3><h3 id="主成分分析"><a href="#主成分分析" class="headerlink" title="主成分分析"></a>主成分分析</h3><h2 id="分类数据可视化：基于OkCupid配置文件数据"><a href="#分类数据可视化：基于OkCupid配置文件数据" class="headerlink" title="分类数据可视化：基于OkCupid配置文件数据"></a>分类数据可视化：基于OkCupid配置文件数据</h2><h3 id="可视化结果与预测因子之间关系"><a href="#可视化结果与预测因子之间关系" class="headerlink" title="可视化结果与预测因子之间关系"></a>可视化结果与预测因子之间关系</h3><h3 id="探索分类因子之间关系"><a href="#探索分类因子之间关系" class="headerlink" title="探索分类因子之间关系"></a>探索分类因子之间关系</h3><h2 id="探索性可视化后初始建模"><a href="#探索性可视化后初始建模" class="headerlink" title="探索性可视化后初始建模"></a>探索性可视化后初始建模</h2><h2 id="计算-1"><a href="#计算-1" class="headerlink" title="计算"></a>计算</h2><h1 id="编码分类预测器"><a href="#编码分类预测器" class="headerlink" title="编码分类预测器"></a>编码分类预测器</h1><h2 id="为无序变量创建虚拟变量"><a href="#为无序变量创建虚拟变量" class="headerlink" title="为无序变量创建虚拟变量"></a>为无序变量创建虚拟变量</h2><h2 id="编码具有多种类别的预测因子"><a href="#编码具有多种类别的预测因子" class="headerlink" title="编码具有多种类别的预测因子"></a>编码具有多种类别的预测因子</h2><h2 id="其它类别处理方法"><a href="#其它类别处理方法" class="headerlink" title="其它类别处理方法"></a>其它类别处理方法</h2><h2 id="编码顺序数据"><a href="#编码顺序数据" class="headerlink" title="编码顺序数据"></a>编码顺序数据</h2><h2 id="为文本数据创建变量"><a href="#为文本数据创建变量" class="headerlink" title="为文本数据创建变量"></a>为文本数据创建变量</h2><h2 id="基于树模型的因子与虚拟变量"><a href="#基于树模型的因子与虚拟变量" class="headerlink" title="基于树模型的因子与虚拟变量"></a>基于树模型的因子与虚拟变量</h2><h2 id="计算-2"><a href="#计算-2" class="headerlink" title="计算"></a>计算</h2><h1 id="数值特征分类器"><a href="#数值特征分类器" class="headerlink" title="数值特征分类器"></a>数值特征分类器</h1><h2 id="1-1转换"><a href="#1-1转换" class="headerlink" title="1:1转换"></a>1:1转换</h2><h2 id="1-N转换"><a href="#1-N转换" class="headerlink" title="1:N转换"></a>1:N转换</h2><h3 id="基础展开和线条的非线性特征"><a href="#基础展开和线条的非线性特征" class="headerlink" title="基础展开和线条的非线性特征"></a>基础展开和线条的非线性特征</h3><h3 id="预测因子分解作为最后的手段"><a href="#预测因子分解作为最后的手段" class="headerlink" title="预测因子分解作为最后的手段"></a>预测因子分解作为最后的手段</h3><h2 id="N-N转换"><a href="#N-N转换" class="headerlink" title="N:N转换"></a>N:N转换</h2><h3 id="线性投影方法"><a href="#线性投影方法" class="headerlink" title="线性投影方法"></a>线性投影方法</h3><h4 id="主成分"><a href="#主成分" class="headerlink" title="主成分"></a>主成分</h4><h4 id="核主成分分析"><a href="#核主成分分析" class="headerlink" title="核主成分分析"></a>核主成分分析</h4><h4 id="独立主成分分析"><a href="#独立主成分分析" class="headerlink" title="独立主成分分析"></a>独立主成分分析</h4><h4 id="非负矩阵分解"><a href="#非负矩阵分解" class="headerlink" title="非负矩阵分解"></a>非负矩阵分解</h4><h4 id="偏最小二乘"><a href="#偏最小二乘" class="headerlink" title="偏最小二乘"></a>偏最小二乘</h4><h3 id="自动编码"><a href="#自动编码" class="headerlink" title="自动编码"></a>自动编码</h3><h3 id="空间标志"><a href="#空间标志" class="headerlink" title="空间标志"></a>空间标志</h3><h3 id="距离和深度特征"><a href="#距离和深度特征" class="headerlink" title="距离和深度特征"></a>距离和深度特征</h3><p>参考文献</p>
+<h1 id="检测交互影响"><a href="#检测交互影响" class="headerlink" title="检测交互影响"></a>检测交互影响</h1><h1 id="展平配置文件数据"><a href="#展平配置文件数据" class="headerlink" title="展平配置文件数据"></a>展平配置文件数据</h1><h1 id="处理缺失数据"><a href="#处理缺失数据" class="headerlink" title="处理缺失数据"></a>处理缺失数据</h1><h1 id="没有过拟合的特征工程"><a href="#没有过拟合的特征工程" class="headerlink" title="没有过拟合的特征工程"></a>没有过拟合的特征工程</h1><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -694,160 +837,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/18/FTRL-introduce/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/18/FTRL-introduce/" itemprop="url">FTRL介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-18T20:55:58+08:00">
-                2018-04-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="FTRL"><a href="#FTRL" class="headerlink" title="FTRL"></a>FTRL</h1><p><a href="http://onlineprediction.net/?n=Main.FollowTheRegularizedLeader" target="_blank" rel="noopener">FTRL</a>是一种<a href="http://onlineprediction.net/?n=Main.On-lineLinearOptimization" target="_blank" rel="noopener">在线线性优化技术</a>，类似于<a href="http://onlineprediction.net/?n=Main.FollowTheLeader" target="_blank" rel="noopener">FTL</a>，但在目标函数上有所差别。</p>
-<p>FTL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x$</p>
-<p>FTRL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x + cR(x)$<br>$R(x)$表示凸可微正则化项。<br>若用于分类，可以参考[1]</p>
-<h1 id="在线线性优化"><a href="#在线线性优化" class="headerlink" title="在线线性优化"></a>在线线性优化</h1><p>在线线性优化(on-line linear optimization)定义为：学习者(玩家)和环境(对手，或现实)之间重复的游戏。<br>假设$\mathcal{K} \in \mathbb{R}^n$是一个紧凑的闭凸集。<br>游戏的协议是：<br>　　FOR $t=1,2,\dots,T$<br>　　　玩家选择 $x_t \in \mathcal{K}$<br>　　　独立的对手选择 $f_t \in \mathbb{R}^n$<br>　　　玩家损失函数 $f’_t x_t$, 和观察到的反馈。<br>　　END FOR. </p>
-<p>玩家的目标是最小化：<br><img src="\images_source\20180418\001.png" alt="Markdown"></p>
-<p>在完全信息的游戏设定下，玩家可以将$f_t$ 作为反馈，并作为他再次决策的参考。其它的设置是负向作用，玩家观察到只是标量值$f’_t x_t$。不知道“如果我们改变了我们的行动会是什么”，只有反馈。<br>其实，这样的设置对于各种各样的应用程序都是有用的。<br>由于这个理论有些缺憾，所以演化出来的FTL(Follow the Leader)算法偶尔被使用，而更多的时候则是使用FTRL(Follow the regularized leader)</p>
-<h1 id="FTL"><a href="#FTL" class="headerlink" title="FTL"></a>FTL</h1><p>FTL是一个用专家建议预测的算法。它衍生了一些其它算法，如FTRL，一种更有效的算法。<br>FTL仅仅跟随“到目前为止”最好的专家。<br>目标函数 $\gamma^T = \arg\min \sum_{t=1}^T \lambda(\omega^t,\gamma^t_k), k=1,\ldots,K$ (可以参考Prediction with expert advice或是其它类似的理论。<br>可以看出，即使是在平方损失函数的情况下，也不能证明该算法的良好后悔界限。<br>假设有两种输出${0,1}$，和两个可能的专家。一个总是预测$0$第二个总是预测$1$.在第一步，学习者选择跟随第一个专家，所以他的预测是$0$，然而现实总是可能让你失望，当产出是$1$时，学习者遭受损失$1$，第一个专家遭受损失$1$，第二个专家遭受损失$0$。在第二步中，学习者选择第二个专家，所以他的预测是$1$。实际输出是$0$，所以学习者遭受损失$1$。<br>(我咋感觉跟我买股票的节奏差不多呢+==+)<br>就这样, 经过$T$步后，学习者的损失是$T$，专家们的损失是$\dfrac{T}{2}$(只有大约，因为当专家的损失相等时，我们不知道在学习者选择他的决定之前哪个人遭受了非零损失)，所以后悔的代价是$\dfrac{T}{2}$。</p>
-<p>[1]:Shai Shalev-Shwartz and Yoram Singer. A primal-dual perspective of online learning algorithms. Mach. Learn., 69(2-3):115–142, 2007. </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -893,7 +887,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -915,7 +909,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -980,7 +974,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
