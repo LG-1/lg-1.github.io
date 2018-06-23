@@ -365,18 +365,19 @@
       
         
           
-            <p>分享一个jupyter小工具<a href="https://github.com/QuantStack/jupyterlab-drawio" target="_blank" rel="noopener">jupyterlab-drawio</a>，可以用来替换原本属于viso的很多工作。<br>界面一览：<br><img src="\images_source\20180412\0001.PNG" alt="Markdown"><br>使用起来感觉很方便，即不用安装viso那么大的软件，也很流畅，可以达到随心的程度。而且一些颜色设置、形状设定等操作在使用过程中还有记忆，这点感觉很好。</p>
-<p>安装步骤：<br>需要先安装<a href="http://jupyterlab.readthedocs.io/en/stable/getting_started/starting.html" target="_blank" rel="noopener">jupyterlab</a></p>
-<h2 id="安装运行"><a href="#安装运行" class="headerlink" title="安装运行"></a>安装运行</h2><h3 id="安装jupyter-lab"><a href="#安装jupyter-lab" class="headerlink" title="安装jupyter lab"></a>安装jupyter lab</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyterlab</span><br></pre></td></tr></table></figure>
-<h3 id="安装扩展插件jupyterlab-drawio"><a href="#安装扩展插件jupyterlab-drawio" class="headerlink" title="安装扩展插件jupyterlab-drawio"></a>安装扩展插件jupyterlab-drawio</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter labextension  install jupyterlab-drawio</span><br></pre></td></tr></table></figure>
-<h3 id="查看插件是否安装成功"><a href="#查看插件是否安装成功" class="headerlink" title="查看插件是否安装成功"></a>查看插件是否安装成功</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter labextension list</span><br></pre></td></tr></table></figure>
-<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter lab</span><br></pre></td></tr></table></figure>
-<h2 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h2><h3 id="‘-xsrf’-argument-missing-from-POST"><a href="#‘-xsrf’-argument-missing-from-POST" class="headerlink" title="‘_xsrf’ argument missing from POST"></a>‘_xsrf’ argument missing from POST</h3><p><img src="\images_source\20180412\001.PNG" alt="Markdown"><br>画好图之后想将结果导出成图片，结果就报以上错误了<br>解决方式可以：<br>在jupyter_notebook_config.py中修改配置为</p>
-<pre><code>#c.NotebookApp.disable_check_xsrf = False
-c.NotebookApp.disable_check_xsrf = True
-</code></pre><h3 id="404-Not-Found"><a href="#404-Not-Found" class="headerlink" title="404 : Not Found"></a>404 : Not Found</h3><p>然而导出还是报错：<br><img src="\images_source\20180412\002.PNG" alt="Markdown"><br>未完待续，尚待解决=====<br>目前为了把砖先搬掉，我是直接截图出来用的。</p>
-
-          
+          分享一个jupyter小工具jupyterlab-drawio，可以用来替换原本属于viso的很多工作。界面一览：使用起来感觉很方便，即不用安装viso那么大的软件，也很流畅，可以达到随心的程度。而且一些颜色设置、形状设定等操作在使用过程中还有记忆，这点感觉很好。
+安装步骤：需要先安装jupyterlab
+安装运行安装jupyter lab1pip install jupyterlab
+安装扩展插件jupyterlab-drawio1jupyter labextension  install jupyterlab-drawio
+查看插件是否安装成功1jupyter labextension l
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/12/jupyter-ext/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
