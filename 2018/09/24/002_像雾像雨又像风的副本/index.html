@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="随记," />
+  <meta name="keywords" content="数据结构,算法,排序," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在python读取相同数据量不同格式时：csv占用存储少，读取很慢pickle占用存储多，读取很快 csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)">
-<meta name="keywords" content="随记">
+<meta name="description" content="合并两个有序数组 思路1:最简单的操作是将nums2直接拼在nums1后面，然后对nums1排序这样的话会用到python自带的排序算法，也可以自己写一下快排代替。总体来讲是先合并再排序。这样的话就没有使用到给出的有序数组中有序的信息。所以复杂度难免会高一点。1234def merge(nums1, m, nums2, n):	nums1[m:] = nums2[:n]	nums1.sort()">
+<meta name="keywords" content="数据结构,算法,排序">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pickle与csv格式">
-<meta property="og:url" content="https://www.ourantech.club/2018/04/23/pickle-csv/index.html">
+<meta property="og:title" content="合并两个有序数组">
+<meta property="og:url" content="https://www.ourantech.club/2018/09/24/002_像雾像雨又像风的副本/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="在python读取相同数据量不同格式时：csv占用存储少，读取很慢pickle占用存储多，读取很快 csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)">
+<meta property="og:description" content="合并两个有序数组 思路1:最简单的操作是将nums2直接拼在nums1后面，然后对nums1排序这样的话会用到python自带的排序算法，也可以自己写一下快排代替。总体来讲是先合并再排序。这样的话就没有使用到给出的有序数组中有序的信息。所以复杂度难免会高一点。1234def merge(nums1, m, nums2, n):	nums1[m:] = nums2[:n]	nums1.sort()">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-04-23T13:01:54.337Z">
+<meta property="og:updated_time" content="2018-09-24T08:38:57.123Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pickle与csv格式">
-<meta name="twitter:description" content="在python读取相同数据量不同格式时：csv占用存储少，读取很慢pickle占用存储多，读取很快 csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)">
+<meta name="twitter:title" content="合并两个有序数组">
+<meta name="twitter:description" content="合并两个有序数组 思路1:最简单的操作是将nums2直接拼在nums1后面，然后对nums1排序这样的话会用到python自带的排序算法，也可以自己写一下快排代替。总体来讲是先合并再排序。这样的话就没有使用到给出的有序数组中有序的信息。所以复杂度难免会高一点。1234def merge(nums1, m, nums2, n):	nums1[m:] = nums2[:n]	nums1.sort()">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2018/04/23/pickle-csv/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2018/09/24/002_像雾像雨又像风的副本/"/>
 
 
 
 
 
-  <title>pickle与csv格式 | 险峰风景</title>
+  <title>合并两个有序数组 | 险峰风景</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/23/pickle-csv/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/09/24/002_像雾像雨又像风的副本/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">pickle与csv格式</h1>
+          <h1 class="post-title" itemprop="name headline">合并两个有序数组</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-23T21:00:17+08:00">
-                2018-04-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-24T16:15:00+08:00">
+                2018-09-24
               </time>
             
 
@@ -327,6 +327,17 @@
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/技术/" itemprop="url" rel="index">
                     <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
                   </a>
                 </span>
 
@@ -362,8 +373,9 @@
       
 
       
-        <p>在python读取相同数据量不同格式时：<br>csv占用存储少，读取很慢<br>pickle占用存储多，读取很快</p>
-<p>csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)<br>pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)</p>
+        <p>合并两个有序数组</p>
+<p>思路1:最简单的操作是将nums2直接拼在nums1后面，然后对nums1排序<br>这样的话会用到python自带的排序算法，也可以自己写一下快排代替。总体来讲是先合并再排序。这样的话就没有使用到给出的有序数组中有序的信息。所以复杂度难免会高一点。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(nums1, m, nums2, n)</span>:</span></span><br><span class="line">	nums1[m:] = nums2[:n]</span><br><span class="line">	nums1.sort()</span><br><span class="line">	<span class="keyword">return</span> nums1</span><br></pre></td></tr></table></figure></p>
+<p>思路2:利用有序信息，依次比较插入nums1中，这种复杂度会低一些，但是边界的判断会复杂一点。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(nums1, m, nums2, n)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    :type nums1: List[int]</span></span><br><span class="line"><span class="string">    :type m: int</span></span><br><span class="line"><span class="string">    :type nums2: List[int]</span></span><br><span class="line"><span class="string">    :type n: int</span></span><br><span class="line"><span class="string">    :rtype: void Do not return anything, modify nums1 in-place instead.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    i = m+n<span class="number">-1</span>  <span class="comment"># nums1的下标长度</span></span><br><span class="line">    <span class="keyword">while</span>(i &gt;= <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">if</span> (len(nums1)==<span class="number">0</span>) <span class="keyword">or</span> (len(nums2)==<span class="number">0</span>):  <span class="comment"># 如果有一个数组为空，则直接拼接</span></span><br><span class="line">            nums1[m:] = nums2</span><br><span class="line">        <span class="keyword">elif</span> (m == <span class="number">0</span>):  <span class="comment"># 如果nums1已经比较完了，则将nums2的剩余部分赋值到nums1</span></span><br><span class="line">            nums1[i] = nums2[n<span class="number">-1</span>]</span><br><span class="line">            n = n - <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> (nums1[m<span class="number">-1</span>] &gt;= nums2[n<span class="number">-1</span>]):  <span class="comment"># 否则比较两数组最后一个元素大小，将大者放入nums1后，并更新下标</span></span><br><span class="line">            nums1[i] = nums1[m<span class="number">-1</span>]</span><br><span class="line">            m = m<span class="number">-1</span></span><br><span class="line">        <span class="keyword">elif</span> (nums1[m<span class="number">-1</span>] &lt; nums2[n<span class="number">-1</span>]) <span class="keyword">and</span> (n<span class="number">-1</span>&gt;=<span class="number">0</span>):  <span class="comment"># 判断大小并检查nums2是否判断完毕，如果nums2判断完毕，则不再利用nums中值，避免循环引用</span></span><br><span class="line">            nums1[i] = nums2[n<span class="number">-1</span>]</span><br><span class="line">            n = n<span class="number">-1</span></span><br><span class="line">        i = i - <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> nums1</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -381,7 +393,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随记/" rel="tag"># 随记</a>
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/排序/" rel="tag"># 排序</a>
           
         </div>
       
@@ -394,8 +410,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/18/FTRL-introduce/" rel="next" title="FTRL介绍">
-                <i class="fa fa-chevron-left"></i> FTRL介绍
+              <a href="/2018/09/18/001_像雾像雨又像风/" rel="next" title="像雾像雨又像风">
+                <i class="fa fa-chevron-left"></i> 像雾像雨又像风
               </a>
             
           </div>
@@ -403,10 +419,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/01/KeyError/" rel="prev" title="KeyError">
-                KeyError <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
