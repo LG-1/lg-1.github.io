@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="NLP,机器学习," />
+  <meta name="keywords" content="机器学习,NLP," />
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。暂时先主要记录：情感分析，tfidf，word2vec 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基">
-<meta name="keywords" content="NLP,机器学习">
+<meta name="keywords" content="机器学习,NLP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="中文自然语言处理小笔记">
 <meta property="og:url" content="https://www.ourantech.club/2018/10/24/004_中文自然语言处理笔记/index.html">
 <meta property="og:site_name" content="险峰风景">
 <meta property="og:description" content="其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。暂时先主要记录：情感分析，tfidf，word2vec 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-24T10:20:02.197Z">
+<meta property="og:updated_time" content="2018-11-09T07:16:21.441Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="中文自然语言处理小笔记">
 <meta name="twitter:description" content="其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。暂时先主要记录：情感分析，tfidf，word2vec 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基">
@@ -366,6 +366,10 @@
 <h2 id="情感分析"><a href="#情感分析" class="headerlink" title="情感分析"></a>情感分析</h2><p>因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。<br>所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词<br>其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。<br>一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。<br>我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的好处是不仅可以计算整个句子的得分，还可以计算每个单元的得分。这样将有可能计算句子的局部情感信息，以及局部信息与全部信息的关系，势必将可以捕捉到更多的特征。例如：某个句子的一个极度负面的用词，对于整体长句是否应该一票否决？不知道，或许不同场景不一样，但特征捕捉出来，然后进行实验就可以知道了。</p>
 <h2 id="tfidf"><a href="#tfidf" class="headerlink" title="tfidf"></a>tfidf</h2><p>具体做的不多。<br>但我理解就是统计词频形成向量，计算向量之间的相似性。<br>词频的表征上可能需要通过一些手段对热门的词进行一些降权操作，可能是逆文档词频。</p>
 <h2 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h2><p>生成方法还没有去做具体研究。<br>理解是基于语料库的词组搭配关系自动生成词语向量量用于刻画语义，可以刻画词语间的相似性。<br>在后续的使用上有一点小思考，看到的应用都是将句子的所有的词语的向量求和，然后计算句子间的相似性，这样的话就会是两个向量求余弦的操作。<br>这样固然简单，但我有一个一个疑问，这样不就将顺序所包含的信息给丢掉了吗？<br>难道不能够用词语向量所组成的矩阵计算相似性？难点在哪里？还在思考。。。<br>可能是$MxN$与$KxL$矩阵的相似性计算在数学上不好操作？有没有近似操作？</p>
+<p>训练词向量的两种方式：<br>    Skip-gram<br>    CBOW<br>训练词向量的核心在于使用贝叶斯推理公式</p>
+<h3 id="word2vec线上部署思路"><a href="#word2vec线上部署思路" class="headerlink" title="word2vec线上部署思路"></a>word2vec线上部署思路</h3><p>初步的一些思路是：<br>    本地load，当然如果每次调用都需要load的话，必定很慢<br>    加载到内存中，这也就对应用服务器的内存提出更高要求<br>    调用REST API，为请求词向量单独起个服务，感觉这个架构会比较清晰简单，但是如果需要使用到所有的词向量的话就会比较麻烦</p>
+<h3 id="word2vec-与-fasttext"><a href="#word2vec-与-fasttext" class="headerlink" title="word2vec 与 fasttext"></a>word2vec 与 fasttext</h3><p>这篇文章讲得很好，可以参考：<a href="https://towardsdatascience.com/word-embedding-with-word2vec-and-fasttext-a209c1d3e12c" target="_blank" rel="noopener">Word2Vec and FastText Word Embedding with Gensim</a><br>讲得简洁清晰。</p>
+<p>对于英文来说，使用fasttext可以训练的w2v可以识别到未出现过的词，因为他会考虑子元组，词未在训练集中出现过，子元组却极有可能是出现过的。</p>
 
       
     </div>
@@ -383,9 +387,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/NLP/" rel="tag"># NLP</a>
-          
             <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
           
         </div>
       
@@ -407,6 +411,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/12/005_Kaggle竞赛总结/" rel="prev" title="Kaggle竞赛总结">
+                Kaggle竞赛总结 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -483,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -505,7 +513,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -566,7 +574,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情感分析"><span class="nav-text">情感分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tfidf"><span class="nav-text">tfidf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec"><span class="nav-text">word2vec</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情感分析"><span class="nav-text">情感分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tfidf"><span class="nav-text">tfidf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec"><span class="nav-text">word2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec线上部署思路"><span class="nav-text">word2vec线上部署思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec-与-fasttext"><span class="nav-text">word2vec 与 fasttext</span></a></li></ol></li></ol></div>
             
 
           </div>
