@@ -272,6 +272,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/12/09/006_How to use tencent chinese embedding in production/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/09/006_How to use tencent chinese embedding in production/" itemprop="url">How to use chinese embedding in production for NLP?</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-09T11:50:00+08:00">
+                2018-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient.
+We all know the emb is almost must be done in NLP. In traditional use case,we need use emb to train a model for future,the emb maybe not need anymore in predict section(we only need 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/09/006_How to use tencent chinese embedding in production/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/11/12/005_Kaggle竞赛总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -516,8 +665,8 @@ Home Credit Deafult Risk本项目来自Kaggle竞赛，其实蛮早就关注平�
       
         
           
-          其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。暂时先主要记录：情感分析，tfidf，word2vec
-情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3
+          学习小笔记
+情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的好处是不仅可以计算整个句子的得分，还可以计算每个单元的得分。这样将有可能计算句子的局部情感信息，以及局部信息与全部信息的关系，势必将可以捕捉到更多的特征。例如：某个句子的一个极度负面的用词，对于整体长
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -709,167 +858,6 @@ Home Credit Deafult Risk本项目来自Kaggle竞赛，其实蛮早就关注平�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/09/24/002_合并两个有序数组/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/24/002_合并两个有序数组/" itemprop="url">合并两个有序数组</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-24T16:15:00+08:00">
-                2018-09-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
-                  </a>
-                </span>
-
-                
-                
-                  , 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          合并两个有序数组
-思路1:最简单的操作是将nums2直接拼在nums1后面，然后对nums1排序这样的话会用到python自带的排序算法，也可以自己写一下快排代替。总体来讲是先合并再排序。这样的话就没有使用到给出的有序数组中有序的信息。所以复杂度难免会高一点。1234def merge(nums1, m, nums2, n):	nums1[m:] = nums2[:n]	nums1.sort()	return nums1
-思路2:利用有序信息，依次比较插入nums1中，这种复杂度会低一些，但是边界的判断会复杂一点。1234567891011121314151617181920212223def
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/09/24/002_合并两个有序数组/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -920,7 +908,7 @@ Home Credit Deafult Risk本项目来自Kaggle竞赛，其实蛮早就关注平�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

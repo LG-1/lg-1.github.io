@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="数学," />
+  <meta name="keywords" content="NLP," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="线性代数：线性讲的是关系。代数讲的是形式。 比如还有非线性代数，那是什么呢？ 学堂上为什么要把行列式放在矩阵前面讲呢？讲了一堆的计算法则与矩阵的生态却是容易混淆的。为什么不先讲矩阵及其生态，讲行列式作为一种特殊的计算形式进行讲解推进呢？是因为难易程度吗？">
-<meta name="keywords" content="数学">
+<meta name="description" content="In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient. We all know the emb is almost must be done in NLP. In traditional use case,we need">
+<meta name="keywords" content="NLP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线性代数">
-<meta property="og:url" content="https://www.ourantech.club/2018/07/29/线性代数/index.html">
+<meta property="og:title" content="How to use chinese embedding in production for NLP?">
+<meta property="og:url" content="https://www.ourantech.club/2018/12/09/006_How to use tencent chinese embedding in production/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="线性代数：线性讲的是关系。代数讲的是形式。 比如还有非线性代数，那是什么呢？ 学堂上为什么要把行列式放在矩阵前面讲呢？讲了一堆的计算法则与矩阵的生态却是容易混淆的。为什么不先讲矩阵及其生态，讲行列式作为一种特殊的计算形式进行讲解推进呢？是因为难易程度吗？">
+<meta property="og:description" content="In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient. We all know the emb is almost must be done in NLP. In traditional use case,we need">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-01T09:28:12.869Z">
+<meta property="og:updated_time" content="2018-12-09T04:10:36.381Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线性代数">
-<meta name="twitter:description" content="线性代数：线性讲的是关系。代数讲的是形式。 比如还有非线性代数，那是什么呢？ 学堂上为什么要把行列式放在矩阵前面讲呢？讲了一堆的计算法则与矩阵的生态却是容易混淆的。为什么不先讲矩阵及其生态，讲行列式作为一种特殊的计算形式进行讲解推进呢？是因为难易程度吗？">
+<meta name="twitter:title" content="How to use chinese embedding in production for NLP?">
+<meta name="twitter:description" content="In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient. We all know the emb is almost must be done in NLP. In traditional use case,we need">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2018/07/29/线性代数/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2018/12/09/006_How to use tencent chinese embedding in production/"/>
 
 
 
 
 
-  <title>线性代数 | 险峰风景</title>
+  <title>How to use chinese embedding in production for NLP? | 险峰风景</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/07/29/线性代数/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/12/09/006_How to use tencent chinese embedding in production/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">线性代数</h1>
+          <h1 class="post-title" itemprop="name headline">How to use chinese embedding in production for NLP?</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-29T13:45:45+08:00">
-                2018-07-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-09T11:50:00+08:00">
+                2018-12-09
               </time>
             
 
@@ -325,8 +325,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数学/" itemprop="url" rel="index">
-                    <span itemprop="name">数学</span>
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
                   </a>
                 </span>
 
@@ -362,9 +362,10 @@
       
 
       
-        <p>线性代数：<br>线性讲的是关系。<br>代数讲的是形式。</p>
-<p>比如还有非线性代数，那是什么呢？</p>
-<p>学堂上为什么要把行列式放在矩阵前面讲呢？讲了一堆的计算法则与矩阵的生态却是容易混淆的。<br>为什么不先讲矩阵及其生态，讲行列式作为一种特殊的计算形式进行讲解推进呢？<br>是因为难易程度吗？</p>
+        <p>In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient.</p>
+<p>We all know the emb is almost must be done in NLP. In traditional use case,we need use emb to train a model for future,the emb maybe not need anymore in predict section(we only need seq the new data then can get the predict result).</p>
+<p>So how to deploy a efficient emb is improtant,</p>
+<p>效果<br>架构<br>部署路径<br>结果展示<br>其他讨论</p>
 
       
     </div>
@@ -382,7 +383,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/数学/" rel="tag"># 数学</a>
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
           
         </div>
       
@@ -395,8 +396,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/22/install-aml-workbench-failure/" rel="next" title="Install Azure ML WorkBench Failure">
-                <i class="fa fa-chevron-left"></i> Install Azure ML WorkBench Failure
+              <a href="/2018/11/12/005_Kaggle竞赛总结/" rel="next" title="Kaggle竞赛总结">
+                <i class="fa fa-chevron-left"></i> Kaggle竞赛总结
               </a>
             
           </div>
@@ -404,10 +405,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/05/机器学习调参总结/" rel="prev" title="机器学习调参总结">
-                机器学习调参总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

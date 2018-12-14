@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。暂时先主要记录：情感分析，tfidf，word2vec 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基">
+<meta name="description" content="学习小笔记 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的">
 <meta name="keywords" content="机器学习,NLP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="中文自然语言处理小笔记">
 <meta property="og:url" content="https://www.ourantech.club/2018/10/24/004_中文自然语言处理笔记/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。暂时先主要记录：情感分析，tfidf，word2vec 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基">
+<meta property="og:description" content="学习小笔记 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-09T07:16:21.441Z">
+<meta property="og:updated_time" content="2018-12-14T10:50:36.427Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="中文自然语言处理小笔记">
-<meta name="twitter:description" content="其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。暂时先主要记录：情感分析，tfidf，word2vec 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基">
+<meta name="twitter:description" content="学习小笔记 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的">
 
 
 
@@ -362,14 +362,17 @@
       
 
       
-        <p>其实感觉上来讲也算不上NLP了，只是做了分词，然后对词语、停用词、词性等进行了简单的一些分析。NLP应该还有很多工作要做，所以仅就我所干的一点点工作而言，不足以攀上这么高大的名称。<br>暂时先主要记录：情感分析，tfidf，word2vec</p>
+        <p>学习小笔记</p>
 <h2 id="情感分析"><a href="#情感分析" class="headerlink" title="情感分析"></a>情感分析</h2><p>因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。<br>所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词<br>其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。<br>一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。<br>我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的好处是不仅可以计算整个句子的得分，还可以计算每个单元的得分。这样将有可能计算句子的局部情感信息，以及局部信息与全部信息的关系，势必将可以捕捉到更多的特征。例如：某个句子的一个极度负面的用词，对于整体长句是否应该一票否决？不知道，或许不同场景不一样，但特征捕捉出来，然后进行实验就可以知道了。</p>
-<h2 id="tfidf"><a href="#tfidf" class="headerlink" title="tfidf"></a>tfidf</h2><p>具体做的不多。<br>但我理解就是统计词频形成向量，计算向量之间的相似性。<br>词频的表征上可能需要通过一些手段对热门的词进行一些降权操作，可能是逆文档词频。</p>
+<h2 id="tfidf"><a href="#tfidf" class="headerlink" title="tfidf"></a>tfidf</h2><p>统计词频并用全局词频进行降权。</p>
 <h2 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h2><p>生成方法还没有去做具体研究。<br>理解是基于语料库的词组搭配关系自动生成词语向量量用于刻画语义，可以刻画词语间的相似性。<br>在后续的使用上有一点小思考，看到的应用都是将句子的所有的词语的向量求和，然后计算句子间的相似性，这样的话就会是两个向量求余弦的操作。<br>这样固然简单，但我有一个一个疑问，这样不就将顺序所包含的信息给丢掉了吗？<br>难道不能够用词语向量所组成的矩阵计算相似性？难点在哪里？还在思考。。。<br>可能是$MxN$与$KxL$矩阵的相似性计算在数学上不好操作？有没有近似操作？</p>
 <p>训练词向量的两种方式：<br>    Skip-gram<br>    CBOW<br>训练词向量的核心在于使用贝叶斯推理公式</p>
 <h3 id="word2vec线上部署思路"><a href="#word2vec线上部署思路" class="headerlink" title="word2vec线上部署思路"></a>word2vec线上部署思路</h3><p>初步的一些思路是：<br>    本地load，当然如果每次调用都需要load的话，必定很慢<br>    加载到内存中，这也就对应用服务器的内存提出更高要求<br>    调用REST API，为请求词向量单独起个服务，感觉这个架构会比较清晰简单，但是如果需要使用到所有的词向量的话就会比较麻烦</p>
 <h3 id="word2vec-与-fasttext"><a href="#word2vec-与-fasttext" class="headerlink" title="word2vec 与 fasttext"></a>word2vec 与 fasttext</h3><p>这篇文章讲得很好，可以参考：<a href="https://towardsdatascience.com/word-embedding-with-word2vec-and-fasttext-a209c1d3e12c" target="_blank" rel="noopener">Word2Vec and FastText Word Embedding with Gensim</a><br>讲得简洁清晰。</p>
 <p>对于英文来说，使用fasttext可以训练的w2v可以识别到未出现过的词，因为他会考虑子元组，词未在训练集中出现过，子元组却极有可能是出现过的。</p>
+<h2 id="基于词向量的主题模型"><a href="#基于词向量的主题模型" class="headerlink" title="基于词向量的主题模型"></a>基于词向量的主题模型</h2><p>基于词袋的LDA主题模型，无法考虑词语顺序、词意，仅能表示相同词语在不同句子中的存在与否、存在频率关系。所以在对问题进行主题分类的任务中应该不会有很好的表现，在实际测试中也确实表现不如人意。</p>
+<p>可以基于词向量对模型进行修改，进行主题建模的根本还是衡量句子间距离（在整个句子空间上），将所有句子分成若干类。能将句子有效表示成向量，就变成了经典的聚类问题。<br>在基于词向量表示句子向量时，使用了tfidf对各词语进行了加权平均得到句子向量表示，然后再进一步将从句子中得到关键词（一个）的向量加到加权平均句子向量上。（这一步相当于再次加权）。得到最终句子平均向量。</p>
+<p>对得到向量表示句子进行无监督聚类，效果不错。</p>
 
       
     </div>
@@ -491,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -574,7 +577,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情感分析"><span class="nav-text">情感分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tfidf"><span class="nav-text">tfidf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec"><span class="nav-text">word2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec线上部署思路"><span class="nav-text">word2vec线上部署思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec-与-fasttext"><span class="nav-text">word2vec 与 fasttext</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情感分析"><span class="nav-text">情感分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tfidf"><span class="nav-text">tfidf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec"><span class="nav-text">word2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec线上部署思路"><span class="nav-text">word2vec线上部署思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec-与-fasttext"><span class="nav-text">word2vec 与 fasttext</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于词向量的主题模型"><span class="nav-text">基于词向量的主题模型</span></a></li></ol></div>
             
 
           </div>
