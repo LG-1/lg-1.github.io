@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="NLP," />
+  <meta name="keywords" content="规划," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient. We all know the emb is almost must be done in NLP. In traditional use case,we need">
-<meta name="keywords" content="NLP">
+<meta name="description" content="2018:1 做了4个月梦2 搭建了个人博客空间，并断断续续写了一些质量不高的博文3 翻译了一本特征工程的书籍。之后把目录及对应的个人心得整理出来4 参加了kaggle比赛获得top2%5 换了工作6 复习了数学 2019:1 跟进kaggle比赛，进入master并为GM打下坚实基础，完成单卡熟练操作并逐步实现3-4卡操作2 开源kaggle kernel 3-5个，主要偏向分析型的EDA内容3">
+<meta name="keywords" content="规划">
 <meta property="og:type" content="article">
-<meta property="og:title" content="How to use chinese embedding in production for NLP?">
-<meta property="og:url" content="https://www.ourantech.club/2018/12/09/006_How to use tencent chinese embedding in production/index.html">
+<meta property="og:title" content="2018总结暨2019规划">
+<meta property="og:url" content="https://www.ourantech.club/2018/12/23/008_2018总结暨2019规划/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient. We all know the emb is almost must be done in NLP. In traditional use case,we need">
+<meta property="og:description" content="2018:1 做了4个月梦2 搭建了个人博客空间，并断断续续写了一些质量不高的博文3 翻译了一本特征工程的书籍。之后把目录及对应的个人心得整理出来4 参加了kaggle比赛获得top2%5 换了工作6 复习了数学 2019:1 跟进kaggle比赛，进入master并为GM打下坚实基础，完成单卡熟练操作并逐步实现3-4卡操作2 开源kaggle kernel 3-5个，主要偏向分析型的EDA内容3">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-09T04:10:36.381Z">
+<meta property="og:updated_time" content="2018-12-23T13:08:09.171Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="How to use chinese embedding in production for NLP?">
-<meta name="twitter:description" content="In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient. We all know the emb is almost must be done in NLP. In traditional use case,we need">
+<meta name="twitter:title" content="2018总结暨2019规划">
+<meta name="twitter:description" content="2018:1 做了4个月梦2 搭建了个人博客空间，并断断续续写了一些质量不高的博文3 翻译了一本特征工程的书籍。之后把目录及对应的个人心得整理出来4 参加了kaggle比赛获得top2%5 换了工作6 复习了数学 2019:1 跟进kaggle比赛，进入master并为GM打下坚实基础，完成单卡熟练操作并逐步实现3-4卡操作2 开源kaggle kernel 3-5个，主要偏向分析型的EDA内容3">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2018/12/09/006_How to use tencent chinese embedding in production/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2018/12/23/008_2018总结暨2019规划/"/>
 
 
 
 
 
-  <title>How to use chinese embedding in production for NLP? | 险峰风景</title>
+  <title>2018总结暨2019规划 | 险峰风景</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/12/09/006_How to use tencent chinese embedding in production/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/12/23/008_2018总结暨2019规划/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">How to use chinese embedding in production for NLP?</h1>
+          <h1 class="post-title" itemprop="name headline">2018总结暨2019规划</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-09T11:50:00+08:00">
-                2018-12-09
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-23T21:00:00+08:00">
+                2018-12-23
               </time>
             
 
@@ -325,8 +325,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
+                  <a href="/categories/个人/" itemprop="url" rel="index">
+                    <span itemprop="name">个人</span>
                   </a>
                 </span>
 
@@ -362,11 +362,11 @@
       
 
       
-        <p>In this atricle, I want to introduce how to deploy a chinese emb in production. which not need big RAM and efficient.</p>
-<p>We all know the emb is almost must be done in NLP. In traditional use case,we need use emb to train a model for future,the emb maybe not need anymore in predict section(we only need seq the new data then can get the predict result).</p>
-<p>So how to deploy a efficient emb is improtant,</p>
-<p>效果<br>架构<br>部署路径<br>结果展示<br>其他讨论</p>
-
+        <h1 id="2018"><a href="#2018" class="headerlink" title="2018:"></a>2018:</h1><p>1 做了4个月梦<br>2 搭建了个人博客空间，并断断续续写了一些质量不高的博文<br>3 翻译了一本特征工程的书籍。之后把目录及对应的个人心得整理出来<br>4 参加了kaggle比赛获得top2%<br>5 换了工作<br>6 复习了数学</p>
+<h1 id="2019"><a href="#2019" class="headerlink" title="2019:"></a>2019:</h1><p>1 跟进kaggle比赛，进入master并为GM打下坚实基础，完成单卡熟练操作并逐步实现3-4卡操作<br>2 开源kaggle kernel 3-5个，主要偏向分析型的EDA内容<br>3 维护2-3个有意义的github自己的项目<br>4 增强编程能力，定向编程题刷到300左右<br>5 实现基本的周更博客，中英间歇，并保证一定质量，不要粗制滥造<br>6 强化数学，微分、积分、级数、矩阵、概率。要到化于无形的状态，要能推公式。不要吹水<br>7 英语水平上一个台阶，目标是词汇量达到6500～7000左右。有一定的应变说读写能力<br>8 看书，计算机技术基础知识3～5本，前沿领域5～10本，人文社会历史1-2本。论文不限，博客不限<br>9 锻炼，保持基本每天半小时的锻炼</p>
+<h3 id="ps"><a href="#ps" class="headerlink" title="ps:"></a>ps:</h3><pre><code>(差不多了，不能再列了，再列多半也完不成了，完成了也是垃圾水平的，没啥用，何必浪费时间。基于自身条件及目前状态，把以上做完做好就可以了。
+不要再做梦了，你正在被时代抛弃！！！ to myself)
+</code></pre>
       
     </div>
     
@@ -383,7 +383,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/NLP/" rel="tag"># NLP</a>
+            <a href="/tags/规划/" rel="tag"># 规划</a>
           
         </div>
       
@@ -456,8 +456,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -483,7 +492,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -494,7 +503,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -545,6 +554,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2018"><span class="nav-text">2018:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2019"><span class="nav-text">2019:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ps"><span class="nav-text">ps:</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
