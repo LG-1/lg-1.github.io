@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="险峰风景">
 <meta property="og:description" content="综述本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧w2vembeddings。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。 问题在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。12345678def embedding_matrix_p(embeddings_index, word_in">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-06T09:24:13.348Z">
+<meta property="og:updated_time" content="2019-01-06T09:25:53.783Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种高效的NLP Word2Vec使用方法">
 <meta name="twitter:description" content="综述本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧w2vembeddings。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。 问题在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。12345678def embedding_matrix_p(embeddings_index, word_in">
@@ -386,7 +386,7 @@ emb = EMB(name=<span class="string">'tencent'</span>, dimensions=<span class="nu
     <span class="keyword">return</span> embedding_matrix
 </code></pre>
 <h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p> 可以节约掉几乎所有的不必要的内存占用，以及95%的时间。</p>
-<h1 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h1><p>当然这个方案也有问题，跟REST API一样，想要使用词向量全局信息的时候也不方便。如果有这种需求，建议参考gensim。<br>这个方法主要面向那些经常使用word2vec做研究的人，以及小型的线上部署场景。<br><a href="https://www.ourantech.club/2019/1/6/011_一种高效的NLP%20Word2Vec使用方法/">原文发表于</a></p>
+<h1 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h1><p>当然这个方案也有问题，跟REST API一样，想要使用词向量全局信息的时候也不方便。如果有这种需求，建议参考gensim。<br>这个方法主要面向那些经常使用word2vec做研究的人，以及小型的线上部署场景。<br><a href="https://www.ourantech.club/2019/01/06/011_一种高效的NLP%20Word2Vec使用方法/">原文发表于</a></p>
 
       
     </div>
