@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="险峰风景">
 <meta property="og:description" content="综述本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧w2vembeddings。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。 问题在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。12345678def embedding_matrix_p(embeddings_index, word_in">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-06T09:43:59.530Z">
+<meta property="og:updated_time" content="2019-01-06T10:07:57.087Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种高效的NLP Word2Vec使用方法">
 <meta name="twitter:description" content="综述本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧w2vembeddings。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。 问题在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。12345678def embedding_matrix_p(embeddings_index, word_in">
@@ -365,9 +365,9 @@
         <h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><p>本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧<a href="https://github.com/LG-1/w2vembeddings" target="_blank" rel="noopener">w2vembeddings</a>。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。</p>
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span><span class="params">(embeddings_index, word_index, max_features)</span>:</span>            </span><br><span class="line">    embed_size = embeddings_index.get(<span class="string">'a'</span>).shape[<span class="number">0</span>]</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_vector = embeddings_index.get(word, np.zeros(embed_size))</span><br><span class="line">        embedding_matrix[i] = embedding_vector</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EMBEDDING_FILE = <span class="string">'../input/embeddings/glove.840B.300d/glove.840B.300d.txt'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_coefs</span><span class="params">(word,*arr)</span>:</span> <span class="keyword">return</span> word, np.asarray(arr, dtype=<span class="string">'float32'</span>)</span><br><span class="line">embeddings_index = dict(get_coefs(*o.split(<span class="string">" "</span>)) <span class="keyword">for</span> o <span class="keyword">in</span> open(EMBEDDING_FILE))</span><br><span class="line">embedding_matrix, embed_size = embedding_matrix_p(embeddings_index, word_index, max_features)</span><br></pre></td></tr></table></figure>
-<p>但是这样就会有一个问题，如果每次都从文件(txt/bin)中load的话需要解析，是比较费时间的，而且load进内存中向量又不都用得到到。比如本次任务分词下来只有2万个，而词向量文件一般都是几百万的级别，所以真正发挥作用的其实可能只有百分之几。那么如何解决这部分不必要的时间浪费及内存占用呢？</p>
+<p>但是这样就会有一个问题，如果每次都从文件(txt/bin)中load的话需要解析，是比较费时间的，而且load进内存中向量又不都用得到。假如某次任务分词下来只有2万个，而词向量文件一般都是几百万的级别，所以真正发挥作用的其实只有百分之几。那么如何解决这部分不必要的时间浪费及内存占用呢？</p>
 <h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>了解了一些部署word2vec的方法之后，发现大概是这么两种：<br>    1、从本地load到内存。<br>    2、起服务，调用REST API。<br>方案1也就上面讲的模式。每次load需要时间，且会占用运行内存。<br>方案2也就是为请求词向量单独起个服务，这个架构会比较清晰。但是如果需要使用到全局词向量的话也会比较麻烦，而且，真的有必要起个服务这么麻烦吗？</p>
-<p>在闲暇时参考<a href="https://github.com/vzhong/embeddings" target="_blank" rel="noopener">embeddings</a>的实现重新封装了一个包<a href="https://github.com/LG-1/w2vembeddings" target="_blank" rel="noopener">w2vembeddings</a>。<br>主要是将词向量内容迁移到SQLite中，本质上来讲也就是将word2vec换了一种存储格式。但是由于SQLite是数据库，且无服务器。所以方面高效，查询快速（也不需要用到写入功能，除了第一次转换格式的时候）。</p>
+<p>在闲暇时参考<a href="https://github.com/vzhong/embeddings" target="_blank" rel="noopener">embeddings</a>的实现重新封装了一个包<a href="https://github.com/LG-1/w2vembeddings" target="_blank" rel="noopener">w2vembeddings</a>。<br>主要是将词向量内容迁移到SQLite中，本质上来讲也就是将word2vec换了一种存储格式。但是由于SQLite是数据库，且无服务器。所以方便高效，查询快速（也不需要用到写入功能，除了第一次转换格式的时候）。</p>
 <p>主要有以下功能：<br>    词向量库管理<br>    词向量即时调用，随取随用</p>
 <p>主要解决内存占用和加载耗时的问题。还可以将多个词向量库放在一起管理。<br>使用方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> w2vembeddings.w2vemb <span class="keyword">import</span> EMB</span><br><span class="line">emb = EMB(name=<span class="string">'tencent'</span>, dimensions=<span class="number">200</span>)  <span class="comment"># 加载词向量库，相当于原来从文件加载的步骤</span></span><br><span class="line"><span class="comment"># 按需提取词向量矩阵</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span><span class="params">(emb, word_index, max_features)</span>:</span>    </span><br><span class="line">    embed_size = len(emb.get_vector(<span class="string">'a'</span>))</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_matrix[i] = np.array(emb.get_vector(word))</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure>
@@ -414,6 +414,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/08/012_An efficient NLP Word2Vec usage method/" rel="prev" title="An efficient NLP Word2Vec usage method">
+                An efficient NLP Word2Vec usage method <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -490,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -501,7 +505,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>

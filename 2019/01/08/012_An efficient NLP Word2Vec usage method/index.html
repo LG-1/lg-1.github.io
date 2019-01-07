@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="随记," />
+  <meta name="keywords" content="NLP," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在python读取相同数据量不同格式时：csv占用存储少，读取很慢pickle占用存储多，读取很快 csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)">
-<meta name="keywords" content="随记">
+<meta name="description" content="IntroductionThis article mainly introduces a word embedding trick when performing deep learning tasks in the NLP field.w2vembeddings。Reduce unnecessary memory usage and 95% load time. It also greatly">
+<meta name="keywords" content="NLP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pickle与csv格式">
-<meta property="og:url" content="https://www.ourantech.club/2018/04/23/pickle-csv/index.html">
+<meta property="og:title" content="An efficient NLP Word2Vec usage method">
+<meta property="og:url" content="https://www.ourantech.club/2019/01/08/012_An efficient NLP Word2Vec usage method/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="在python读取相同数据量不同格式时：csv占用存储少，读取很慢pickle占用存储多，读取很快 csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)">
+<meta property="og:description" content="IntroductionThis article mainly introduces a word embedding trick when performing deep learning tasks in the NLP field.w2vembeddings。Reduce unnecessary memory usage and 95% load time. It also greatly">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-04-23T13:01:54.337Z">
+<meta property="og:updated_time" content="2019-01-07T03:40:19.255Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pickle与csv格式">
-<meta name="twitter:description" content="在python读取相同数据量不同格式时：csv占用存储少，读取很慢pickle占用存储多，读取很快 csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)">
+<meta name="twitter:title" content="An efficient NLP Word2Vec usage method">
+<meta name="twitter:description" content="IntroductionThis article mainly introduces a word embedding trick when performing deep learning tasks in the NLP field.w2vembeddings。Reduce unnecessary memory usage and 95% load time. It also greatly">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2018/04/23/pickle-csv/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2019/01/08/012_An efficient NLP Word2Vec usage method/"/>
 
 
 
 
 
-  <title>pickle与csv格式 | 险峰风景</title>
+  <title>An efficient NLP Word2Vec usage method | 险峰风景</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/23/pickle-csv/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/08/012_An efficient NLP Word2Vec usage method/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">pickle与csv格式</h1>
+          <h1 class="post-title" itemprop="name headline">An efficient NLP Word2Vec usage method</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-23T21:00:17+08:00">
-                2018-04-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-08T12:00:00+08:00">
+                2019-01-08
               </time>
             
 
@@ -325,8 +325,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
+                  <a href="/categories/tech/" itemprop="url" rel="index">
+                    <span itemprop="name">tech</span>
                   </a>
                 </span>
 
@@ -362,8 +362,17 @@
       
 
       
-        <p>在python读取相同数据量不同格式时：<br>csv占用存储少，读取很慢<br>pickle占用存储多，读取很快</p>
-<p>csv格式使用内存的大小会是存储空间的5倍左右(csv格式还可压缩，最终占用存储大小与占用内存大小差距可能达到50倍)<br>pickle格式使用的内存大小将与存储空间相当(pd 0.20中，pickle将可以压缩)</p>
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This article mainly introduces a word embedding trick when performing deep learning tasks in the NLP field.<a href="https://github.com/LG-1/w2vembeddings" target="_blank" rel="noopener">w2vembeddings</a>。Reduce unnecessary memory usage and 95% load time. It also greatly enhances the management ability and reusability of the word embedding library.</p>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>When performing NLP tasks, Word2Vec is generally used for embedding. Generate a word vector matrix based on the current task. As below.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span><span class="params">(embeddings_index, word_index, max_features)</span>:</span>            </span><br><span class="line">    embed_size = embeddings_index.get(<span class="string">'a'</span>).shape[<span class="number">0</span>]</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_vector = embeddings_index.get(word, np.zeros(embed_size))</span><br><span class="line">        embedding_matrix[i] = embedding_vector</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EMBEDDING_FILE = <span class="string">'../input/embeddings/glove.840B.300d/glove.840B.300d.txt'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_coefs</span><span class="params">(word,*arr)</span>:</span> <span class="keyword">return</span> word, np.asarray(arr, dtype=<span class="string">'float32'</span>)</span><br><span class="line">embeddings_index = dict(get_coefs(*o.split(<span class="string">" "</span>)) <span class="keyword">for</span> o <span class="keyword">in</span> open(EMBEDDING_FILE))</span><br><span class="line">embedding_matrix, embed_size = embedding_matrix_p(embeddings_index, word_index, max_features)</span><br></pre></td></tr></table></figure>
+<p>But this have a problem, if you need to parse from the file (txt/bin) each time, it is time consuming, and the loaded into the memory vectors is not all used. If there are only 20,000 words divisions in a certain task, but the word vector files are generally contains several millions, the real effect is only a few percent. So how to solve this part of unnecessary time waste and memory usage?</p>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>After understanding some of the ways to deploy word2vec, I found that there are probably two of them:<br>    1、Load to memory from local file.<br>    2、REST API.<br>Solution 1 is also the mode described above. time and memory are wasted.<br>Solution 2 is to serve the request vector separately, and the architecture will be clearer. But if you need to use the global word vector, it will be more troublesome, and it is really necessary to start a service so complicated?</p>
+<p>In my leisure time, reference<a href="https://github.com/vzhong/embeddings" target="_blank" rel="noopener">embeddings</a> and do some other works<a href="https://github.com/LG-1/w2vembeddings" target="_blank" rel="noopener">w2vembeddings</a>。<br>The main thing is to transfer the word vector content to SQLite. In essence, it is to change word2vec to a storage format. But since SQLite is a database and there is no server. So it is convenient and efficient, and the query is fast (you don’t need to use the write function, except when you convert the format for the first time).</p>
+<p>Mainly functions:<br>    Word vector library management<br>    Word vector instant call, ready to use</p>
+<p>Instructions：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> w2vembeddings.w2vemb <span class="keyword">import</span> EMB</span><br><span class="line">emb = EMB(name=<span class="string">'tencent'</span>, dimensions=<span class="number">200</span>)  <span class="comment"># Load the word vector library, equivalent to the original step of loading from the file</span></span><br><span class="line"><span class="comment"># Extract word vector matrix on demand</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span><span class="params">(emb, word_index, max_features)</span>:</span>    </span><br><span class="line">    embed_size = len(emb.get_vector(<span class="string">'a'</span>))</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_matrix[i] = np.array(emb.get_vector(word))</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure>
+<p>It can save almost all unnecessary memory usage and 95% of the time.</p>
+<h1 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem"></a>Problem</h1><p>Of course, this solution has problems. Like the REST API, it is not convenient to use the global information of the word vector. If you have such a requirement, it is recommended to refer to gensim.<br>This method is mainly for those who often use word2vec for research, as well as small online deployment scenarios.<br><a href="https://www.ourantech.club/2019/01/06/011_一种高效的NLP%20Word2Vec使用方法/">Originally published in</a><br>and<a href="https://mp.weixin.qq.com/s/Lc6ti634aN31D1Z0T-N2eA" target="_blank" rel="noopener">Wechat</a></p>
 
       
     </div>
@@ -381,7 +390,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随记/" rel="tag"># 随记</a>
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
           
         </div>
       
@@ -394,8 +403,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/18/FTRL-introduce/" rel="next" title="FTRL介绍">
-                <i class="fa fa-chevron-left"></i> FTRL介绍
+              <a href="/2019/01/06/011_一种高效的NLP Word2Vec使用方法/" rel="next" title="一种高效的NLP Word2Vec使用方法">
+                <i class="fa fa-chevron-left"></i> 一种高效的NLP Word2Vec使用方法
               </a>
             
           </div>
@@ -403,10 +412,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/01/KeyError/" rel="prev" title="KeyError">
-                KeyError <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -458,8 +463,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -547,6 +561,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Problem"><span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Solution"><span class="nav-text">Solution</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Problem-1"><span class="nav-text">Problem</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
