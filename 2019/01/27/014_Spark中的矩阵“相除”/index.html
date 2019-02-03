@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="背景我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的. 所以这里将的相除其实是两个维度完全一样的矩阵对应点一一相除的意思. 类似于python 中np.array/np.array 1234import numpy as npa = np.array([[1,2], [3,4]])b = np.array([[2,3], [1,4]])print(&quot;mat a is: \n &amp;#123;0">
+<meta name="description" content="背景我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的. 所以这里讲的相除其实是两个维度完全一样的矩阵对应点一一相除的意思. 类似于python 中np.array/np.array 1234import numpy as npa = np.array([[1,2], [3,4]])b = np.array([[2,3], [1,4]])print(&quot;mat a is: \n &amp;#123;0">
 <meta name="keywords" content="Spark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark中的矩阵“相除”">
 <meta property="og:url" content="https://www.ourantech.club/2019/01/27/014_Spark中的矩阵“相除”/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="背景我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的. 所以这里将的相除其实是两个维度完全一样的矩阵对应点一一相除的意思. 类似于python 中np.array/np.array 1234import numpy as npa = np.array([[1,2], [3,4]])b = np.array([[2,3], [1,4]])print(&quot;mat a is: \n &amp;#123;0">
+<meta property="og:description" content="背景我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的. 所以这里讲的相除其实是两个维度完全一样的矩阵对应点一一相除的意思. 类似于python 中np.array/np.array 1234import numpy as npa = np.array([[1,2], [3,4]])b = np.array([[2,3], [1,4]])print(&quot;mat a is: \n &amp;#123;0">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-27T15:09:35.638Z">
+<meta property="og:updated_time" content="2019-01-30T02:54:25.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark中的矩阵“相除”">
-<meta name="twitter:description" content="背景我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的. 所以这里将的相除其实是两个维度完全一样的矩阵对应点一一相除的意思. 类似于python 中np.array/np.array 1234import numpy as npa = np.array([[1,2], [3,4]])b = np.array([[2,3], [1,4]])print(&quot;mat a is: \n &amp;#123;0">
+<meta name="twitter:description" content="背景我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的. 所以这里讲的相除其实是两个维度完全一样的矩阵对应点一一相除的意思. 类似于python 中np.array/np.array 1234import numpy as npa = np.array([[1,2], [3,4]])b = np.array([[2,3], [1,4]])print(&quot;mat a is: \n &amp;#123;0">
 
 
 
@@ -363,7 +363,7 @@
 
       
         <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的.</p>
-<p>所以这里将的相除其实是两个维度完全一样的矩阵对应点一一相除的意思.</p>
+<p>所以这里讲的相除其实是两个维度完全一样的矩阵对应点一一相除的意思.</p>
 <p>类似于python 中np.array/np.array</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">b = np.array([[<span class="number">2</span>,<span class="number">3</span>], [<span class="number">1</span>,<span class="number">4</span>]])</span><br><span class="line">print(<span class="string">"mat a is: \n &#123;0&#125; \n mat b is:\n &#123;1&#125; \n mat a/b is: \n &#123;2&#125;"</span>.format(a, b, a/b))</span><br></pre></td></tr></table></figure>
 <pre><code>mat a is: 
