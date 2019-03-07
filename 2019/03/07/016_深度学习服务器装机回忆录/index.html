@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="技术,硬件," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="没卡是没法做深度学习的,所以决定斥资装一台服务器. 关于本文本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已. 前言本来由于已经有一台MBP了,所以还考虑过的方案是给它配外接GPU,链接网站(egpu.io)是专门给MBP配eGPU的大">
+<meta name="keywords" content="技术,硬件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习服务器装机回忆录">
+<meta property="og:url" content="https://www.ourantech.club/2019/03/07/016_深度学习服务器装机回忆录/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="没卡是没法做深度学习的,所以决定斥资装一台服务器. 关于本文本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已. 前言本来由于已经有一台MBP了,所以还考虑过的方案是给它配外接GPU,链接网站(egpu.io)是专门给MBP配eGPU的大">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/000.jpeg">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/001.jpeg">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/003.png">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/002.jpeg">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/004.jpeg">
+<meta property="og:updated_time" content="2019-03-07T15:40:43.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习服务器装机回忆录">
+<meta name="twitter:description" content="没卡是没法做深度学习的,所以决定斥资装一台服务器. 关于本文本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已. 前言本来由于已经有一台MBP了,所以还考虑过的方案是给它配外接GPU,链接网站(egpu.io)是专门给MBP配eGPU的大">
+<meta name="twitter:image" content="https://www.ourantech.club/images_source/20190307/000.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.ourantech.club/2019/03/07/016_深度学习服务器装机回忆录/"/>
+
+
+
+
+
+  <title>深度学习服务器装机回忆录 | 险峰风景</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">险峰风景</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/03/07/016_深度学习服务器装机回忆录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深度学习服务器装机回忆录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-07T18:00:00+08:00">
+                2019-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index">
+                    <span itemprop="name">tech</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>没卡是没法做深度学习的,所以决定斥资装一台服务器.</p>
+<h3 id="关于本文"><a href="#关于本文" class="headerlink" title="关于本文"></a>关于本文</h3><p>本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.<br>因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已.</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本来由于已经有一台MBP了,所以还考虑过的方案是给它配<a href="https://egpu.io/build-guides/" target="_blank" rel="noopener">外接GPU</a>,链接网站(egpu.io)是专门给MBP配eGPU的大神们分享经验的地方,如果有这个需求或许可以参考.<br>后来之所以放弃是因为:</p>
+<ul>
+<li>MBP的CPU也不是很强(17款)</li>
+<li>内存也只有16G</li>
+<li>需要完全对接机器硬件、系统、GPU、电源等一些问题(会略复杂)</li>
+<li>MBP是需要便携移动的,eGPU有点烦了</li>
+<li>干脆弄一台服务器,MBP来做数据探索、特征处理,服务器来跑代码,拓展性足够,两不耽搁(只是钱包略痛)</li>
+</ul>
+<h2 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h2><p>成本来说的话,打算用于长期学习的话肯定自购硬件比较划算,毕竟随着时间的流逝,边际成本越来越低.<br>如果只是用个一时半会的肯定直接租用云平台了,在超出本地服务器要求时的短期需求也可以直接放在云平台上运行.</p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>过程虽有坎坷,结果还是OK的,但还有几个坑要提一下.<br>由于选了华硕x299主板,只能装win10(其实我想装Ubuntu啊++),系统原因又会导致一系列问题,比如NV、深度学习框架等等兼容性.在初学者的路上,任何一个小问题都可能使计划夭折在半路上,所以要慎重.主板的选择基本决定了系统,系统基本决定了平台和框架.所以要慎重.(选的时候注意主板和CPU/GPU的兼容基本就没啥问题了)<br>由于装的win10系统(在深度学习界并不是公认主流),导致TF-GPU安装一直报错失败,虽然参考官方文档进行了多次check,但依然没有解决,这就导致了keras基本处于不可用的状态.所幸Pytorch是可用的,不然我真是要洒泪了++,也就是现实将我逼上了Pytorch这座梁山.<br>装win系统还需要克制自己想装游戏的冲动,目前我还能克制.</p>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><h3 id="资料准备"><a href="#资料准备" class="headerlink" title="资料准备"></a>资料准备</h3><p>资料来源主要参考了知乎上关于深度学习的装机指南<a href="https://www.zhihu.com/question/33996159?sort=created" target="_blank" rel="noopener">帖子</a>(<a href="https://www.zhihu.com/question/33996159?sort=created)" target="_blank" rel="noopener">https://www.zhihu.com/question/33996159?sort=created)</a>.</p>
+<h3 id="列配置"><a href="#列配置" class="headerlink" title="列配置"></a>列配置</h3><p>(此配置不具有参考性,请参考阅读时间当前的最新硬件及其兼容性[既然要装,这些也是逃不掉要学的,或早或晚,或交学费或没有])</p>
+<ul>
+<li>主板: WS X299</li>
+<li>CPU: Inter i7 7820x</li>
+<li>GPU: RTX 2080</li>
+<li>内存: 金士顿 16G*2</li>
+<li>SSD: SAMSUNG</li>
+<li>水冷: 海盗船</li>
+<li>硬盘: WD 4T</li>
+<li>电源: CORSAIR</li>
+<li>显示器: PHILIPS 27</li>
+<li>机箱: AIR540</li>
+<li>鼠键: 罗技</li>
+</ul>
+<p><img src="\images_source\20190307\000.jpeg" alt="Markdown"></p>
+<h3 id="插线"><a href="#插线" class="headerlink" title="插线"></a>插线</h3><p>设备买好之后,按照操作手册把线插好就行了.<br>当然,最复杂就是如何接主板上的接口,要多看两遍主板手册.<br><img src="\images_source\20190307\001.jpeg" alt="Markdown"><br>(走线不是关键,走线再漂亮,点不亮也是白搭)</p>
+<h3 id="装系统"><a href="#装系统" class="headerlink" title="装系统"></a>装系统</h3><p>本以为,虽没装过操作系统,应该也能搞定.<br>殊不知,没搞定.<br>然后找了个专业装系统的,花了120,++.(没有启动盘).<br><img src="\images_source\20190307\003.png" alt="Markdown"><br>真是惭愧~</p>
+<h3 id="装软件"><a href="#装软件" class="headerlink" title="装软件"></a>装软件</h3><p>软件就比较简单了(但也不尽然,比如TF-GPU就没装好😢,道行还是不够啊).</p>
+<h3 id="写代码跑起来"><a href="#写代码跑起来" class="headerlink" title="写代码跑起来"></a>写代码跑起来</h3><p>测测GPU的安装成功与否.运行CUDA sample下的deviceQuery代码.<br><img src="\images_source\20190307\002.jpeg" alt="Markdown"></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>平台搭好,只是开始.<br><img src="\images_source\20190307\004.jpeg" alt="Markdown"><br>后面的路还长.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/技术/" rel="tag"># 技术</a>
+          
+            <a href="/tags/硬件/" rel="tag"># 硬件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/24/015_不确定性与确定性的一点思考/" rel="next" title="不确定性与确定性的一点思考">
+                <i class="fa fa-chevron-left"></i> 不确定性与确定性的一点思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">LG</p>
+              <p class="site-description motion-element" itemprop="description">不要说是为什么 燕过留声 风去留痕</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="/uploads/wechat.jpg" target="_blank" title="Wechat">
+                      
+                        <i class="fa fa-fw fa-wechat"></i>Wechat</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/5594215928" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/LG-1" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="/uploads/donate.png" target="_blank" title="Donate">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Donate</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于本文"><span class="nav-text">关于本文</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#成本"><span class="nav-text">成本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结果"><span class="nav-text">结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#过程"><span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#资料准备"><span class="nav-text">资料准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列配置"><span class="nav-text">列配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插线"><span class="nav-text">插线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装系统"><span class="nav-text">装系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装软件"><span class="nav-text">装软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写代码跑起来"><span class="nav-text">写代码跑起来</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-text">后记</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
