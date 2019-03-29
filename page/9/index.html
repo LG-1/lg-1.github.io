@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="机器学习," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -105,18 +105,16 @@
 
 
 
-<meta name="description" content="FTRLFTRL是一种在线线性优化技术，类似于FTL，但在目标函数上有所差别。 FTL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x$ FTRL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x + cR(x)$$R(x)$表示凸可微正则化">
-<meta name="keywords" content="机器学习">
-<meta property="og:type" content="article">
-<meta property="og:title" content="FTRL介绍">
-<meta property="og:url" content="https://www.ourantech.club/2018/04/18/FTRL-introduce/index.html">
+<meta name="description" content="不要说是为什么 燕过留声 风去留痕">
+<meta property="og:type" content="website">
+<meta property="og:title" content="险峰风景">
+<meta property="og:url" content="https://www.ourantech.club/page/9/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="FTRLFTRL是一种在线线性优化技术，类似于FTL，但在目标函数上有所差别。 FTL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x$ FTRL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x + cR(x)$$R(x)$表示凸可微正则化">
+<meta property="og:description" content="不要说是为什么 燕过留声 风去留痕">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-31T02:27:48.593Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FTRL介绍">
-<meta name="twitter:description" content="FTRLFTRL是一种在线线性优化技术，类似于FTL，但在目标函数上有所差别。 FTL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x$ FTRL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x + cR(x)$$R(x)$表示凸可微正则化">
+<meta name="twitter:title" content="险峰风景">
+<meta name="twitter:description" content="不要说是为什么 燕过留声 风去留痕">
 
 
 
@@ -146,13 +144,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2018/04/18/FTRL-introduce/"/>
+  <link rel="canonical" href="https://www.ourantech.club/page/9/"/>
 
 
 
 
 
-  <title>FTRL介绍 | 险峰风景</title>
+  <title>险峰风景</title>
   
 
 
@@ -181,7 +179,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -284,9 +283,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -299,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/18/FTRL-introduce/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/12/jupyter-ext/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -316,7 +315,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">FTRL介绍</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/12/jupyter-ext/" itemprop="url">一个jupyter插件</a></h1>
         
 
         <div class="post-meta">
@@ -328,8 +329,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-18T20:55:58+08:00">
-                2018-04-18
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-12T19:40:50+08:00">
+                2018-04-12
               </time>
             
 
@@ -388,16 +389,22 @@
       
 
       
-        <h1 id="FTRL"><a href="#FTRL" class="headerlink" title="FTRL"></a>FTRL</h1><p><a href="http://onlineprediction.net/?n=Main.FollowTheRegularizedLeader" target="_blank" rel="noopener">FTRL</a>是一种<a href="http://onlineprediction.net/?n=Main.On-lineLinearOptimization" target="_blank" rel="noopener">在线线性优化技术</a>，类似于<a href="http://onlineprediction.net/?n=Main.FollowTheLeader" target="_blank" rel="noopener">FTL</a>，但在目标函数上有所差别。</p>
-<p>FTL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x$</p>
-<p>FTRL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x + cR(x)$<br>$R(x)$表示凸可微正则化项。<br>若用于分类，可以参考[1]</p>
-<h1 id="在线线性优化"><a href="#在线线性优化" class="headerlink" title="在线线性优化"></a>在线线性优化</h1><p>在线线性优化(on-line linear optimization)定义为：学习者(玩家)和环境(对手，或现实)之间重复的游戏。<br>假设$\mathcal{K} \in \mathbb{R}^n$是一个紧凑的闭凸集。<br>游戏的协议是：<br>　　FOR $t=1,2,\dots,T$<br>　　　玩家选择 $x_t \in \mathcal{K}$<br>　　　独立的对手选择 $f_t \in \mathbb{R}^n$<br>　　　玩家损失函数 $f’_t x_t$, 和观察到的反馈。<br>　　END FOR. </p>
-<p>玩家的目标是最小化：</p>
-<p>$$<br>R _ { T } = \sum _ { t = 1 } ^ { T } f _ { t } ^ { \prime } x _ { t } - \min _ { x ^ { * } \in \mathcal { K } } \sum _ { t = 1 } ^ { T } f _ { t } ^ { \prime } x ^ { * }<br>$$</p>
-<p>在完全信息的游戏设定下，玩家可以将$f_t$ 作为反馈，并作为他再次决策的参考。其它的设置是负向作用，玩家观察到只是标量值$f’_t x_t$。不知道“如果我们改变了我们的行动会是什么”，只有反馈。<br>其实，这样的设置对于各种各样的应用程序都是有用的。<br>由于这个理论有些缺憾，所以演化出来的FTL(Follow the Leader)算法偶尔被使用，而更多的时候则是使用FTRL(Follow the regularized leader)</p>
-<h1 id="FTL"><a href="#FTL" class="headerlink" title="FTL"></a>FTL</h1><p>FTL是一个用专家建议预测的算法。它衍生了一些其它算法，如FTRL，一种更有效的算法。<br>FTL仅仅跟随“到目前为止”最好的专家。<br>目标函数 $\gamma^T = \arg\min \sum_{t=1}^T \lambda(\omega^t,\gamma^t_k), k=1,\ldots,K$ (可以参考Prediction with expert advice或是其它类似的理论。<br>可以看出，即使是在平方损失函数的情况下，也不能证明该算法的良好后悔界限。<br>假设有两种输出${0,1}$，和两个可能的专家。一个总是预测$0$第二个总是预测$1$.在第一步，学习者选择跟随第一个专家，所以他的预测是$0$，然而现实总是可能让你失望，当产出是$1$时，学习者遭受损失$1$，第一个专家遭受损失$1$，第二个专家遭受损失$0$。在第二步中，学习者选择第二个专家，所以他的预测是$1$。实际输出是$0$，所以学习者遭受损失$1$。<br>(我咋感觉跟我买股票的节奏差不多呢+==+)<br>就这样, 经过$T$步后，学习者的损失是$T$，专家们的损失是$\dfrac{T}{2}$(只有大约，因为当专家的损失相等时，我们不知道在学习者选择他的决定之前哪个人遭受了非零损失)，所以后悔的代价是$\dfrac{T}{2}$。</p>
-<p>[1]:Shai Shalev-Shwartz and Yoram Singer. A primal-dual perspective of online learning algorithms. Mach. Learn., 69(2-3):115–142, 2007. </p>
-
+        
+          
+          分享一个jupyter小工具jupyterlab-drawio，可以用来替换原本属于viso的很多工作。界面一览：使用起来感觉很方便，即不用安装viso那么大的软件，也很流畅，可以达到随心的程度。而且一些颜色设置、形状设定等操作在使用过程中还有记忆，这点感觉很好。
+安装步骤：需要先安装jupyterlab
+安装运行安装jupyter lab1pip install jupyterlab
+安装扩展插件jupyterlab-drawio1jupyter labextension  install jupyterlab-drawio
+查看插件是否安装成功1jupyter labextension l
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/12/jupyter-ext/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
       
     </div>
     
@@ -412,40 +419,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/04/18/experience-of-kaggle/" rel="next" title="机器学习经验">
-                <i class="fa fa-chevron-left"></i> 机器学习经验
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/23/pickle-csv/" rel="prev" title="pickle与csv格式">
-                pickle与csv格式 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -455,11 +436,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
+  </nav>
+
 
 
           </div>
@@ -467,10 +451,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -491,17 +471,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -589,22 +560,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FTRL"><span class="nav-text">FTRL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在线线性优化"><span class="nav-text">在线线性优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FTL"><span class="nav-text">FTL</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -732,10 +687,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
