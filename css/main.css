@@ -1886,7 +1886,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #2147ff;
+  background: #8e16ff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2967,4 +2967,20 @@ hr {
     width: auto;
     text-align: center;
   }
+}
+#toc {
+  line-height: 1em;
+  font-size: 0.9em;
+  float: right;
+}
+#toc .toc {
+  padding: 0;
+  margin: 1em;
+  line-height: 1.8em;
+}
+#toc .toc li {
+  list-style-type: none;
+}
+#toc .toc-child {
+  margin-left: 1em;
 }

@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="思考," />
+  <meta name="keywords" content="思考,技术," />
 
 
 
@@ -105,18 +105,18 @@
 
 
 
-<meta name="description" content="人工智能的发展时间在计算机时代的历史中应该也不算短了. 至今(2019-02)所谓的强人工智能仍是一个遥不可及的问题. 要接受人的控制就必须要能够预测整个“智能”若干步骤后的状态,即没有不确定性,一切尽在掌控.那么这种掌控有可能产生智能吗?今天的人工智能行业的探索或许将给我们答案. 如果受基因进化思想的影响(交叉变异,环境选择),那么智能的发展过程中可能是充满不确定性的,这就从根本上与我们要求的控">
-<meta name="keywords" content="思考">
+<meta name="description" content="相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之. 详参论文参考使用案例 只是做一些学习记录,如有遗误,望请指教. 公式$${score}=w_{0} A U C_{\tex">
+<meta name="keywords" content="思考,技术">
 <meta property="og:type" content="article">
-<meta property="og:title" content="不确定性与确定性的一点思考">
-<meta property="og:url" content="https://www.ourantech.club/2019/02/24/015_不确定性与确定性的一点思考/index.html">
+<meta property="og:title" content="一种为评估文本分类效果的改进指标">
+<meta property="og:url" content="https://www.ourantech.club/2019/04/04/020_一种为评估文本分类效果的改进指标/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="人工智能的发展时间在计算机时代的历史中应该也不算短了. 至今(2019-02)所谓的强人工智能仍是一个遥不可及的问题. 要接受人的控制就必须要能够预测整个“智能”若干步骤后的状态,即没有不确定性,一切尽在掌控.那么这种掌控有可能产生智能吗?今天的人工智能行业的探索或许将给我们答案. 如果受基因进化思想的影响(交叉变异,环境选择),那么智能的发展过程中可能是充满不确定性的,这就从根本上与我们要求的控">
+<meta property="og:description" content="相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之. 详参论文参考使用案例 只是做一些学习记录,如有遗误,望请指教. 公式$${score}=w_{0} A U C_{\tex">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-29T06:30:10.413Z">
+<meta property="og:updated_time" content="2019-04-03T19:33:21.362Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="不确定性与确定性的一点思考">
-<meta name="twitter:description" content="人工智能的发展时间在计算机时代的历史中应该也不算短了. 至今(2019-02)所谓的强人工智能仍是一个遥不可及的问题. 要接受人的控制就必须要能够预测整个“智能”若干步骤后的状态,即没有不确定性,一切尽在掌控.那么这种掌控有可能产生智能吗?今天的人工智能行业的探索或许将给我们答案. 如果受基因进化思想的影响(交叉变异,环境选择),那么智能的发展过程中可能是充满不确定性的,这就从根本上与我们要求的控">
+<meta name="twitter:title" content="一种为评估文本分类效果的改进指标">
+<meta name="twitter:description" content="相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之. 详参论文参考使用案例 只是做一些学习记录,如有遗误,望请指教. 公式$${score}=w_{0} A U C_{\tex">
 
 
 
@@ -146,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2019/02/24/015_不确定性与确定性的一点思考/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2019/04/04/020_一种为评估文本分类效果的改进指标/"/>
 
 
 
 
 
-  <title>不确定性与确定性的一点思考 | 险峰风景</title>
+  <title>一种为评估文本分类效果的改进指标 | 险峰风景</title>
   
 
 
@@ -299,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/02/24/015_不确定性与确定性的一点思考/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/04/020_一种为评估文本分类效果的改进指标/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -316,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">不确定性与确定性的一点思考</h1>
+          <h1 class="post-title" itemprop="name headline">一种为评估文本分类效果的改进指标</h1>
         
 
         <div class="post-meta">
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-24T14:00:00+08:00">
-                2019-02-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-04T01:00:00+08:00">
+                2019-04-04
               </time>
             
 
@@ -388,13 +388,37 @@
       
 
       
-        <p>人工智能的发展时间在计算机时代的历史中应该也不算短了.</p>
-<p>至今(2019-02)所谓的强人工智能仍是一个遥不可及的问题.</p>
-<p>要接受人的控制就必须要能够预测整个“智能”若干步骤后的状态,即没有不确定性,一切尽在掌控.那么这种掌控有可能产生智能吗?今天的人工智能行业的探索或许将给我们答案.</p>
-<p>如果受基因进化思想的影响(交叉变异,环境选择),那么智能的发展过程中可能是充满不确定性的,这就从根本上与我们要求的控制形成了冲突和矛盾.</p>
-<p>如果我们真的需要拥抱不确定性的话,初初想来确实也蛮可怕的.</p>
-<p>我个人其实倾向于加入不确定性方可产生新的智能的方案.那么可能存在的问题应该怎么思考呢?<br>个人感觉可以参考人这个系统的方案,人中有好人和坏人.机器智能中有好的机器智能和坏的机器智能,是否可以将为人设计的机制以某种方式参照到机器智能中去呢?这样对于现存的人这个系统来说是不是就可以接受了?</p>
-<p>目标是,只要加入了整个机器智能的系统后,带来的增益是大于成本的,总体上来说这个机制应该就可以存在下去.</p>
+        <p>相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.<br>指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之.</p>
+<p><a href="https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification#evaluation" target="_blank" rel="noopener">详参</a><br><a href="https://arxiv.org/pdf/1903.04561.pdf" target="_blank" rel="noopener">论文参考</a><br><a href="https://www.kaggle.com/dborkan/benchmark-kernel/log" target="_blank" rel="noopener">使用案例</a></p>
+<p>只是做一些学习记录,如有遗误,望请指教.</p>
+<h1 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h1><p>$${score}=w_{0} A U C_{\text {overall}}+\sum_{a=1}^{A} w_{a} M_{p}\left(m_{s, a}\right)$$</p>
+<p>最终得分由 整体AUC 与 广义偏差AUC均值 们 加权 得到.<br>本次涉及到3种偏差AUC(Subgroup_AUC/BPSN_AUC/BNSP_AUC).</p>
+<p>整体AUC值是常规操作,详可参sklearn.</p>
+<p>其中:</p>
+<ul>
+<li>$A$表示子指标数量 本次为3</li>
+<li>$m_{s, a}$表示子组s的第a中偏差指标</li>
+<li>$w_{a}$ 表示对应的 广义均值 权重, 本次所有权重都为0.25,即等权.</li>
+</ul>
+<ul>
+<li><h2 id="M-p-left-m-s-a-right-含义"><a href="#M-p-left-m-s-a-right-含义" class="headerlink" title="$M_{p}\left(m_{s, a}\right)$ 含义"></a>$M_{p}\left(m_{s, a}\right)$ 含义</h2>  即广义均值<br>  本次计算广义偏差AUC均值<br>  公式为:<br>  $$<br>  M_{p}\left(m_{s}\right)=\left(\frac{1}{N} \sum_{s=1}^{N} m_{s}^{p}\right)^{\frac{1}{p}}<br>  $$<br>  其中:<ul>
+<li>$M_{p}$表示p级广义均值, 本次取p=-5</li>
+<li>$m_{s}$表示子组s的偏差指标</li>
+<li>$N$ 表示子组数量</li>
+</ul>
+</li>
+</ul>
+<p>进一步, 公式的重点是定义了三种偏差AUC.</p>
+<h1 id="三种偏差AUC含义"><a href="#三种偏差AUC含义" class="headerlink" title="三种偏差AUC含义"></a>三种偏差AUC含义</h1><p>三种偏差AUC的计算公式其实一样,都是计算AUC,不同的是基于不同的数据子集计算.</p>
+<ul>
+<li><h2 id="Subgroup-AUC"><a href="#Subgroup-AUC" class="headerlink" title="Subgroup_AUC"></a>Subgroup_AUC</h2><p>基于 满足身份识别的样本所构成的子数据集计算的AUC,这个指标越低表示在特定需求(身份识别)上模型表现越差.</p>
+</li>
+<li><h2 id="BPSN-AUC"><a href="#BPSN-AUC" class="headerlink" title="BPSN_AUC"></a>BPSN_AUC</h2><p>即 Background Positive, Subgroup Negative AUC<br>基于提及身份的正面和不提及身份的负面样本所构成的子数据集计算的AUC,这个指标越低表示模型混淆了身份识别,只要提及了身份识别就可能被预测得到更高的值,这不是希望的最佳模型.</p>
+</li>
+<li><h2 id="BNSP-AUC"><a href="#BNSP-AUC" class="headerlink" title="BNSP_AUC"></a>BNSP_AUC</h2><p>即 Background Negative, Subgroup Positive AUC<br>基于提及身份的负面和不提及身份的正面样本所构成的子数据集计算的AUC.</p>
+</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>所以同理,<br>将来也可以基于此思路,针对其它的特定需求,设计特定的评价指标.在模型训练的时候就依据需求进行加权.</p>
 
       
     </div>
@@ -414,6 +438,8 @@
           
             <a href="/tags/思考/" rel="tag"># 思考</a>
           
+            <a href="/tags/技术/" rel="tag"># 技术</a>
+          
         </div>
       
 
@@ -425,8 +451,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/27/014_Spark中的矩阵“相除”/" rel="next" title="Spark中的矩阵“相除”">
-                <i class="fa fa-chevron-left"></i> Spark中的矩阵“相除”
+              <a href="/2019/03/29/018_Bert使用备注/" rel="next" title="Bert使用备注">
+                <i class="fa fa-chevron-left"></i> Bert使用备注
               </a>
             
           </div>
@@ -434,10 +460,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/07/016_深度学习服务器装机回忆录/" rel="prev" title="深度学习服务器装机回忆录">
-                深度学习服务器装机回忆录 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -489,8 +511,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -578,6 +609,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#公式"><span class="nav-text">公式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#M-p-left-m-s-a-right-含义"><span class="nav-text">$M_{p}\left(m_{s, a}\right)$ 含义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三种偏差AUC含义"><span class="nav-text">三种偏差AUC含义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Subgroup-AUC"><span class="nav-text">Subgroup_AUC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BPSN-AUC"><span class="nav-text">BPSN_AUC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BNSP-AUC"><span class="nav-text">BNSP_AUC</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结语"><span class="nav-text">结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
