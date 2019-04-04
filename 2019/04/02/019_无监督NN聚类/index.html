@@ -113,7 +113,7 @@
 <meta property="og:site_name" content="险峰风景">
 <meta property="og:description" content="传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量. 背景希望可以对中文句子进行无监督聚类.最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降. 另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-04T05:05:04.200Z">
+<meta property="og:updated_time" content="2019-04-04T06:51:29.055Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无监督NN聚类探索">
 <meta name="twitter:description" content="传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量. 背景希望可以对中文句子进行无监督聚类.最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降. 另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(">
@@ -402,7 +402,7 @@
 </li>
 <li><h2 id="针对NLP的自动编码"><a href="#针对NLP的自动编码" class="headerlink" title="针对NLP的自动编码"></a>针对NLP的自动编码</h2><p>图像领域一般可以用变分自动编码.<br>那么sentence级别的是不是可以考虑用LSTM进行自编码呢?<br>可谓之LSTM自动编码++<br>经过实验表明:是可以的.</p>
 </li>
-<li><h2 id="针对句子无监督聚类的双路LSTM-Attention自动编码"><a href="#针对句子无监督聚类的双路LSTM-Attention自动编码" class="headerlink" title="针对句子无监督聚类的双路LSTM+Attention自动编码"></a>针对句子无监督聚类的双路LSTM+Attention自动编码</h2><p>经过实验表明,效果很好很好<br>我要把它称作: Unsupervised double LSTM&amp;Attention cluster model<br>思路就是使用上面提到的思路,当然具体过程需要有一些操作.结果表明效果很好,不仅可以捕获到内容,还可以捕获到结构,远远不是平均的效果可以匹敌的.哈哈哈哈,真棒.<br>后面可能单独开一篇做一些介绍,先上线再说,哈哈……</p>
+<li><h2 id="针对句子无监督聚类的双路LSTM-Attention自动编码"><a href="#针对句子无监督聚类的双路LSTM-Attention自动编码" class="headerlink" title="针对句子无监督聚类的双路LSTM+Attention自动编码"></a>针对句子无监督聚类的双路LSTM+Attention自动编码</h2><p>经过实验表明,效果很好很好<br>我要把它称作: Unsupervised Clustering base on double LSTM&amp;Attention<br>思路就是使用上面提到的思路,当然具体过程需要有一些操作.结果表明效果很好,不仅可以捕获到内容,还可以捕获到结构,远远不是平均的效果可以匹敌的.哈哈哈哈,真棒.<br>后面可能单独开一篇做一些介绍,先上线再说,哈哈……</p>
 </li>
 </ul>
 <h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>句子级别的聚类,特别是多句子(也可以扩展到篇章)的效果很好,当然会比平均复杂一点点,但是效果好太多.</p>
