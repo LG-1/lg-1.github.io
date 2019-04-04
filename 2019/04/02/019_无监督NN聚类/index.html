@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="算法,机器学习," />
+  <meta name="keywords" content="思考,技术," />
 
 
 
@@ -105,21 +105,18 @@
 
 
 
-<meta name="description" content="我理解维特比算法可以算作一种优化技术，正是这些类优化技术的应用，加上算力的提升及数据量and分析方法的更新，构成了大数据&amp;amp;机器学习的核心。 所以，理解这类优化技术对于技术学习应当是很有必要的。 之前，读到这个算法的时候，对它的理解是是而非。所以觉得有必要进行一下梳理及通俗理解，以便加强理解&amp;amp;灵活运用。 梳理梳理之后的总结便是： 以层为中心，去筛选线(路径)而不是以路径为中心，去筛选">
-<meta name="keywords" content="算法,机器学习">
+<meta name="description" content="传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量. 背景希望可以对中文句子进行无监督聚类.最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降. 另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(">
+<meta name="keywords" content="思考,技术">
 <meta property="og:type" content="article">
-<meta property="og:title" content="维特比算法小解">
-<meta property="og:url" content="https://www.ourantech.club/2018/04/16/Viterbi/index.html">
+<meta property="og:title" content="无监督NN聚类探索">
+<meta property="og:url" content="https://www.ourantech.club/2019/04/02/019_无监督NN聚类/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="我理解维特比算法可以算作一种优化技术，正是这些类优化技术的应用，加上算力的提升及数据量and分析方法的更新，构成了大数据&amp;amp;机器学习的核心。 所以，理解这类优化技术对于技术学习应当是很有必要的。 之前，读到这个算法的时候，对它的理解是是而非。所以觉得有必要进行一下梳理及通俗理解，以便加强理解&amp;amp;灵活运用。 梳理梳理之后的总结便是： 以层为中心，去筛选线(路径)而不是以路径为中心，去筛选">
+<meta property="og:description" content="传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量. 背景希望可以对中文句子进行无监督聚类.最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降. 另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://www.ourantech.club/images_source/20180416/001.PNG">
-<meta property="og:image" content="https://www.ourantech.club/images_source/20180416/002.PNG">
-<meta property="og:updated_time" content="2018-05-07T07:34:57.419Z">
+<meta property="og:updated_time" content="2019-04-04T05:05:04.200Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="维特比算法小解">
-<meta name="twitter:description" content="我理解维特比算法可以算作一种优化技术，正是这些类优化技术的应用，加上算力的提升及数据量and分析方法的更新，构成了大数据&amp;amp;机器学习的核心。 所以，理解这类优化技术对于技术学习应当是很有必要的。 之前，读到这个算法的时候，对它的理解是是而非。所以觉得有必要进行一下梳理及通俗理解，以便加强理解&amp;amp;灵活运用。 梳理梳理之后的总结便是： 以层为中心，去筛选线(路径)而不是以路径为中心，去筛选">
-<meta name="twitter:image" content="https://www.ourantech.club/images_source/20180416/001.PNG">
+<meta name="twitter:title" content="无监督NN聚类探索">
+<meta name="twitter:description" content="传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量. 背景希望可以对中文句子进行无监督聚类.最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降. 另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(">
 
 
 
@@ -149,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2018/04/16/Viterbi/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2019/04/02/019_无监督NN聚类/"/>
 
 
 
 
 
-  <title>维特比算法小解 | 险峰风景</title>
+  <title>无监督NN聚类探索 | 险峰风景</title>
   
 
 
@@ -302,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/16/Viterbi/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/02/019_无监督NN聚类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -319,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">维特比算法小解</h1>
+          <h1 class="post-title" itemprop="name headline">无监督NN聚类探索</h1>
         
 
         <div class="post-meta">
@@ -331,8 +328,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-16T22:41:09+08:00">
-                2018-04-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-02T12:00:00+08:00">
+                2019-04-02
               </time>
             
 
@@ -354,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
+                  <a href="/categories/tech/" itemprop="url" rel="index">
+                    <span itemprop="name">tech</span>
                   </a>
                 </span>
 
@@ -391,24 +388,25 @@
       
 
       
-        <h2 id="我理解"><a href="#我理解" class="headerlink" title="我理解"></a>我理解</h2><p>维特比算法可以算作一种优化技术，正是这些类优化技术的应用，加上算力的提升及数据量and分析方法的更新，构成了大数据&amp;机器学习的核心。</p>
-<p>所以，理解这类优化技术对于技术学习应当是很有必要的。</p>
-<p>之前，读到这个算法的时候，对它的理解是是而非。<br>所以觉得有必要进行一下梳理及通俗理解，以便加强理解&amp;灵活运用。</p>
-<h2 id="梳理"><a href="#梳理" class="headerlink" title="梳理"></a>梳理</h2><p>梳理之后的总结便是：</p>
-<center>以层为中心，去筛选线(路径)</center><br><center>而不是以路径为中心，去筛选线(路径)</center>
-
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>解释一下就是：以层为中心，逐层筛选(V)；<br>而另外一种方法就是穷举遍历法(E)。<br>作两张图说明一下：<br><img src="\images_source\20180416\001.PNG" alt="Markdown"><br>从上图寻找最优路径需要比较的次数是：</p>
-<ul>
-<li>E方法：$1*2*2*3=12$</li>
-<li>V方法：$0+1*2+2*2+2*3+3*0=12$</li>
+        <p>传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量.</p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>希望可以对中文句子进行无监督聚类.<br>最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.<br>但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降.</p>
+<p>另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(而不是使用平均)–也就可以展到更高的维度空间去,然后使用使用KMEANS模型.<br>所以关键就是如何使用NN进行特征提取.</p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><ul>
+<li>与传统的NLP任务相似,需要有一步补齐操作,如果在多个句子的词场景下,是不是可以在更高一个维度上进行补齐操作后就与传统NLP任务类似来呢?(高了一个维度)</li>
+<li>基于word2vec,和补齐\嵌入等操作,直接将高维空间展成二维向量,然后聚类,(这种思路有点将word2vec也视为预训练模型的感觉),也可以再降降维什么的</li>
+<li>采用迁移学习的思路,利用其它任务的得到的模型进行中间层输出得到特征</li>
 </ul>
-<p>看起来两种方法的结果好像一样？<br>再看一图：<br><img src="\images_source\20180416\002.PNG" alt="Markdown"><br>从上图寻找最优路径需要比较的次数是：</p>
-<ul>
-<li>E方法：$1*2*2*3*4*5=360$</li>
-<li>V方法：$0+1*2+2*2+2*3+3*4+4*5+5*0=44$</li>
+<p>几个思路都可以一试.具体效果可能需要到不同的场景下结合数据进行验证.(对的,是”可能”,不然怎么讲是实验科学呢++)</p>
+<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><ul>
+<li><h2 id="Autoencoder"><a href="#Autoencoder" class="headerlink" title="Autoencoder"></a>Autoencoder</h2><p>使用变分自动编码是一种操作,主要也是利用降维的思路.<br>参考:<br><a href="http://ufldl.stanford.edu/tutorial/unsupervised/Autoencoders/" target="_blank" rel="noopener">Autoencoders</a><br><a href="https://nlp.stanford.edu/~socherr/sparseAutoencoder_2011new.pdf" target="_blank" rel="noopener">Sparse autoencoder</a><br><a href="https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fayearofai.com%2Flenny-2-autoencoders-and-word-embeddings-oh-my-576403b0113a" target="_blank" rel="noopener">Autoencoders and Word embeddings</a><br><a href="https://nbviewer.jupyter.org/github/domreichl/blog-post-clustering/blob/master/blog_post_clustering.ipynb" target="_blank" rel="noopener">Blog Post Clustering</a><br><a href="https://github.com/L1aoXingyu/pytorch-beginner/blob/master/08-AutoEncoder/Variational_autoencoder.py" target="_blank" rel="noopener">Variational Autoencoder base on pytorch</a></p>
+</li>
+<li><h2 id="针对NLP的自动编码"><a href="#针对NLP的自动编码" class="headerlink" title="针对NLP的自动编码"></a>针对NLP的自动编码</h2><p>图像领域一般可以用变分自动编码.<br>那么sentence级别的是不是可以考虑用LSTM进行自编码呢?<br>可谓之LSTM自动编码++<br>经过实验表明:是可以的.</p>
+</li>
+<li><h2 id="针对句子无监督聚类的双路LSTM-Attention自动编码"><a href="#针对句子无监督聚类的双路LSTM-Attention自动编码" class="headerlink" title="针对句子无监督聚类的双路LSTM+Attention自动编码"></a>针对句子无监督聚类的双路LSTM+Attention自动编码</h2><p>经过实验表明,效果很好很好<br>我要把它称作: Unsupervised double LSTM&amp;Attention cluster model<br>思路就是使用上面提到的思路,当然具体过程需要有一些操作.结果表明效果很好,不仅可以捕获到内容,还可以捕获到结构,远远不是平均的效果可以匹敌的.哈哈哈哈,真棒.<br>后面可能单独开一篇做一些介绍,先上线再说,哈哈……</p>
+</li>
 </ul>
-<p>“以层为中心逐层筛选”再通俗一点：每一层的每一次筛选，总能将当前的最短路径定位到该层的某一点。然后下一次计算时，将只考虑：锁定的那一点*下一层数目*下下层数目，即:1*(n+1)*(n+2)，迭代之。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>算法的力量一目了然。显然真正的使用场景可能远比图二所示复杂，所以算法带来的提升将是若干几何级的。</p>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>句子级别的聚类,特别是多句子(也可以扩展到篇章)的效果很好,当然会比平均复杂一点点,但是效果好太多.</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>有了一个新的模型架构,<br>有点引入了无监督对抗的味道,<br>使用了数据本身做标签,不依赖结果标签,也就实现了无监督,哈哈,我真棒!</p>
 
       
     </div>
@@ -426,9 +424,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法/" rel="tag"># 算法</a>
+            <a href="/tags/思考/" rel="tag"># 思考</a>
           
-            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+            <a href="/tags/技术/" rel="tag"># 技术</a>
           
         </div>
       
@@ -441,8 +439,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/13/ml-manufacturing/" rel="next" title="利用大数据和机器学习提升制造业良品率">
-                <i class="fa fa-chevron-left"></i> 利用大数据和机器学习提升制造业良品率
+              <a href="/2019/03/29/018_Bert使用备注/" rel="next" title="Bert使用备注">
+                <i class="fa fa-chevron-left"></i> Bert使用备注
               </a>
             
           </div>
@@ -451,8 +449,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/18/experience-of-kaggle/" rel="prev" title="机器学习经验">
-                机器学习经验 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/04/04/020_一种为评估文本分类效果的改进指标/" rel="prev" title="一种为评估文本分类效果的改进指标">
+                一种为评估文本分类效果的改进指标 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -613,7 +611,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#我理解"><span class="nav-text">我理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梳理"><span class="nav-text">梳理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解释"><span class="nav-text">解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思路"><span class="nav-text">思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实操"><span class="nav-text">实操</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Autoencoder"><span class="nav-text">Autoencoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对NLP的自动编码"><span class="nav-text">针对NLP的自动编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对句子无监督聚类的双路LSTM-Attention自动编码"><span class="nav-text">针对句子无监督聚类的双路LSTM+Attention自动编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#效果"><span class="nav-text">效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结语"><span class="nav-text">结语</span></a></li></ol></div>
             
 
           </div>
