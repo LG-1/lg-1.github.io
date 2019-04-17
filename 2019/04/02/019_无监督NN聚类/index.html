@@ -113,7 +113,7 @@
 <meta property="og:site_name" content="险峰风景">
 <meta property="og:description" content="传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量. 背景希望可以对中文句子进行无监督聚类.最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降. 另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-04T06:51:29.055Z">
+<meta property="og:updated_time" content="2019-04-06T09:30:48.911Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无监督NN聚类探索">
 <meta name="twitter:description" content="传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量. 背景希望可以对中文句子进行无监督聚类.最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降. 另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(">
@@ -392,7 +392,7 @@
 <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>希望可以对中文句子进行无监督聚类.<br>最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.<br>但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降.</p>
 <p>另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(而不是使用平均)–也就可以展到更高的维度空间去,然后使用使用KMEANS模型.<br>所以关键就是如何使用NN进行特征提取.</p>
 <h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><ul>
-<li>与传统的NLP任务相似,需要有一步补齐操作,如果在多个句子的词场景下,是不是可以在更高一个维度上进行补齐操作后就与传统NLP任务类似来呢?(高了一个维度)</li>
+<li>与传统的NLP任务相似,需要有一步补齐操作,如果在多个句子的词场景下,是不是可以在更高一个维度上进行补齐操作后就与传统NLP任务类似了呢?(高了一个维度)</li>
 <li>基于word2vec,和补齐\嵌入等操作,直接将高维空间展成二维向量,然后聚类,(这种思路有点将word2vec也视为预训练模型的感觉),也可以再降降维什么的</li>
 <li>采用迁移学习的思路,利用其它任务的得到的模型进行中间层输出得到特征</li>
 </ul>
@@ -528,7 +528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -550,7 +550,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
