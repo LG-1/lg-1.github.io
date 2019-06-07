@@ -105,18 +105,18 @@
 
 
 
-<meta name="description" content="Pythonpypi发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u username -p pwd">
+<meta name="description" content="Pythonpypi包发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u username -p pwd  Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key) 将本地key配备到远程仓库上实现免密登陆(拉取/提交等)pbcopy">
 <meta name="keywords" content="思考">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发杂七杂八">
 <meta property="og:url" content="https://www.ourantech.club/2019/01/01/010_开发杂七杂八/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="Pythonpypi发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u username -p pwd">
+<meta property="og:description" content="Pythonpypi包发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u username -p pwd  Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key) 将本地key配备到远程仓库上实现免密登陆(拉取/提交等)pbcopy">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-01T09:18:15.033Z">
+<meta property="og:updated_time" content="2019-04-22T03:28:33.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发杂七杂八">
-<meta name="twitter:description" content="Pythonpypi发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u username -p pwd">
+<meta name="twitter:description" content="Pythonpypi包发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u username -p pwd  Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key) 将本地key配备到远程仓库上实现免密登陆(拉取/提交等)pbcopy">
 
 
 
@@ -388,10 +388,16 @@
       
 
       
-        <h1 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h1><h2 id="pypi发布"><a href="#pypi发布" class="headerlink" title="pypi发布"></a>pypi发布</h2><p><a href="https://pypi.org/project/twine/" target="_blank" rel="noopener">https://pypi.org/project/twine/</a></p>
+        <h1 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h1><h2 id="pypi包发布"><a href="#pypi包发布" class="headerlink" title="pypi包发布"></a>pypi包发布</h2><p><a href="https://pypi.org/project/twine/" target="_blank" rel="noopener">https://pypi.org/project/twine/</a></p>
 <pre><code class="bash">python setup.py sdist bdist_wheel
 twine upload dist/* -u username -p <span class="built_in">pwd</span>
 </code></pre>
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="仓库权限添加"><a href="#仓库权限添加" class="headerlink" title="仓库权限添加"></a>仓库权限添加</h2><ul>
+<li>生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key)</li>
+<li>将本地key配备到远程仓库上实现免密登陆(拉取/提交等)<pre><code class="bash">pbcopy &lt; ~/.ssh/id_rsa.pub
+</code></pre>
+</li>
+</ul>
 
       
     </div>
@@ -511,7 +517,7 @@ twine upload dist/* -u username -p <span class="built_in">pwd</span>
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -547,9 +553,9 @@ twine upload dist/* -u username -p <span class="built_in">pwd</span>
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="/uploads/wechat.jpg" target="_blank" title="Wechat">
+                    <a href="https://www.kaggle.com/xffjlg" target="_blank" title="Kaggle">
                       
-                        <i class="fa fa-fw fa-wechat"></i>Wechat</a>
+                        <i class="fa fa-fw fa-globe"></i>Kaggle</a>
                   </span>
                 
                   <span class="links-of-author-item">
@@ -562,6 +568,12 @@ twine upload dist/* -u username -p <span class="built_in">pwd</span>
                     <a href="https://github.com/LG-1" target="_blank" title="GitHub">
                       
                         <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="/uploads/wechat.jpg" target="_blank" title="Wechat">
+                      
+                        <i class="fa fa-fw fa-wechat"></i>Wechat</a>
                   </span>
                 
                   <span class="links-of-author-item">
@@ -594,7 +606,7 @@ twine upload dist/* -u username -p <span class="built_in">pwd</span>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pypi发布"><span class="nav-text">pypi发布</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pypi包发布"><span class="nav-text">pypi包发布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#仓库权限添加"><span class="nav-text">仓库权限添加</span></a></li></ol></li></ol></div>
             
 
           </div>
