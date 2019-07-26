@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="机器学习,图像处理," />
+  <meta name="keywords" content="机器学习,NLP,技术," />
 
 
 
@@ -105,18 +105,18 @@
 
 
 
-<meta name="description" content="图像分类是图像级别的，图像语义分割是到像素点级别的。 FCN可作为图像语义分割的基础框架参考。FCN论文,FCN原作代码 FCN的提出主要解决了：一般的CNN分类网络，如VGG和Resnet，会在网络的最后加入全连接层，经过softmax获取类别概率信息，但这个概率是一维的，所以只能对整个图片进行分类，是谓图像级别。 FCN结构提出将后面几个全连接替换成卷积，便可以获得一张2维的feature m">
-<meta name="keywords" content="机器学习,图像处理">
+<meta name="description" content="需求Word2Vec应用已经比较普遍.基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等. 目录本篇练习主要讨论:  如何评价句子向量化效果 进一步探索必要性的背景 参考的一些论文及阅读思考 实际探索的方向 探索实验结果  评价标准在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.特别地,Annoy挺好用.另外,也可">
+<meta name="keywords" content="机器学习,NLP,技术">
 <meta property="og:type" content="article">
-<meta property="og:title" content="图像处理学习笔记">
-<meta property="og:url" content="https://www.ourantech.club/2018/08/28/图像处理学习笔记/index.html">
+<meta property="og:title" content="Sentence2Vec 探索">
+<meta property="og:url" content="https://www.ourantech.club/2019/06/15/024_Sentence2Vec 探索/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="图像分类是图像级别的，图像语义分割是到像素点级别的。 FCN可作为图像语义分割的基础框架参考。FCN论文,FCN原作代码 FCN的提出主要解决了：一般的CNN分类网络，如VGG和Resnet，会在网络的最后加入全连接层，经过softmax获取类别概率信息，但这个概率是一维的，所以只能对整个图片进行分类，是谓图像级别。 FCN结构提出将后面几个全连接替换成卷积，便可以获得一张2维的feature m">
+<meta property="og:description" content="需求Word2Vec应用已经比较普遍.基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等. 目录本篇练习主要讨论:  如何评价句子向量化效果 进一步探索必要性的背景 参考的一些论文及阅读思考 实际探索的方向 探索实验结果  评价标准在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.特别地,Annoy挺好用.另外,也可">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-29T07:09:20.940Z">
+<meta property="og:updated_time" content="2019-07-26T09:17:45.213Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="图像处理学习笔记">
-<meta name="twitter:description" content="图像分类是图像级别的，图像语义分割是到像素点级别的。 FCN可作为图像语义分割的基础框架参考。FCN论文,FCN原作代码 FCN的提出主要解决了：一般的CNN分类网络，如VGG和Resnet，会在网络的最后加入全连接层，经过softmax获取类别概率信息，但这个概率是一维的，所以只能对整个图片进行分类，是谓图像级别。 FCN结构提出将后面几个全连接替换成卷积，便可以获得一张2维的feature m">
+<meta name="twitter:title" content="Sentence2Vec 探索">
+<meta name="twitter:description" content="需求Word2Vec应用已经比较普遍.基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等. 目录本篇练习主要讨论:  如何评价句子向量化效果 进一步探索必要性的背景 参考的一些论文及阅读思考 实际探索的方向 探索实验结果  评价标准在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.特别地,Annoy挺好用.另外,也可">
 
 
 
@@ -146,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2018/08/28/图像处理学习笔记/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2019/06/15/024_Sentence2Vec 探索/"/>
 
 
 
 
 
-  <title>图像处理学习笔记 | 险峰风景</title>
+  <title>Sentence2Vec 探索 | 险峰风景</title>
   
 
 
@@ -299,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/08/28/图像处理学习笔记/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/06/15/024_Sentence2Vec 探索/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -316,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">图像处理学习笔记</h1>
+          <h1 class="post-title" itemprop="name headline">Sentence2Vec 探索</h1>
         
 
         <div class="post-meta">
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T16:45:00+08:00">
-                2018-08-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-15T13:20:00+08:00">
+                2019-06-15
               </time>
             
 
@@ -351,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
                   </a>
                 </span>
 
@@ -388,11 +388,30 @@
       
 
       
-        <p>图像分类是图像级别的，图像语义分割是到像素点级别的。</p>
-<p>FCN可作为图像语义分割的基础框架参考。<a href="https://arxiv.org/abs/1411.4038" target="_blank" rel="noopener">FCN论文</a>,<a href="https://github.com/shelhamer/fcn.berkeleyvision.org" target="_blank" rel="noopener">FCN原作代码</a></p>
-<p>FCN的提出主要解决了：一般的CNN分类网络，如VGG和Resnet，会在网络的最后加入全连接层，经过softmax获取类别概率信息，但这个概率是一维的，所以只能对整个图片进行分类，是谓图像级别。</p>
-<p>FCN结构提出将后面几个全连接替换成卷积，便可以获得一张2维的feature map，然后再接softmax便可获得每个像素点的分类信息，是谓像素点级别。可以支持解决图像语义分割问题。</p>
-<p>图像语义分割整体流程：下采样+上采样 &gt; 特征融合 &gt; 获取像素级别类别判断</p>
+        <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>Word2Vec应用已经比较普遍.<br>基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等.</p>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>本篇练习主要讨论:</p>
+<ul>
+<li>如何评价句子向量化效果</li>
+<li>进一步探索必要性的背景</li>
+<li>参考的一些论文及阅读思考</li>
+<li>实际探索的方向</li>
+<li>探索实验结果</li>
+</ul>
+<h1 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h1><p>在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.<br>特别地,<a href="https://github.com/spotify/annoy" target="_blank" rel="noopener">Annoy</a>挺好用.<br>另外,也可试试二维或者三维可视化看看效果.</p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>基于Word2Vec,尝试了最简单的词向量平均及TFIDF加权平均,结果表明,在短句(&lt;20左右)的情况下,效果还不错.<br>但是句子一旦稍长,结果就不甚可用.文章级别就更勿论.<br>NIPS 2013 Deep Learning Workshop:<a href="https://drive.google.com/file/d/0B7XkCwpI5KDYRWRnd1RzWXQ2TWc/edit?usp=sharing" target="_blank" rel="noopener">NNforText.pdf</a>中page20处也早就提到了这一点,亲身肉测发现确实.<br>(要是文档链接看不了的可以跟我吱一声)</p>
+<p>想想其实可理解,不管是平均或者加权平均,都丢掉了句子结构信息,在短句情况下,句子结构本来也比较简单一些,所以可能信息丢失不多,尚可.<br>句子越长越复杂,结构越复杂,平均丢掉的信息也就越多,结果就扑街.</p>
+<p>所以,基于Word2Vec,捕捉句子结构及顺序,可能会是一种值得探索的方向.</p>
+<p>另外,不久之前的Bert或可考虑是否有用.当然,如果准备用Bert中间层导出,基本也就不用考虑LSTM模型了,因为结果肯定是有差距的.</p>
+<h1 id="论文阅读"><a href="#论文阅读" class="headerlink" title="论文阅读"></a>论文阅读</h1><p><a href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf" target="_blank" rel="noopener">Distributed Representations of Sentences and Documents</a><br>介绍了将文章视为另一个词的方法,文章所代表的“词”将刻画哪些未出现在当前上下文中的信息,故称:Distributed Memory Model of Paragraph Vectors(PV-DM).上下文信息通过滑动窗口得到.<br>论文介绍的Paragraph Vector方法从逻辑到实现上都比较通畅明晰,训练时间论文提到的是2.5万(平均230词)句子在16核机器上需要30分钟.个人觉得可以实验一下.<br>而且文章也间接总结了之前相关的一些论文,也可以作为索引.<br>ps1:在gensim的Doc2vec实现方法上用300万的中文句子做了尝试.结果表明,还是只能对短句起到比较好的效果,长句仍无法达到推进生产的标准.(所耗时间倒是跟论文所提差不多)<br>ps2:还试了一个Pytorch版本的Paragraph2vec,效果也不是很好,且面对新句子没法推导vec.但是思路还是可以借鉴的,或可在此基础上改进一下.</p>
+<p><a href="https://supernlp.github.io/2018/11/26/sentreps/" target="_blank" rel="noopener">On sentence representations</a><br>是一篇介绍文章,主要介绍了句子表示方法.比较详细的介绍了最近的/较早的-监督/无监督句子表示方法.可以作为综述文章阅读.</p>
+<p><a href="https://github.com/google-research/bert" target="_blank" rel="noopener">BERT</a><br><a href="https://github.com/hanxiao/bert-as-service" target="_blank" rel="noopener">bert-as-service</a><br>这个项目写得挺好的,耦合比较规范,但我就是不知道作者为啥把代码都写在了<strong>init</strong>.py中,但项目仍然是个非常好的项目.<br>直接可用.</p>
+<h1 id="探索方向"><a href="#探索方向" class="headerlink" title="探索方向"></a>探索方向</h1><p>主要实验了mean Word2Vec/ paragraph vector / Bert embedding</p>
+<p>Bert embedding的操作是输入句子,利用Bert预训练模型得到中间层结果(实验以得到的第12层为基准)<br>层越往前,可能效果会越有损失,但是速度可能会更快一点.</p>
+<h1 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h1><p>文章从6月中开始写,但是伴随着实验结果不理想以及方法的探索,一直写到7月底,速度也是够慢的.</p>
+<p>结果是,使用Bert embedding能够得到目前可以获取的最好结果,效果基本可以达到Word2Vec水平.<br>所以基本达到了可以应用的水平.<br>可以达到聚类可用的水平,近邻搜索用于召回或许还有点问题.</p>
+<p>速度上来讲,120长度,基于CPU需要200ms左右,基于GPU需要30ms左右.<br>句子长度(需要保留的长度)越长速度也会越慢,层越往后也会越慢.</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>目前Sentence2Vec基于最佳的Bert可以得到最好效果.<br>通过聚类可以发现,能够较好的刻画关键信息,即使句子比较长(&lt;512),长度500左右基本可以覆盖中短篇章.<br>再往后估计需要期待下一步的NLP发展,仍需探索.</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1]. <a href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf" target="_blank" rel="noopener">Distributed Representations of Sentences and Documents</a><br>[2]. <a href="https://machinelearningmastery.com/gentle-introduction-bag-words-model/" target="_blank" rel="noopener">A Gentle Introduction to the Bag-of-Words Model</a><br>[3]. <a href="https://github.com/google-research/bert" target="_blank" rel="noopener">BERT</a><br>[4]. <a href="https://github.com/hanxiao/bert-as-service" target="_blank" rel="noopener">bert-as-service</a></p>
 
       
     </div>
@@ -412,7 +431,9 @@
           
             <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
           
-            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/技术/" rel="tag"># 技术</a>
           
         </div>
       
@@ -425,8 +446,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/15/gplearn为分类问题生成新特征/" rel="next" title="gplearn 为分类问题生成新特征">
-                <i class="fa fa-chevron-left"></i> gplearn 为分类问题生成新特征
+              <a href="/2019/06/08/023_Pytorch model Production部署探索/" rel="next" title="Pytorch model Production部署探索">
+                <i class="fa fa-chevron-left"></i> Pytorch model Production部署探索
               </a>
             
           </div>
@@ -434,10 +455,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/13/000_循环有序数组查找/" rel="prev" title="循环有序数组查找">
-                循环有序数组查找 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -489,8 +506,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -584,6 +610,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#需求"><span class="nav-text">需求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#评价标准"><span class="nav-text">评价标准</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文阅读"><span class="nav-text">论文阅读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#探索方向"><span class="nav-text">探索方向</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验结果"><span class="nav-text">实验结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
