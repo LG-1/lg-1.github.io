@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="机器学习,NLP,技术," />
+  <meta name="keywords" content="知识图谱," />
 
 
 
@@ -105,18 +105,18 @@
 
 
 
-<meta name="description" content="需求Word2Vec应用已经比较普遍.基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等. 目录本篇练习主要讨论:  如何评价句子向量化效果 进一步探索必要性的背景 参考的一些论文及阅读思考 实际探索的方向 探索实验结果  评价标准在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.特别地,Annoy挺好用.另外,也可">
-<meta name="keywords" content="机器学习,NLP,技术">
+<meta name="description" content="知识图谱:语义知识形式化表达的框架,节点表示本体,边表示关系. 知识图谱建设对众多NLP基础技术依赖很大,是一个系统工程,需要整体考虑.所以梳理一下思路对整体认识有帮助.但,这是一个更偏工程技术的挑战,而且成本也不小,所以既考规划也考技术,整理思路可能只对思路有帮助,实际建设过程却非常有可能遇到七七八八的问题. 需求这个是第一位需要考虑的,这个会对大范围进行限定,因为会从“我要建知识图谱” =&amp;g">
+<meta name="keywords" content="知识图谱">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sentence2Vec 探索">
-<meta property="og:url" content="https://www.ourantech.club/2019/06/15/024_Sentence2Vec 探索/index.html">
+<meta property="og:title" content="知识图谱构建思路">
+<meta property="og:url" content="https://www.ourantech.club/2019/09/09/033_kg_construct_ideas/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="需求Word2Vec应用已经比较普遍.基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等. 目录本篇练习主要讨论:  如何评价句子向量化效果 进一步探索必要性的背景 参考的一些论文及阅读思考 实际探索的方向 探索实验结果  评价标准在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.特别地,Annoy挺好用.另外,也可">
+<meta property="og:description" content="知识图谱:语义知识形式化表达的框架,节点表示本体,边表示关系. 知识图谱建设对众多NLP基础技术依赖很大,是一个系统工程,需要整体考虑.所以梳理一下思路对整体认识有帮助.但,这是一个更偏工程技术的挑战,而且成本也不小,所以既考规划也考技术,整理思路可能只对思路有帮助,实际建设过程却非常有可能遇到七七八八的问题. 需求这个是第一位需要考虑的,这个会对大范围进行限定,因为会从“我要建知识图谱” =&amp;g">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-26T09:17:45.213Z">
+<meta property="og:updated_time" content="2019-09-10T02:37:26.946Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sentence2Vec 探索">
-<meta name="twitter:description" content="需求Word2Vec应用已经比较普遍.基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等. 目录本篇练习主要讨论:  如何评价句子向量化效果 进一步探索必要性的背景 参考的一些论文及阅读思考 实际探索的方向 探索实验结果  评价标准在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.特别地,Annoy挺好用.另外,也可">
+<meta name="twitter:title" content="知识图谱构建思路">
+<meta name="twitter:description" content="知识图谱:语义知识形式化表达的框架,节点表示本体,边表示关系. 知识图谱建设对众多NLP基础技术依赖很大,是一个系统工程,需要整体考虑.所以梳理一下思路对整体认识有帮助.但,这是一个更偏工程技术的挑战,而且成本也不小,所以既考规划也考技术,整理思路可能只对思路有帮助,实际建设过程却非常有可能遇到七七八八的问题. 需求这个是第一位需要考虑的,这个会对大范围进行限定,因为会从“我要建知识图谱” =&amp;g">
 
 
 
@@ -146,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="https://www.ourantech.club/2019/06/15/024_Sentence2Vec 探索/"/>
+  <link rel="canonical" href="https://www.ourantech.club/2019/09/09/033_kg_construct_ideas/"/>
 
 
 
 
 
-  <title>Sentence2Vec 探索 | 险峰风景</title>
+  <title>知识图谱构建思路 | 险峰风景</title>
   
 
 
@@ -299,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/06/15/024_Sentence2Vec 探索/">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/09/09/033_kg_construct_ideas/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="LG">
@@ -316,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Sentence2Vec 探索</h1>
+          <h1 class="post-title" itemprop="name headline">知识图谱构建思路</h1>
         
 
         <div class="post-meta">
@@ -328,8 +328,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-15T13:20:00+08:00">
-                2019-06-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-09T16:20:00+08:00">
+                2019-09-09
               </time>
             
 
@@ -388,30 +388,23 @@
       
 
       
-        <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>Word2Vec应用已经比较普遍.<br>基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等.</p>
-<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>本篇练习主要讨论:</p>
-<ul>
-<li>如何评价句子向量化效果</li>
-<li>进一步探索必要性的背景</li>
-<li>参考的一些论文及阅读思考</li>
-<li>实际探索的方向</li>
-<li>探索实验结果</li>
+        <p>知识图谱:语义知识形式化表达的框架,节点表示本体,边表示关系.</p>
+<p>知识图谱建设对众多NLP基础技术依赖很大,是一个系统工程,需要整体考虑.<br>所以梳理一下思路对整体认识有帮助.<br>但,这是一个更偏工程技术的挑战,而且成本也不小,所以既考规划也考技术,整理思路可能只对思路有帮助,实际建设过程却非常有可能遇到七七八八的问题.</p>
+<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>这个是第一位需要考虑的,这个会对大范围进行限定,因为会从“我要建知识图谱” =&gt; “我要建xxxx的知识图谱”.<br>需求会明确所面临的是开放领域还是专业领域,这个区别会造成数据来源的不同,以及对结果的要求高低也会不一样.<br>开放领域的数据可能一般通过从互联网爬取获得.<br>专业领域一般都有自己的数据积累,更新途径.</p>
+<p>专业领域的知识图谱可能原本就会有一些相关应用,只是不叫知识图谱罢了,所以其要求也会更高.</p>
+<h1 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h1><p>实体提取、关系提取、图谱存储、检索等</p>
+<h3 id="实体提取"><a href="#实体提取" class="headerlink" title="实体提取"></a>实体提取</h3><ul>
+<li>词典匹配 | 有了词典后就很简单快速,关键是如果要更新的就需要维护词典</li>
+<li>统计方法(NER) | 将NER问题转换为序列标注问题,一共那么几个标记,根据训练数据分布,计算当前语序下每个标记的概率,选概率最大的作为标记,这可以识别未登录词</li>
 </ul>
-<h1 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h1><p>在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.<br>特别地,<a href="https://github.com/spotify/annoy" target="_blank" rel="noopener">Annoy</a>挺好用.<br>另外,也可试试二维或者三维可视化看看效果.</p>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>基于Word2Vec,尝试了最简单的词向量平均及TFIDF加权平均,结果表明,在短句(&lt;20左右)的情况下,效果还不错.<br>但是句子一旦稍长,结果就不甚可用.文章级别就更勿论.<br>NIPS 2013 Deep Learning Workshop:<a href="https://drive.google.com/file/d/0B7XkCwpI5KDYRWRnd1RzWXQ2TWc/edit?usp=sharing" target="_blank" rel="noopener">NNforText.pdf</a>中page20处也早就提到了这一点,亲身肉测发现确实.<br>(要是文档链接看不了的可以跟我吱一声)</p>
-<p>想想其实可理解,不管是平均或者加权平均,都丢掉了句子结构信息,在短句情况下,句子结构本来也比较简单一些,所以可能信息丢失不多,尚可.<br>句子越长越复杂,结构越复杂,平均丢掉的信息也就越多,结果就扑街.</p>
-<p>所以,基于Word2Vec,捕捉句子结构及顺序,可能会是一种值得探索的方向.</p>
-<p>另外,不久之前的Bert或可考虑是否有用.当然,如果准备用Bert中间层导出,基本也就不用考虑LSTM模型了,因为结果肯定是有差距的.</p>
-<h1 id="论文阅读"><a href="#论文阅读" class="headerlink" title="论文阅读"></a>论文阅读</h1><p><a href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf" target="_blank" rel="noopener">Distributed Representations of Sentences and Documents</a><br>介绍了将文章视为另一个词的方法,文章所代表的“词”将刻画哪些未出现在当前上下文中的信息,故称:Distributed Memory Model of Paragraph Vectors(PV-DM).上下文信息通过滑动窗口得到.<br>论文介绍的Paragraph Vector方法从逻辑到实现上都比较通畅明晰,训练时间论文提到的是2.5万(平均230词)句子在16核机器上需要30分钟.个人觉得可以实验一下.<br>而且文章也间接总结了之前相关的一些论文,也可以作为索引.<br>ps1:在gensim的Doc2vec实现方法上用300万的中文句子做了尝试.结果表明,还是只能对短句起到比较好的效果,长句仍无法达到推进生产的标准.(所耗时间倒是跟论文所提差不多)<br>ps2:还试了一个Pytorch版本的Paragraph2vec,效果也不是很好,且面对新句子没法推导vec.但是思路还是可以借鉴的,或可在此基础上改进一下.</p>
-<p><a href="https://supernlp.github.io/2018/11/26/sentreps/" target="_blank" rel="noopener">On sentence representations</a><br>是一篇介绍文章,主要介绍了句子表示方法.比较详细的介绍了最近的/较早的-监督/无监督句子表示方法.可以作为综述文章阅读.</p>
-<p><a href="https://github.com/google-research/bert" target="_blank" rel="noopener">BERT</a><br><a href="https://github.com/hanxiao/bert-as-service" target="_blank" rel="noopener">bert-as-service</a><br>这个项目写得挺好的,耦合比较规范,但我就是不知道作者为啥把代码都写在了<strong>init</strong>.py中,但项目仍然是个非常好的项目.<br>直接可用.</p>
-<h1 id="探索方向"><a href="#探索方向" class="headerlink" title="探索方向"></a>探索方向</h1><p>主要实验了mean Word2Vec/ paragraph vector / Bert embedding</p>
-<p>Bert embedding的操作是输入句子,利用Bert预训练模型得到中间层结果(实验以得到的第12层为基准)<br>层越往前,可能效果会越有损失,但是速度可能会更快一点.</p>
-<h1 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h1><p>文章从6月中开始写,但是伴随着实验结果不理想以及方法的探索,一直写到7月底,速度也是够慢的.</p>
-<p>结果是,使用Bert embedding能够得到目前可以获取的最好结果,效果基本可以达到Word2Vec水平.<br>所以基本达到了可以应用的水平.<br>可以达到聚类可用的水平,近邻搜索用于召回或许还有点问题.</p>
-<p>速度上来讲,120长度,基于CPU需要200ms左右,基于GPU需要30ms左右.<br>句子长度(需要保留的长度)越长速度也会越慢,层越往后也会越慢.</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>目前Sentence2Vec基于最佳的Bert可以得到最好效果.<br>通过聚类可以发现,能够较好的刻画关键信息,即使句子比较长(&lt;512),长度500左右基本可以覆盖中短篇章.<br>再往后估计需要期待下一步的NLP发展,仍需探索.</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1]. <a href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf" target="_blank" rel="noopener">Distributed Representations of Sentences and Documents</a><br>[2]. <a href="https://machinelearningmastery.com/gentle-introduction-bag-words-model/" target="_blank" rel="noopener">A Gentle Introduction to the Bag-of-Words Model</a><br>[3]. <a href="https://github.com/google-research/bert" target="_blank" rel="noopener">BERT</a><br>[4]. <a href="https://github.com/hanxiao/bert-as-service" target="_blank" rel="noopener">bert-as-service</a></p>
+<h3 id="关系提取"><a href="#关系提取" class="headerlink" title="关系提取"></a>关系提取</h3><p>如果全部的关系集合预先指定好的话(比如谓词集合),任务也可视为当两个实体同时出现时实体间关系的分类问题.如果不当成分类问题可能就需要当成一个生成问题,根据句法分析后的依存关系生成实体间的关系.</p>
+<p>基于依存关系生成主要基于句法分析和依存模版进行关系提取,可以看看<a href="https://github.com/LG-1/EntityRelation" target="_blank" rel="noopener">EntityRelation</a>的Python工具包实现,及对应的论文<a href="https://www.researchgate.net/profile/Shengbin_Jia2/publication/323198509_Chinese_Open_Relation_Extraction_and_Knowledge_Base_Establishment/links/5ad80644aca272fdaf802ff1/Chinese-Open-Relation-Extraction-and-Knowledge-Base-Establishment.pdf" target="_blank" rel="noopener">Chinese Open Relation Extraction and Knowledge Base<br>Establishment</a></p>
+<p>关系分类大体可以分为无监督方法(基于模版),监督方法(基于特征/基于核函数/基于深度学习)<br>基于模版根据固定的语法格式提取实体间的关系,模版的生成可以是专家根据语言规则生成也可以用统计方法生成(利用搜索引擎等其它外部工具验证模版).<br>人工模版判断实体的上下位关系的准确率比较高,是因为这个模版所涉及到的表达形式比较固定,但对于其它关系可能就比较困难.<br>其他关系可以考虑使用统计生成模版,步骤是选择一个关系涉及到的实体对提交到搜索引擎,保留结果中包含实体对的的最长子串,这样会可能会得到多个模版,计算每个模版的置信度(只提交问题实体到搜索引擎,取包含实体的结果作为分母,契合某个模版的结果作为其模版的分子计算置信度),可以根据置信度阀值或者TopN提取模版.</p>
+<p>基于特征就是根据标记数据训练分类模型,分类模型有很多可选,特征一般可以考虑(词汇相关/数值相关/类型相关/依存相关等等)<br>基于核函数利用空间转换计算相似度进行关系分类,方法复杂度比较高<br>基于深度学习从训练数据利用端到端对关系进行打分排序,进行关系分类</p>
+<h3 id="图谱存储"><a href="#图谱存储" class="headerlink" title="图谱存储"></a>图谱存储</h3><p>关系型数据库/图数据库<br>前者更新快,查询慢<br>后者查询快,更新慢</p>
+<p>但是前者的使用成本可能会小一些,后者由于是一个相对新,可能需要趟更多的坑.包括但不限于图查询,图索引,子图优化等</p>
+<h3 id="检索"><a href="#检索" class="headerlink" title="检索"></a>检索</h3><p>SQL/SPARQL</p>
+<h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>包括知识推理在内应该属于应用范围,<br>其它应用领域可能有:搜索引擎,智能问答,推荐系统等</p>
 
       
     </div>
@@ -429,11 +422,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
-          
-            <a href="/tags/NLP/" rel="tag"># NLP</a>
-          
-            <a href="/tags/技术/" rel="tag"># 技术</a>
+            <a href="/tags/知识图谱/" rel="tag"># 知识图谱</a>
           
         </div>
       
@@ -446,8 +435,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/08/023_Pytorch model Production部署探索/" rel="next" title="Pytorch model Production部署探索">
-                <i class="fa fa-chevron-left"></i> Pytorch model Production部署探索
+              <a href="/2019/09/06/032_weilidai_repayment/" rel="next" title="微粒贷还款问题">
+                <i class="fa fa-chevron-left"></i> 微粒贷还款问题
               </a>
             
           </div>
@@ -455,10 +444,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/06/025_Ubuntu 开启 cron job/" rel="prev" title="Ubuntu 开启 cron job">
-                Ubuntu 开启 cron job <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -624,7 +609,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#需求"><span class="nav-text">需求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#评价标准"><span class="nav-text">评价标准</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#论文阅读"><span class="nav-text">论文阅读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#探索方向"><span class="nav-text">探索方向</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验结果"><span class="nav-text">实验结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#需求"><span class="nav-text">需求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#技术"><span class="nav-text">技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实体提取"><span class="nav-text">实体提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关系提取"><span class="nav-text">关系提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图谱存储"><span class="nav-text">图谱存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检索"><span class="nav-text">检索</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应用"><span class="nav-text">应用</span></a></li></ol></div>
             
 
           </div>
