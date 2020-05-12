@@ -113,7 +113,7 @@
 <meta property="og:site_name" content="险峰风景">
 <meta property="og:description" content="由于最近的工作有涉及到一些NLP的研究,而Bert的效果看起来不错,所以在原有方案上,基于相同的数据集(内部的任务数据集,所以暂时不会公开),做了一下效果对比. 只做一些简单的记录,以备自己将来回溯. 背景是基于中文句子分类.任务数据集在100万左右. 2080 on Pytorch. 原有方案word2vec(200维度) + LSTM + Attention网络结构比较简单,常规操作训练 5">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-09T15:01:44.800Z">
+<meta property="og:updated_time" content="2020-01-05T11:02:12.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bert使用备注">
 <meta name="twitter:description" content="由于最近的工作有涉及到一些NLP的研究,而Bert的效果看起来不错,所以在原有方案上,基于相同的数据集(内部的任务数据集,所以暂时不会公开),做了一下效果对比. 只做一些简单的记录,以备自己将来回溯. 背景是基于中文句子分类.任务数据集在100万左右. 2080 on Pytorch. 原有方案word2vec(200维度) + LSTM + Attention网络结构比较简单,常规操作训练 5">
@@ -397,6 +397,7 @@
 <h2 id="Bert的一些备注"><a href="#Bert的一些备注" class="headerlink" title="Bert的一些备注"></a>Bert的一些备注</h2><p>Bert有三个嵌入层,向量(Token)、上下部分(Segment)、位置(Position), 具体的一些解释可以<a href="https://medium.com/@_init_/why-bert-has-3-embedding-layers-and-their-implementation-details-9c261108e28a" target="_blank" rel="noopener">参考</a><br>维度为768,所以比原来的高不少,这慢的一个原因(还有是因为网络结构比较复杂)<br>基于预训练模型在现有任务上训练一个epoch的效果最好,好像并不是训练的epoch越多越好,还不知道是为什么</p>
 <h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>具体可以参考<a href="https://github.com/huggingface/pytorch-pretrained-BERT" target="_blank" rel="noopener">pytorch-pretrained-BERT</a>,里面不止有Bert的预训练模型,还有一些其它模型的Pytorch实现,想要快速上手可以参考,特别是examples目录下的代码++</p>
 <p>Bert是好,但并不一定在你的场景下也好,正式投产前还是需要做一些研究的.毕竟NLP这类的机器学习任务的数据集变化对模型的影响是很大的.</p>
+<h1 id="在Keras-中自定义可训练层"><a href="#在Keras-中自定义可训练层" class="headerlink" title="在Keras 中自定义可训练层"></a>在Keras 中自定义可训练层</h1><p>Bert预训练模型有12层或者24层,一般在起上层的Finetune任务会对所有层参数进行微调,也还有可能会在后面再接一些Layer.<br>但是,如果对所有层都进行微调的话,需要调整的参数量可能过大,12(约1.1亿), 24(2.2亿),耗时会比较久,如果只对后面几层或者特定层进行微调,可以是微调参数大大减少,训练实现也会加快.<br>主要可有参考:<br><a href="https://towardsdatascience.com/fine-tuning-bert-with-keras-and-tf-module-ed24ea91cff2" target="_blank" rel="noopener">Fine-tuning BERT with Keras and tf.Module</a><br><a href="https://colab.research.google.com/drive/1ofSfThTBlWjOx5dqXmdsIol-MdiqCyZC#scrollTo=cOyKrgZRRqZe&amp;forceEdit=true&amp;sandboxMode=true" target="_blank" rel="noopener">Finetuning BERT with Keras and tf.Module.ipynb</a><br><a href="https://github.com/gaphex/bert_experimental" target="_blank" rel="noopener">bert_experimental</a><br><a href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Layer?version=stable#non_trainable_weights" target="_blank" rel="noopener">TensorFlow Documentions</a><br><a href="https://keras.io/" target="_blank" rel="noopener">Keras Documentions</a>    </p>
 
       
     </div>
@@ -518,7 +519,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -529,7 +530,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -540,7 +541,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -607,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原有方案"><span class="nav-text">原有方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bert效果"><span class="nav-text">Bert效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bert的一些备注"><span class="nav-text">Bert的一些备注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它"><span class="nav-text">其它</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原有方案"><span class="nav-text">原有方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bert效果"><span class="nav-text">Bert效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bert的一些备注"><span class="nav-text">Bert的一些备注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它"><span class="nav-text">其它</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在Keras-中自定义可训练层"><span class="nav-text">在Keras 中自定义可训练层</span></a></li></ol></div>
             
 
           </div>
@@ -627,7 +628,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

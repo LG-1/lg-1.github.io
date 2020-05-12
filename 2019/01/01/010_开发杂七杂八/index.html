@@ -105,18 +105,18 @@
 
 
 
-<meta name="description" content="Pythonpypi包发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u {username} -p {pwd} {--skip-existing}  Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key) 将本地key配备到远程仓库">
+<meta name="description" content="Pythonpypi包发布https://pypi.org/project/twine/12python setup.py sdist bdist_wheeltwine upload dist/* -u &amp;#123;username&amp;#125; -p &amp;#123;pwd&amp;#125; &amp;#123;--skip-existing&amp;#125; Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要">
 <meta name="keywords" content="思考">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发杂七杂八">
 <meta property="og:url" content="https://www.ourantech.club/2019/01/01/010_开发杂七杂八/index.html">
 <meta property="og:site_name" content="险峰风景">
-<meta property="og:description" content="Pythonpypi包发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u {username} -p {pwd} {--skip-existing}  Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key) 将本地key配备到远程仓库">
+<meta property="og:description" content="Pythonpypi包发布https://pypi.org/project/twine/12python setup.py sdist bdist_wheeltwine upload dist/* -u &amp;#123;username&amp;#125; -p &amp;#123;pwd&amp;#125; &amp;#123;--skip-existing&amp;#125; Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-09T15:02:43.204Z">
+<meta property="og:updated_time" content="2019-11-11T23:46:41.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发杂七杂八">
-<meta name="twitter:description" content="Pythonpypi包发布https://pypi.org/project/twine/ python setup.py sdist bdist_wheel twine upload dist/* -u {username} -p {pwd} {--skip-existing}  Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key) 将本地key配备到远程仓库">
+<meta name="twitter:description" content="Pythonpypi包发布https://pypi.org/project/twine/12python setup.py sdist bdist_wheeltwine upload dist/* -u &amp;#123;username&amp;#125; -p &amp;#123;pwd&amp;#125; &amp;#123;--skip-existing&amp;#125; Git仓库权限添加 生成本地密钥(如果本地密钥更新了,也需要">
 
 
 
@@ -388,16 +388,15 @@
       
 
       
-        <h1 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h1><h2 id="pypi包发布"><a href="#pypi包发布" class="headerlink" title="pypi包发布"></a>pypi包发布</h2><p><a href="https://pypi.org/project/twine/" target="_blank" rel="noopener">https://pypi.org/project/twine/</a></p>
-<pre><code class="bash">python setup.py sdist bdist_wheel
-twine upload dist/* -u {username} -p {<span class="built_in">pwd</span>} {--skip-existing}
-</code></pre>
+        <h1 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h1><h2 id="pypi包发布"><a href="#pypi包发布" class="headerlink" title="pypi包发布"></a>pypi包发布</h2><p><a href="https://pypi.org/project/twine/" target="_blank" rel="noopener">https://pypi.org/project/twine/</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python setup.py sdist bdist_wheel</span><br><span class="line">twine upload dist/* -u &#123;username&#125; -p &#123;<span class="built_in">pwd</span>&#125; &#123;--skip-existing&#125;</span><br></pre></td></tr></table></figure></p>
 <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="仓库权限添加"><a href="#仓库权限添加" class="headerlink" title="仓库权限添加"></a>仓库权限添加</h2><ul>
 <li>生成本地密钥(如果本地密钥更新了,也需要同步更新远程配置的本地key)</li>
-<li>将本地key配备到远程仓库上实现免密登陆(拉取/提交等)<pre><code class="bash">pbcopy &lt; ~/.ssh/id_rsa.pub
-</code></pre>
+<li>将本地key配备到远程仓库上实现免密登陆(拉取/提交等)  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbcopy &lt; ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
+<h1 id="ML"><a href="#ML" class="headerlink" title="ML"></a>ML</h1><h2 id="特征工程资源"><a href="#特征工程资源" class="headerlink" title="特征工程资源"></a>特征工程资源</h2><p>category_encoders<br>    ce.CountEncoder<br>    ce.TargetEncoder<br>    ce.CatBoostEncoder</p>
+<p>​</p>
+<h2 id="特征选择资源"><a href="#特征选择资源" class="headerlink" title="特征选择资源"></a>特征选择资源</h2><p>sklearn.feature_selection<br>    基于特征的选择(依据评分函数评价特征对目标的贡献, 𝜒2, ANOVA, F-value, 互信息)<br>    基于模型的选择(l1, l2)</p>
 
       
     </div>
@@ -517,7 +516,7 @@ twine upload dist/* -u {username} -p {<span class="built_in">pwd</span>} {--skip
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -528,7 +527,7 @@ twine upload dist/* -u {username} -p {<span class="built_in">pwd</span>} {--skip
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -539,7 +538,7 @@ twine upload dist/* -u {username} -p {<span class="built_in">pwd</span>} {--skip
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -606,7 +605,7 @@ twine upload dist/* -u {username} -p {<span class="built_in">pwd</span>} {--skip
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pypi包发布"><span class="nav-text">pypi包发布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#仓库权限添加"><span class="nav-text">仓库权限添加</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pypi包发布"><span class="nav-text">pypi包发布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#仓库权限添加"><span class="nav-text">仓库权限添加</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ML"><span class="nav-text">ML</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征工程资源"><span class="nav-text">特征工程资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征选择资源"><span class="nav-text">特征选择资源</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -626,7 +625,7 @@ twine upload dist/* -u {username} -p {<span class="built_in">pwd</span>} {--skip
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
