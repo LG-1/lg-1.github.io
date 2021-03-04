@@ -1,37 +1,479 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="没卡是没法做深度学习的,所以决定斥资装一台服务器. 关于本文本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已. 前言本来由于已经有一台MBP了,所以还考虑过的方案是给它配外接GPU,链接网站(egpu.io)是专门给MBP配eGPU的大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习服务器装机回忆录">
+<meta property="og:url" content="https://www.ourantech.club/2019/03/07/016_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A3%85%E6%9C%BA%E5%9B%9E%E5%BF%86%E5%BD%95/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="没卡是没法做深度学习的,所以决定斥资装一台服务器. 关于本文本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已. 前言本来由于已经有一台MBP了,所以还考虑过的方案是给它配外接GPU,链接网站(egpu.io)是专门给MBP配eGPU的大">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/000.jpeg">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/001.jpeg">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/003.png">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/002.jpeg">
+<meta property="og:image" content="https://www.ourantech.club/images_source/20190307/004.jpeg">
+<meta property="article:published_time" content="2019-03-07T10:00:00.000Z">
+<meta property="article:modified_time" content="2019-11-09T15:01:52.221Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="技术">
+<meta property="article:tag" content="硬件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.ourantech.club/images_source/20190307/000.jpeg">
 
 
-{% block content %}
+<link rel="canonical" href="https://www.ourantech.club/2019/03/07/016_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A3%85%E6%9C%BA%E5%9B%9E%E5%BF%86%E5%BD%95/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>深度学习服务器装机回忆录 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E6%96%87"><span class="nav-text">关于本文</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E6%9C%AC"><span class="nav-text">成本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-text">结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%96%99%E5%87%86%E5%A4%87"><span class="nav-text">资料准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E9%85%8D%E7%BD%AE"><span class="nav-text">列配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E7%BA%BF"><span class="nav-text">插线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="nav-text">装系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E8%BD%AF%E4%BB%B6"><span class="nav-text">装软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E4%BB%A3%E7%A0%81%E8%B7%91%E8%B5%B7%E6%9D%A5"><span class="nav-text">写代码跑起来</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-text">后记</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/03/07/016_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A3%85%E6%9C%BA%E5%9B%9E%E5%BF%86%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习服务器装机回忆录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-03-07 18:00:00" itemprop="dateCreated datePublished" datetime="2019-03-07T18:00:00+08:00">2019-03-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:52" itemprop="dateModified" datetime="2019-11-09T23:01:52+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>没卡是没法做深度学习的,所以决定斥资装一台服务器.</p>
+<h3 id="关于本文"><a href="#关于本文" class="headerlink" title="关于本文"></a>关于本文</h3><p>本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.<br>因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已.</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本来由于已经有一台MBP了,所以还考虑过的方案是给它配<a target="_blank" rel="noopener" href="https://egpu.io/build-guides/">外接GPU</a>,链接网站(egpu.io)是专门给MBP配eGPU的大神们分享经验的地方,如果有这个需求或许可以参考.<br>后来之所以放弃是因为:</p>
+<ul>
+<li>MBP的CPU也不是很强(17款)</li>
+<li>内存也只有16G</li>
+<li>需要完全对接机器硬件、系统、GPU、电源等一些问题(会略复杂)</li>
+<li>MBP是需要便携移动的,eGPU有点烦了</li>
+<li>干脆弄一台服务器,MBP来做数据探索、特征处理,服务器来跑代码,拓展性足够,两不耽搁(只是钱包略痛)</li>
+</ul>
+<h2 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h2><p>成本来说的话,打算用于长期学习的话肯定自购硬件比较划算,毕竟随着时间的流逝,边际成本越来越低.<br>如果只是用个一时半会的肯定直接租用云平台了,在超出本地服务器要求时的短期需求也可以直接放在云平台上运行.</p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>过程虽有坎坷,结果还是OK的,但还有几个坑要提一下.<br>由于选了华硕x299主板,只能装win10(其实我想装Ubuntu啊++),系统原因又会导致一系列问题,比如NV、深度学习框架等等兼容性.在初学者的路上,任何一个小问题都可能使计划夭折在半路上,所以要慎重.主板的选择基本决定了系统,系统基本决定了平台和框架.所以要慎重.(选的时候注意主板和CPU/GPU的兼容基本就没啥问题了)<br>由于装的win10系统(在深度学习界并不是公认主流),导致TF-GPU安装一直报错失败,虽然参考官方文档进行了多次check,但依然没有解决,这就导致了keras基本处于不可用的状态.所幸Pytorch是可用的,不然我真是要洒泪了++,也就是现实将我逼上了Pytorch这座梁山.<br>装win系统还需要克制自己想装游戏的冲动,目前我还能克制.</p>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><h3 id="资料准备"><a href="#资料准备" class="headerlink" title="资料准备"></a>资料准备</h3><p>资料来源主要参考了知乎上关于深度学习的装机指南<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/33996159?sort=created">帖子</a>(<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/33996159?sort=created)">https://www.zhihu.com/question/33996159?sort=created)</a>.</p>
+<h3 id="列配置"><a href="#列配置" class="headerlink" title="列配置"></a>列配置</h3><p>(此配置不具有参考性,请参考阅读时间当前的最新硬件及其兼容性[既然要装,这些也是逃不掉要学的,或早或晚,或交学费或没有])</p>
+<ul>
+<li>主板: WS X299</li>
+<li>CPU: Inter i7 7820x</li>
+<li>GPU: RTX 2080</li>
+<li>内存: 金士顿 16G*2</li>
+<li>SSD: SAMSUNG</li>
+<li>水冷: 海盗船</li>
+<li>硬盘: WD 4T</li>
+<li>电源: CORSAIR</li>
+<li>显示器: PHILIPS 27</li>
+<li>机箱: AIR540</li>
+<li>鼠键: 罗技</li>
+</ul>
+<p><img src="\images_source\20190307\000.jpeg" alt="Markdown"></p>
+<h3 id="插线"><a href="#插线" class="headerlink" title="插线"></a>插线</h3><p>设备买好之后,按照操作手册把线插好就行了.<br>当然,最复杂就是如何接主板上的接口,要多看两遍主板手册.<br><img src="\images_source\20190307\001.jpeg" alt="Markdown"><br>(走线不是关键,走线再漂亮,点不亮也是白搭)</p>
+<h3 id="装系统"><a href="#装系统" class="headerlink" title="装系统"></a>装系统</h3><p>本以为,虽没装过操作系统,应该也能搞定.<br>殊不知,没搞定.<br>然后找了个专业装系统的,花了120,++.(没有启动盘).<br><img src="\images_source\20190307\003.png" alt="Markdown"><br>真是惭愧~</p>
+<h3 id="装软件"><a href="#装软件" class="headerlink" title="装软件"></a>装软件</h3><p>软件就比较简单了(但也不尽然,比如TF-GPU就没装好😢,道行还是不够啊).</p>
+<h3 id="写代码跑起来"><a href="#写代码跑起来" class="headerlink" title="写代码跑起来"></a>写代码跑起来</h3><p>测测GPU的安装成功与否.运行CUDA sample下的deviceQuery代码.<br><img src="\images_source\20190307\002.jpeg" alt="Markdown"></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>平台搭好,只是开始.<br><img src="\images_source\20190307\004.jpeg" alt="Markdown"><br>后面的路还长.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag"># 技术</a>
+              <a href="/tags/%E7%A1%AC%E4%BB%B6/" rel="tag"># 硬件</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/24/015_%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" rel="prev" title="不确定性与确定性的一点思考">
+                  <i class="fa fa-chevron-left"></i> 不确定性与确定性的一点思考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/29/018_Bert%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/" rel="next" title="Bert使用备注">
+                  Bert使用备注 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>
