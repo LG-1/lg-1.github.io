@@ -179,7 +179,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -241,116 +241,6 @@
 
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/" class="post-title-link" itemprop="url">一种为评估文本分类效果的改进指标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-04-04 01:00:00" itemprop="dateCreated datePublished" datetime="2019-04-04T01:00:00+08:00">2019-04-04</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:01:28" itemprop="dateModified" datetime="2019-11-09T23:01:28+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.<br>指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之.</p>
-<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification#evaluation">详参</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1903.04561.pdf">论文参考</a><br><a target="_blank" rel="noopener" href="https://www.kaggle.com/dborkan/benchmark-kernel/log">使用案例</a></p>
-<p>只是做一些学习记录,如有遗误,望请指教.</p>
-<h1 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h1><p>$${score}=w_{0} A U C_{\text {overall}}+\sum_{a=1}^{A} w_{a} M_{p}\left(m_{s, a}\right)$$</p>
-<p>最终得分由 整体AUC 与 广义偏差AUC均值 们 加权 得到.<br>本次涉及到3种偏差AUC(Subgroup_AUC/BPSN_AUC/BNSP_AUC).</p>
-<p>整体AUC值是常规操作,详可参sklearn.</p>
-<p>其中:</p>
-<ul>
-<li>$A$表示子指标数量 本次为3</li>
-<li>$m_{s, a}$表示子组s的第a中偏差指标</li>
-<li>$w_{a}$ 表示对应的 广义均值 权重, 本次所有权重都为0.25,即等权.</li>
-</ul>
-<ul>
-<li><h2 id="M-p-left-m-s-a-right-含义"><a href="#M-p-left-m-s-a-right-含义" class="headerlink" title="$M_{p}\left(m_{s, a}\right)$ 含义"></a>$M_{p}\left(m_{s, a}\right)$ 含义</h2>  即广义均值<br>  本次计算广义偏差AUC均值<br>  公式为:<br>  $$<br>  M_{p}\left(m_{s}\right)=\left(\frac{1}{N} \sum_{s=1}^{N} m_{s}^{p}\right)^{\frac{1}{p}}<br>  $$<br>  其中:<ul>
-<li>$M_{p}$表示p级广义均值, 本次取p=-5</li>
-<li>$m_{s}$表示子组s的偏差指标</li>
-<li>$N$ 表示子组数量</li>
-</ul>
-</li>
-</ul>
-<p>进一步, 公式的重点是定义了三种偏差AUC.</p>
-<h1 id="三种偏差AUC含义"><a href="#三种偏差AUC含义" class="headerlink" title="三种偏差AUC含义"></a>三种偏差AUC含义</h1><p>三种偏差AUC的计算公式其实一样,都是计算AUC,不同的是基于不同的数据子集计算.</p>
-<ul>
-<li><h2 id="Subgroup-AUC"><a href="#Subgroup-AUC" class="headerlink" title="Subgroup_AUC"></a>Subgroup_AUC</h2><p>基于 满足身份识别的样本所构成的子数据集计算的AUC,这个指标越低表示在特定需求(身份识别)上模型表现越差.</p>
-</li>
-<li><h2 id="BPSN-AUC"><a href="#BPSN-AUC" class="headerlink" title="BPSN_AUC"></a>BPSN_AUC</h2><p>即 Background Positive, Subgroup Negative AUC<br>基于提及身份的正面和不提及身份的负面样本所构成的子数据集计算的AUC,这个指标越低表示模型混淆了身份识别,只要提及了身份识别就可能被预测得到更高的值,这不是希望的最佳模型.</p>
-</li>
-<li><h2 id="BNSP-AUC"><a href="#BNSP-AUC" class="headerlink" title="BNSP_AUC"></a>BNSP_AUC</h2><p>即 Background Negative, Subgroup Positive AUC<br>基于提及身份的负面和不提及身份的正面样本所构成的子数据集计算的AUC.</p>
-</li>
-</ul>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>所以同理,<br>将来也可以基于此思路,针对其它的特定需求,设计特定的评价指标.在模型训练的时候就依据需求进行加权.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -633,6 +523,92 @@
 <h3 id="装软件"><a href="#装软件" class="headerlink" title="装软件"></a>装软件</h3><p>软件就比较简单了(但也不尽然,比如TF-GPU就没装好😢,道行还是不够啊).</p>
 <h3 id="写代码跑起来"><a href="#写代码跑起来" class="headerlink" title="写代码跑起来"></a>写代码跑起来</h3><p>测测GPU的安装成功与否.运行CUDA sample下的deviceQuery代码.<br><img src="\images_source\20190307\002.jpeg" alt="Markdown"></p>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>平台搭好,只是开始.<br><img src="\images_source\20190307\004.jpeg" alt="Markdown"><br>后面的路还长.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/02/24/015_%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/02/24/015_%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">不确定性与确定性的一点思考</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-02-24 14:00:00" itemprop="dateCreated datePublished" datetime="2019-02-24T14:00:00+08:00">2019-02-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:02:00" itemprop="dateModified" datetime="2019-11-09T23:02:00+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>人工智能的发展时间在计算机时代的历史中应该也不算短了.</p>
+<p>至今(2019-02)所谓的强人工智能仍是一个遥不可及的问题.</p>
+<p>要接受人的控制就必须要能够预测整个“智能”若干步骤后的状态,即没有不确定性,一切尽在掌控.那么这种掌控有可能产生智能吗?今天的人工智能行业的探索或许将给我们答案.</p>
+<p>如果受基因进化思想的影响(交叉变异,环境选择),那么智能的发展过程中可能是充满不确定性的,这就从根本上与我们要求的控制形成了冲突和矛盾.</p>
+<p>如果我们真的需要拥抱不确定性的话,初初想来确实也蛮可怕的.</p>
+<p>我个人其实倾向于加入不确定性方可产生新的智能的方案.那么可能存在的问题应该怎么思考呢?<br>个人感觉可以参考人这个系统的方案,人中有好人和坏人.机器智能中有好的机器智能和坏的机器智能,是否可以将为人设计的机制以某种方式参照到机器智能中去呢?这样对于现存的人这个系统来说是不是就可以接受了?</p>
+<p>目标是,只要加入了整个机器智能的系统后,带来的增益是大于成本的,总体上来说这个机制应该就可以存在下去.</p>
 
       
     </div>
