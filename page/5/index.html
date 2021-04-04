@@ -186,13 +186,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -440,6 +440,86 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/08/013_%E8%B5%84%E6%BA%90%E9%93%BE%E6%8E%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/01/08/013_%E8%B5%84%E6%BA%90%E9%93%BE%E6%8E%A5/" class="post-title-link" itemprop="url">资源链接</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-01-08 12:00:00" itemprop="dateCreated datePublished" datetime="2019-01-08T12:00:00+08:00">2019-01-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:02:18" itemprop="dateModified" datetime="2019-11-09T23:02:18+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h1><p>cudnn <a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#install-windows">开发者手册</a>和<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html">安装指南</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/08/012_An%20efficient%20NLP%20Word2Vec%20usage%20method/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -504,86 +584,6 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> w2vembeddings.w2vemb <span class="keyword">import</span> EMB</span><br><span class="line">emb = EMB(name=<span class="string">&#x27;tencent&#x27;</span>, dimensions=<span class="number">200</span>)  <span class="comment"># Load the word vector library, equivalent to the original step of loading from the file</span></span><br><span class="line"><span class="comment"># Extract word vector matrix on demand</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span>(<span class="params">emb, word_index, max_features</span>):</span>    </span><br><span class="line">    embed_size = <span class="built_in">len</span>(emb.get_vector(<span class="string">&#x27;a&#x27;</span>))</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_matrix[i] = np.array(emb.get_vector(word))</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure>
 <p>It can save almost all unnecessary memory usage and 95% of the time.</p>
 <h1 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem"></a>Problem</h1><p>Of course, this solution has problems. Like the REST API, it is not convenient to use the global information of the word vector. If you have such a requirement, it is recommended to refer to gensim.<br>This method is mainly for those who often use word2vec for research, as well as small online deployment scenarios.<br><a href="https://www.ourantech.club/2019/01/06/011_一种高效的NLP%20Word2Vec使用方法/">Originally published in</a><br>and<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Lc6ti634aN31D1Z0T-N2eA">Wechat</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/08/013_%E8%B5%84%E6%BA%90%E9%93%BE%E6%8E%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/01/08/013_%E8%B5%84%E6%BA%90%E9%93%BE%E6%8E%A5/" class="post-title-link" itemprop="url">资源链接</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-01-08 12:00:00" itemprop="dateCreated datePublished" datetime="2019-01-08T12:00:00+08:00">2019-01-08</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:02:18" itemprop="dateModified" datetime="2019-11-09T23:02:18+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h1><p>cudnn <a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#install-windows">开发者手册</a>和<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/sdk/cudnn-developer-guide/index.html">安装指南</a></p>
 
       
     </div>
