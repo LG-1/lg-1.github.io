@@ -179,14 +179,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -241,6 +241,286 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/18/FTRL-introduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/04/18/FTRL-introduce/" class="post-title-link" itemprop="url">FTRL介绍</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-04-18 20:55:58" itemprop="dateCreated datePublished" datetime="2018-04-18T20:55:58+08:00">2018-04-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 22:59:39" itemprop="dateModified" datetime="2019-11-09T22:59:39+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="FTRL"><a href="#FTRL" class="headerlink" title="FTRL"></a>FTRL</h1><p><a target="_blank" rel="noopener" href="http://onlineprediction.net/?n=Main.FollowTheRegularizedLeader">FTRL</a>是一种<a target="_blank" rel="noopener" href="http://onlineprediction.net/?n=Main.On-lineLinearOptimization">在线线性优化技术</a>，类似于<a target="_blank" rel="noopener" href="http://onlineprediction.net/?n=Main.FollowTheLeader">FTL</a>，但在目标函数上有所差别。</p>
+<p>FTL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x$</p>
+<p>FTRL目标函数：$x_{T+1} = \arg\min_{x \in \mathcal{K}} \sum_{t=1}^T f’_t x + cR(x)$<br>$R(x)$表示凸可微正则化项。<br>若用于分类，可以参考[1]</p>
+<h1 id="在线线性优化"><a href="#在线线性优化" class="headerlink" title="在线线性优化"></a>在线线性优化</h1><p>在线线性优化(on-line linear optimization)定义为：学习者(玩家)和环境(对手，或现实)之间重复的游戏。<br>假设$\mathcal{K} \in \mathbb{R}^n$是一个紧凑的闭凸集。<br>游戏的协议是：<br>　　FOR $t=1,2,\dots,T$<br>　　　玩家选择 $x_t \in \mathcal{K}$<br>　　　独立的对手选择 $f_t \in \mathbb{R}^n$<br>　　　玩家损失函数 $f’_t x_t$, 和观察到的反馈。<br>　　END FOR. </p>
+<p>玩家的目标是最小化：</p>
+<p>$$<br>R _ { T } = \sum _ { t = 1 } ^ { T } f _ { t } ^ { \prime } x _ { t } - \min _ { x ^ { * } \in \mathcal { K } } \sum _ { t = 1 } ^ { T } f _ { t } ^ { \prime } x ^ { * }<br>$$</p>
+<p>在完全信息的游戏设定下，玩家可以将$f_t$ 作为反馈，并作为他再次决策的参考。其它的设置是负向作用，玩家观察到只是标量值$f’_t x_t$。不知道“如果我们改变了我们的行动会是什么”，只有反馈。<br>其实，这样的设置对于各种各样的应用程序都是有用的。<br>由于这个理论有些缺憾，所以演化出来的FTL(Follow the Leader)算法偶尔被使用，而更多的时候则是使用FTRL(Follow the regularized leader)</p>
+<h1 id="FTL"><a href="#FTL" class="headerlink" title="FTL"></a>FTL</h1><p>FTL是一个用专家建议预测的算法。它衍生了一些其它算法，如FTRL，一种更有效的算法。<br>FTL仅仅跟随“到目前为止”最好的专家。<br>目标函数 $\gamma^T = \arg\min \sum_{t=1}^T \lambda(\omega^t,\gamma^t_k), k=1,\ldots,K$ (可以参考Prediction with expert advice或是其它类似的理论。<br>可以看出，即使是在平方损失函数的情况下，也不能证明该算法的良好后悔界限。<br>假设有两种输出${0,1}$，和两个可能的专家。一个总是预测$0$第二个总是预测$1$.在第一步，学习者选择跟随第一个专家，所以他的预测是$0$，然而现实总是可能让你失望，当产出是$1$时，学习者遭受损失$1$，第一个专家遭受损失$1$，第二个专家遭受损失$0$。在第二步中，学习者选择第二个专家，所以他的预测是$1$。实际输出是$0$，所以学习者遭受损失$1$。<br>(我咋感觉跟我买股票的节奏差不多呢+==+)<br>就这样, 经过$T$步后，学习者的损失是$T$，专家们的损失是$\dfrac{T}{2}$(只有大约，因为当专家的损失相等时，我们不知道在学习者选择他的决定之前哪个人遭受了非零损失)，所以后悔的代价是$\dfrac{T}{2}$。</p>
+<p>[1]:Shai Shalev-Shwartz and Yoram Singer. A primal-dual perspective of online learning algorithms. Mach. Learn., 69(2-3):115–142, 2007. </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/18/experience-of-kaggle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/04/18/experience-of-kaggle/" class="post-title-link" itemprop="url">机器学习经验</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-04-18 16:59:45" itemprop="dateCreated datePublished" datetime="2018-04-18T16:59:45+08:00">2018-04-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 22:59:56" itemprop="dateModified" datetime="2019-11-09T22:59:56+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>站在前人的肩膀上可以看得更远，但请也别忘了自己该走的路。</p>
+<p>本文整理自：<a target="_blank" rel="noopener" href="https://medium.com/unstructured/how-feature-engineering-can-help-you-do-well-in-a-kaggle-competition-part-iii-f67567aaf57c">原文参考</a></p>
+<p>比较成熟的机器学习经验大概有：</p>
+<ol>
+<li>一个好的交叉验证策略很重要。</li>
+<li>特征工程需要时间，在数据集上添加新特性可能需要花更多时间。</li>
+<li>对稀疏数据来说哈希是必要的，而且从操作性和效率方面来看比独热编码(OHE)表现更好。</li>
+<li>独热编码对于分类特征来说不是最优的。从经验来看，在树足够多的情况下，树的集成将在原始的分类特征值(ids)上表现得更好。因为可以将特征向量降低到更低的维度，增加随机特性集包含更多预测特性的机会。</li>
+<li>测试多种框架对学习来说是好的，但也通常导致花费大量时间转换数据和格式、阅读文档以及调整超参数。</li>
+<li>阅读涉及到的主要技术(FTRL、FFM)的论文，对于调整超参数这项工作来说是必不可少的。</li>
+<li>从别人分享的博客、核心程序代码以及过往案例中学习也是至关重要的。每个人也都应当有所分享。</li>
+<li>平均搭配、机器学习权重、堆叠技术可以大大提高准确性，基于堆叠使用在固定折上进行超折训练可以增加可用训练集并提高整体准确性。</li>
+<li>不到最后一刻，不要放弃。</li>
+<li>kaggle是个好地方。</li>
+</ol>
+<p>此外，可以基于成熟的云服务提供商解决可能遇到的大数据和分布式困境，让你专注于机器学习事业。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/16/Viterbi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/04/16/Viterbi/" class="post-title-link" itemprop="url">维特比算法小解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-04-16 22:41:09" itemprop="dateCreated datePublished" datetime="2018-04-16T22:41:09+08:00">2018-04-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-10 10:16:11" itemprop="dateModified" datetime="2019-11-10T10:16:11+08:00">2019-11-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="我理解"><a href="#我理解" class="headerlink" title="我理解"></a>我理解</h2><p>维特比算法可以算作一种优化技术，正是这些类优化技术的应用，加上算力的提升及数据量and分析方法的更新，构成了大数据&amp;机器学习的核心。</p>
+<p>所以，理解这类优化技术对于技术学习应当是很有必要的。</p>
+<p>之前，读到这个算法的时候，对它的理解是是而非。<br>所以觉得有必要进行一下梳理及通俗理解，以便加强理解&amp;灵活运用。</p>
+<h2 id="梳理"><a href="#梳理" class="headerlink" title="梳理"></a>梳理</h2><p>梳理之后的总结便是：</p>
+<center>以层为中心，去筛选线(路径)</center><br><center>而不是以路径为中心，去筛选线(路径)</center>
+
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>解释一下就是：以层为中心，逐层筛选(V)；<br>而另外一种方法就是穷举遍历法(E)。<br>作两张图说明一下：<br><img src="\images_source\20180416\001.PNG" alt="Markdown"><br>从上图寻找最优路径需要比较的次数是：</p>
+<ul>
+<li>E方法：$1*2*2*3=12$</li>
+<li>V方法：$0+1*2+2*2+2*3+3*0=12$</li>
+</ul>
+<p>看起来两种方法的结果好像一样？<br>再看一图：<br><img src="\images_source\20180416\002.PNG" alt="Markdown"><br>从上图寻找最优路径需要比较的次数是：</p>
+<ul>
+<li>E方法：$1*2*2*3*4*5=360$</li>
+<li>V方法：$0+1*2+2*2+2*3+3*4+4*5+5*0=44$</li>
+</ul>
+<p>“以层为中心逐层筛选”再通俗一点：每一层的每一次筛选，总能将当前的最短路径定位到该层的某一点。然后下一次计算时，将只考虑：锁定的那一点*下一层数目*下下层数目，即:1*(n+1)*(n+2)，迭代之。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>算法的力量一目了然。显然真正的使用场景可能远比图二所示复杂，所以算法带来的提升将是若干几何级的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -351,97 +631,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/12/jupyter-ext/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/12/jupyter-ext/" class="post-title-link" itemprop="url">一个jupyter插件</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-04-12 19:40:50" itemprop="dateCreated datePublished" datetime="2018-04-12T19:40:50+08:00">2018-04-12</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 22:50:49" itemprop="dateModified" datetime="2019-11-09T22:50:49+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>分享一个jupyter小工具<a target="_blank" rel="noopener" href="https://github.com/QuantStack/jupyterlab-drawio">jupyterlab-drawio</a>，可以用来替换原本属于viso的很多工作。<br>界面一览：<br><img src="\images_source\20180412\0001.PNG" alt="Markdown"><br>使用起来感觉很方便，即不用安装viso那么大的软件，也很流畅，可以达到随心的程度。而且一些颜色设置、形状设定等操作在使用过程中还有记忆，这点感觉很好。</p>
-<p>安装步骤：<br>需要先安装<a target="_blank" rel="noopener" href="http://jupyterlab.readthedocs.io/en/stable/getting_started/starting.html">jupyterlab</a></p>
-<h2 id="安装运行"><a href="#安装运行" class="headerlink" title="安装运行"></a>安装运行</h2><h3 id="安装jupyter-lab"><a href="#安装jupyter-lab" class="headerlink" title="安装jupyter lab"></a>安装jupyter lab</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyterlab</span><br></pre></td></tr></table></figure>
-<h3 id="安装扩展插件jupyterlab-drawio"><a href="#安装扩展插件jupyterlab-drawio" class="headerlink" title="安装扩展插件jupyterlab-drawio"></a>安装扩展插件jupyterlab-drawio</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter labextension  install jupyterlab-drawio</span><br></pre></td></tr></table></figure>
-<h3 id="查看插件是否安装成功"><a href="#查看插件是否安装成功" class="headerlink" title="查看插件是否安装成功"></a>查看插件是否安装成功</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter labextension list</span><br></pre></td></tr></table></figure>
-<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter lab</span><br></pre></td></tr></table></figure>
-<h2 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h2><h3 id="‘-xsrf’-argument-missing-from-POST"><a href="#‘-xsrf’-argument-missing-from-POST" class="headerlink" title="‘_xsrf’ argument missing from POST"></a>‘_xsrf’ argument missing from POST</h3><p><img src="\images_source\20180412\001.PNG" alt="Markdown"><br>画好图之后想将结果导出成图片，结果就报以上错误了<br>解决方式可以：<br>在jupyter_notebook_config.py中修改配置为</p>
-<pre><code>#c.NotebookApp.disable_check_xsrf = False
-c.NotebookApp.disable_check_xsrf = True
-</code></pre><h3 id="404-Not-Found"><a href="#404-Not-Found" class="headerlink" title="404 : Not Found"></a>404 : Not Found</h3><p>然而导出还是报错：<br><img src="\images_source\20180412\002.PNG" alt="Markdown"><br>未完待续，尚待解决=====<br>目前为了把砖先搬掉，我是直接截图出来用的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -475,7 +666,7 @@ c.NotebookApp.disable_check_xsrf = True
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

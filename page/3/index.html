@@ -179,14 +179,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -241,6 +241,186 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/08/31/029_%E8%A7%86%E9%A2%91%E9%9F%B3%E4%B9%90%E4%B9%A6%E7%B1%8D%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/08/31/029_%E8%A7%86%E9%A2%91%E9%9F%B3%E4%B9%90%E4%B9%A6%E7%B1%8D%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">视频音乐书籍标注数据</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-31 10:03:00" itemprop="dateCreated datePublished" datetime="2019-08-31T10:03:00+08:00">2019-08-31</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:00:52" itemprop="dateModified" datetime="2019-11-09T23:00:52+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>类似于人名/地名/组织机构名的命名体识别数据集,我花了几天时间标注了大约10000条视频/音乐/书籍数据.</p>
+<p>数据的意义希冀能够基于此训练NLP模型识别句子中的视频/音乐/书籍等名称信息.</p>
+<p>数据的标注过程:</p>
+<ul>
+<li>先纯手动提取标记了一部分(大约5000条),基于标注数据训练一个base模型,基于base模型重新审视校正标注数据.</li>
+<li>基于校正后的数据再训练一个模型,基于模型标注了另外约5000条数据.并对数据进行人工审核校验.</li>
+<li>最终数据集包含9632条数据.</li>
+</ul>
+<p>理论上来说,任务也会是标准的NER任务.<br>难点:同一个名称可能是书籍也可能是视频(电视电影可能是由小说改编而来,有些场景关注书籍,另外一些可能关注视频),有些句子则只是提供了一长串并列的名称,可能没有更多的辅助信息;</p>
+<p>示例:<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">放暑假了，最近剧荒，陈情令也才一个星期更新三次，根本不够看，问问大家有什么好看的电视剧或电影推荐吗？最好是那种搞笑，温暖的那种，日剧也可以，好像道骏枝佑的剧还不错！</span><br><span class="line">label: 陈情令/video</span><br><span class="line"></span><br><span class="line">最近有没有好看的电视剧推荐，国内国外的都可以，前两天再追少年派，但剧情走向越来越扯，非常想给编剧寄刀片，现在想看些正常三观的剧，大家有没有推荐哒？</span><br><span class="line">label: 少年派/video</span><br><span class="line"></span><br><span class="line">最近有些剧荒啊，有什么好看的电视剧或者电影可以推荐么？我看的也比较杂，权力的游戏，黑色止血钳，最近看的韩剧囚犯医生是大爱啊，类似这种类型的可以给我推荐一些么？</span><br><span class="line">label: 权力的游戏/video	黑色止血钳/video	囚犯医生/video</span><br><span class="line"></span><br><span class="line">我个人比较喜欢听古风歌曲，然后呢，我歌单里面可以给你推荐几首，归去来兮琵琶行清明上河图好可以去试着搜索一些古装剧的主题曲或者插曲</span><br><span class="line">label: 归去来兮/music	琵琶行/music	清明上河图好/music</span><br><span class="line"></span><br><span class="line">不知道你喜欢什么类型的小说，最近在看十宗罪，悬疑烧脑类的，讲述的是公安部门打击违法犯罪的故事，现在已经出到第六部了，估计够你看一个月了。大冰写的书也可以尝试看一下，文艺小清新类型的</span><br><span class="line">label: 十宗罪/book</span><br></pre></td></tr></table></figure></p>
+<p>最终提供的数据集转换成了标准的BIO标注格式,欢迎尝试使用.</p>
+<h1 id="Copyrights-amp-Cite"><a href="#Copyrights-amp-Cite" class="headerlink" title="Copyrights &amp; Cite"></a>Copyrights &amp; Cite</h1><p>LG: <a href="mailto:ourantech@163.com">ourantech@163.com</a><br>Blog: <a href="https://www.ourantech.club/2019/08/31/029_视频音乐书籍标注数据/">https://www.ourantech.club/2019/08/31/029_视频音乐书籍标注数据/</a><br>Github: <a target="_blank" rel="noopener" href="https://github.com/LG-1/video_music_book_datasets">https://github.com/LG-1/video_music_book_datasets</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/08/06/025_Ubuntu%20%E5%BC%80%E5%90%AF%20cron%20job/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/08/06/025_Ubuntu%20%E5%BC%80%E5%90%AF%20cron%20job/" class="post-title-link" itemprop="url">Ubuntu 开启 cron job</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-06 12:20:00" itemprop="dateCreated datePublished" datetime="2019-08-06T12:20:00+08:00">2019-08-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:00" itemprop="dateModified" datetime="2019-11-09T23:01:00+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li>将要执行的内容编写到.sh脚本中(要注意路径和环境变量)</li>
+<li>创建修改定时任务: crontab -e</li>
+<li><p>打开日志(不是必须,但是最好打开,便于debug):<br>vi /etc/rsyslog.d/50-default.conf<br>sudo service rsyslog restart</p>
+</li>
+<li><p>重启服务<br>service cron restart</p>
+</li>
+<li><p>查看执行记录:cat /var/log/cron.log<br>检查执行记录及最终结果,执行记录有报错一定没执行成功,可以根据报错debug;执行记录没报错也不一定是执行成功,因为sh脚本可能做了相应的报错隐藏,要检查一下实际的执行结果确认.</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -463,210 +643,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/18/022_%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%BC%98%E9%9B%85%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%B1%80%E5%9F%9F%E7%BD%91PC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/18/022_%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%BC%98%E9%9B%85%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%B1%80%E5%9F%9F%E7%BD%91PC/" class="post-title-link" itemprop="url">通过内网穿透优雅的远程连接局域网PC</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-04-18 00:02:00" itemprop="dateCreated datePublished" datetime="2019-04-18T00:02:00+08:00">2019-04-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:01:20" itemprop="dateModified" datetime="2019-11-09T23:01:20+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>家里有一台Windows PC,我希望能够像连阿里云服务器一样随时随地都可以远程连接,以便充分利用资源.<br>当然可以利用远程连接软件,比如teamviewer\向日葵 甚至 QQ都可以实现这样的远程控制,<br>但这不是我最想要的,一是多屏不方便,二是在两个电脑的两个软件之间转来转去也很麻烦.<br>我最希望的是像ssh连服务器一样直接连上去操作就好了.<br>查了一下资料,还真可以,且挺简单的,略微记录一下.</p>
-<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>PC/Mac/AWS服务器<br>AWS服务器是免费的,真是太好用且稳定了,现在我已经有两个服务架在上面了,VPN server, 内网穿透服务端,是真香.<br>另外主要是<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/blob/master/README_zh.md">frp</a>(内网穿透软件)的配置.</p>
-<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ul>
-<li>在aws上安装并启动frp服务端: ./frps -c ./frps.ini</li>
-<li>在内网Windows上安装并启动客户端: ./frpc.exe -c ./frpc.ini</li>
-<li>以上两个详细配置根据需求参照官网操作就OK了.</li>
-<li>到这一步就可以ssh连接了: ssh -oPort=[Windows端端口] [windows用户名]@[aws公网IP]</li>
-<li>还可以多做两步,将frps和frpc分别在相应的机器上设置为开机启动.<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/issues/176">参考1</a>、<a target="_blank" rel="noopener" href="http://www.letvps.com/757.html">参考2</a></li>
-<li>最后, 可以再通过sshpass插件实现ssh密码参数化,然后再将这行命令写成脚本,最终就实现一键登录.</li>
-</ul>
-<p><img src="\images_source\20190418\001.jpeg" alt="image"></p>
-<p>哈哈,真香~</p>
-<p>后面可以再看看powershell的使用,充分调动起来,跑跑代码,说不定就不用Windows鼠标和键盘了.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/" class="post-title-link" itemprop="url">一种为评估文本分类效果的改进指标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-04-04 01:00:00" itemprop="dateCreated datePublished" datetime="2019-04-04T01:00:00+08:00">2019-04-04</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:01:28" itemprop="dateModified" datetime="2019-11-09T23:01:28+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.<br>指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之.</p>
-<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification#evaluation">详参</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1903.04561.pdf">论文参考</a><br><a target="_blank" rel="noopener" href="https://www.kaggle.com/dborkan/benchmark-kernel/log">使用案例</a></p>
-<p>只是做一些学习记录,如有遗误,望请指教.</p>
-<h1 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h1><p>$${score}=w_{0} A U C_{\text {overall}}+\sum_{a=1}^{A} w_{a} M_{p}\left(m_{s, a}\right)$$</p>
-<p>最终得分由 整体AUC 与 广义偏差AUC均值 们 加权 得到.<br>本次涉及到3种偏差AUC(Subgroup_AUC/BPSN_AUC/BNSP_AUC).</p>
-<p>整体AUC值是常规操作,详可参sklearn.</p>
-<p>其中:</p>
-<ul>
-<li>$A$表示子指标数量 本次为3</li>
-<li>$m_{s, a}$表示子组s的第a中偏差指标</li>
-<li>$w_{a}$ 表示对应的 广义均值 权重, 本次所有权重都为0.25,即等权.</li>
-</ul>
-<ul>
-<li><h2 id="M-p-left-m-s-a-right-含义"><a href="#M-p-left-m-s-a-right-含义" class="headerlink" title="$M_{p}\left(m_{s, a}\right)$ 含义"></a>$M_{p}\left(m_{s, a}\right)$ 含义</h2>  即广义均值<br>  本次计算广义偏差AUC均值<br>  公式为:<br>  $$<br>  M_{p}\left(m_{s}\right)=\left(\frac{1}{N} \sum_{s=1}^{N} m_{s}^{p}\right)^{\frac{1}{p}}<br>  $$<br>  其中:<ul>
-<li>$M_{p}$表示p级广义均值, 本次取p=-5</li>
-<li>$m_{s}$表示子组s的偏差指标</li>
-<li>$N$ 表示子组数量</li>
-</ul>
-</li>
-</ul>
-<p>进一步, 公式的重点是定义了三种偏差AUC.</p>
-<h1 id="三种偏差AUC含义"><a href="#三种偏差AUC含义" class="headerlink" title="三种偏差AUC含义"></a>三种偏差AUC含义</h1><p>三种偏差AUC的计算公式其实一样,都是计算AUC,不同的是基于不同的数据子集计算.</p>
-<ul>
-<li><h2 id="Subgroup-AUC"><a href="#Subgroup-AUC" class="headerlink" title="Subgroup_AUC"></a>Subgroup_AUC</h2><p>基于 满足身份识别的样本所构成的子数据集计算的AUC,这个指标越低表示在特定需求(身份识别)上模型表现越差.</p>
-</li>
-<li><h2 id="BPSN-AUC"><a href="#BPSN-AUC" class="headerlink" title="BPSN_AUC"></a>BPSN_AUC</h2><p>即 Background Positive, Subgroup Negative AUC<br>基于提及身份的正面和不提及身份的负面样本所构成的子数据集计算的AUC,这个指标越低表示模型混淆了身份识别,只要提及了身份识别就可能被预测得到更高的值,这不是希望的最佳模型.</p>
-</li>
-<li><h2 id="BNSP-AUC"><a href="#BNSP-AUC" class="headerlink" title="BNSP_AUC"></a>BNSP_AUC</h2><p>即 Background Negative, Subgroup Positive AUC<br>基于提及身份的负面和不提及身份的正面样本所构成的子数据集计算的AUC.</p>
-</li>
-</ul>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>所以同理,<br>将来也可以基于此思路,针对其它的特定需求,设计特定的评价指标.在模型训练的时候就依据需求进行加权.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -700,7 +678,7 @@
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

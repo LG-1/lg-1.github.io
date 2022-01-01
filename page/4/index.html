@@ -179,14 +179,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -241,6 +241,208 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/18/022_%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%BC%98%E9%9B%85%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%B1%80%E5%9F%9F%E7%BD%91PC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/18/022_%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E4%BC%98%E9%9B%85%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%B1%80%E5%9F%9F%E7%BD%91PC/" class="post-title-link" itemprop="url">通过内网穿透优雅的远程连接局域网PC</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-18 00:02:00" itemprop="dateCreated datePublished" datetime="2019-04-18T00:02:00+08:00">2019-04-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:20" itemprop="dateModified" datetime="2019-11-09T23:01:20+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>家里有一台Windows PC,我希望能够像连阿里云服务器一样随时随地都可以远程连接,以便充分利用资源.<br>当然可以利用远程连接软件,比如teamviewer\向日葵 甚至 QQ都可以实现这样的远程控制,<br>但这不是我最想要的,一是多屏不方便,二是在两个电脑的两个软件之间转来转去也很麻烦.<br>我最希望的是像ssh连服务器一样直接连上去操作就好了.<br>查了一下资料,还真可以,且挺简单的,略微记录一下.</p>
+<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>PC/Mac/AWS服务器<br>AWS服务器是免费的,真是太好用且稳定了,现在我已经有两个服务架在上面了,VPN server, 内网穿透服务端,是真香.<br>另外主要是<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/blob/master/README_zh.md">frp</a>(内网穿透软件)的配置.</p>
+<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ul>
+<li>在aws上安装并启动frp服务端: ./frps -c ./frps.ini</li>
+<li>在内网Windows上安装并启动客户端: ./frpc.exe -c ./frpc.ini</li>
+<li>以上两个详细配置根据需求参照官网操作就OK了.</li>
+<li>到这一步就可以ssh连接了: ssh -oPort=[Windows端端口] [windows用户名]@[aws公网IP]</li>
+<li>还可以多做两步,将frps和frpc分别在相应的机器上设置为开机启动.<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/issues/176">参考1</a>、<a target="_blank" rel="noopener" href="http://www.letvps.com/757.html">参考2</a></li>
+<li>最后, 可以再通过sshpass插件实现ssh密码参数化,然后再将这行命令写成脚本,最终就实现一键登录.</li>
+</ul>
+<p><img src="\images_source\20190418\001.jpeg" alt="image"></p>
+<p>哈哈,真香~</p>
+<p>后面可以再看看powershell的使用,充分调动起来,跑跑代码,说不定就不用Windows鼠标和键盘了.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/" class="post-title-link" itemprop="url">一种为评估文本分类效果的改进指标</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-04 01:00:00" itemprop="dateCreated datePublished" datetime="2019-04-04T01:00:00+08:00">2019-04-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:28" itemprop="dateModified" datetime="2019-11-09T23:01:28+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.<br>指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之.</p>
+<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification#evaluation">详参</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1903.04561.pdf">论文参考</a><br><a target="_blank" rel="noopener" href="https://www.kaggle.com/dborkan/benchmark-kernel/log">使用案例</a></p>
+<p>只是做一些学习记录,如有遗误,望请指教.</p>
+<h1 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h1><p>$${score}=w_{0} A U C_{\text {overall}}+\sum_{a=1}^{A} w_{a} M_{p}\left(m_{s, a}\right)$$</p>
+<p>最终得分由 整体AUC 与 广义偏差AUC均值 们 加权 得到.<br>本次涉及到3种偏差AUC(Subgroup_AUC/BPSN_AUC/BNSP_AUC).</p>
+<p>整体AUC值是常规操作,详可参sklearn.</p>
+<p>其中:</p>
+<ul>
+<li>$A$表示子指标数量 本次为3</li>
+<li>$m_{s, a}$表示子组s的第a中偏差指标</li>
+<li>$w_{a}$ 表示对应的 广义均值 权重, 本次所有权重都为0.25,即等权.</li>
+</ul>
+<ul>
+<li><h2 id="M-p-left-m-s-a-right-含义"><a href="#M-p-left-m-s-a-right-含义" class="headerlink" title="$M_{p}\left(m_{s, a}\right)$ 含义"></a>$M_{p}\left(m_{s, a}\right)$ 含义</h2>  即广义均值<br>  本次计算广义偏差AUC均值<br>  公式为:<br>  $$<br>  M_{p}\left(m_{s}\right)=\left(\frac{1}{N} \sum_{s=1}^{N} m_{s}^{p}\right)^{\frac{1}{p}}<br>  $$<br>  其中:<ul>
+<li>$M_{p}$表示p级广义均值, 本次取p=-5</li>
+<li>$m_{s}$表示子组s的偏差指标</li>
+<li>$N$ 表示子组数量</li>
+</ul>
+</li>
+</ul>
+<p>进一步, 公式的重点是定义了三种偏差AUC.</p>
+<h1 id="三种偏差AUC含义"><a href="#三种偏差AUC含义" class="headerlink" title="三种偏差AUC含义"></a>三种偏差AUC含义</h1><p>三种偏差AUC的计算公式其实一样,都是计算AUC,不同的是基于不同的数据子集计算.</p>
+<ul>
+<li><h2 id="Subgroup-AUC"><a href="#Subgroup-AUC" class="headerlink" title="Subgroup_AUC"></a>Subgroup_AUC</h2><p>基于 满足身份识别的样本所构成的子数据集计算的AUC,这个指标越低表示在特定需求(身份识别)上模型表现越差.</p>
+</li>
+<li><h2 id="BPSN-AUC"><a href="#BPSN-AUC" class="headerlink" title="BPSN_AUC"></a>BPSN_AUC</h2><p>即 Background Positive, Subgroup Negative AUC<br>基于提及身份的正面和不提及身份的负面样本所构成的子数据集计算的AUC,这个指标越低表示模型混淆了身份识别,只要提及了身份识别就可能被预测得到更高的值,这不是希望的最佳模型.</p>
+</li>
+<li><h2 id="BNSP-AUC"><a href="#BNSP-AUC" class="headerlink" title="BNSP_AUC"></a>BNSP_AUC</h2><p>即 Background Negative, Subgroup Positive AUC<br>基于提及身份的负面和不提及身份的正面样本所构成的子数据集计算的AUC.</p>
+</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>所以同理,<br>将来也可以基于此思路,针对其它的特定需求,设计特定的评价指标.在模型训练的时候就依据需求进行加权.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -429,206 +631,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/03/07/016_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A3%85%E6%9C%BA%E5%9B%9E%E5%BF%86%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/03/07/016_%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A3%85%E6%9C%BA%E5%9B%9E%E5%BF%86%E5%BD%95/" class="post-title-link" itemprop="url">深度学习服务器装机回忆录</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-03-07 18:00:00" itemprop="dateCreated datePublished" datetime="2019-03-07T18:00:00+08:00">2019-03-07</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:01:52" itemprop="dateModified" datetime="2019-11-09T23:01:52+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>没卡是没法做深度学习的,所以决定斥资装一台服务器.</p>
-<h3 id="关于本文"><a href="#关于本文" class="headerlink" title="关于本文"></a>关于本文</h3><p>本想边装边写指南,但是由于自己也是第一次装PC,还不定会成功呢,再者也不想写成流水账.所以在成功使用了一段时间之后以回忆录的方式记一下.<br>因为不是按装机步骤记录的指南,所以可能对装机也没什么参考价值.仅饭后小文而已.</p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本来由于已经有一台MBP了,所以还考虑过的方案是给它配<a target="_blank" rel="noopener" href="https://egpu.io/build-guides/">外接GPU</a>,链接网站(egpu.io)是专门给MBP配eGPU的大神们分享经验的地方,如果有这个需求或许可以参考.<br>后来之所以放弃是因为:</p>
-<ul>
-<li>MBP的CPU也不是很强(17款)</li>
-<li>内存也只有16G</li>
-<li>需要完全对接机器硬件、系统、GPU、电源等一些问题(会略复杂)</li>
-<li>MBP是需要便携移动的,eGPU有点烦了</li>
-<li>干脆弄一台服务器,MBP来做数据探索、特征处理,服务器来跑代码,拓展性足够,两不耽搁(只是钱包略痛)</li>
-</ul>
-<h2 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h2><p>成本来说的话,打算用于长期学习的话肯定自购硬件比较划算,毕竟随着时间的流逝,边际成本越来越低.<br>如果只是用个一时半会的肯定直接租用云平台了,在超出本地服务器要求时的短期需求也可以直接放在云平台上运行.</p>
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>过程虽有坎坷,结果还是OK的,但还有几个坑要提一下.<br>由于选了华硕x299主板,只能装win10(其实我想装Ubuntu啊++),系统原因又会导致一系列问题,比如NV、深度学习框架等等兼容性.在初学者的路上,任何一个小问题都可能使计划夭折在半路上,所以要慎重.主板的选择基本决定了系统,系统基本决定了平台和框架.所以要慎重.(选的时候注意主板和CPU/GPU的兼容基本就没啥问题了)<br>由于装的win10系统(在深度学习界并不是公认主流),导致TF-GPU安装一直报错失败,虽然参考官方文档进行了多次check,但依然没有解决,这就导致了keras基本处于不可用的状态.所幸Pytorch是可用的,不然我真是要洒泪了++,也就是现实将我逼上了Pytorch这座梁山.<br>装win系统还需要克制自己想装游戏的冲动,目前我还能克制.</p>
-<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><h3 id="资料准备"><a href="#资料准备" class="headerlink" title="资料准备"></a>资料准备</h3><p>资料来源主要参考了知乎上关于深度学习的装机指南<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/33996159?sort=created">帖子</a>(<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/33996159?sort=created)">https://www.zhihu.com/question/33996159?sort=created)</a>.</p>
-<h3 id="列配置"><a href="#列配置" class="headerlink" title="列配置"></a>列配置</h3><p>(此配置不具有参考性,请参考阅读时间当前的最新硬件及其兼容性[既然要装,这些也是逃不掉要学的,或早或晚,或交学费或没有])</p>
-<ul>
-<li>主板: WS X299</li>
-<li>CPU: Inter i7 7820x</li>
-<li>GPU: RTX 2080</li>
-<li>内存: 金士顿 16G*2</li>
-<li>SSD: SAMSUNG</li>
-<li>水冷: 海盗船</li>
-<li>硬盘: WD 4T</li>
-<li>电源: CORSAIR</li>
-<li>显示器: PHILIPS 27</li>
-<li>机箱: AIR540</li>
-<li>鼠键: 罗技</li>
-</ul>
-<p><img src="\images_source\20190307\000.jpeg" alt="Markdown"></p>
-<h3 id="插线"><a href="#插线" class="headerlink" title="插线"></a>插线</h3><p>设备买好之后,按照操作手册把线插好就行了.<br>当然,最复杂就是如何接主板上的接口,要多看两遍主板手册.<br><img src="\images_source\20190307\001.jpeg" alt="Markdown"><br>(走线不是关键,走线再漂亮,点不亮也是白搭)</p>
-<h3 id="装系统"><a href="#装系统" class="headerlink" title="装系统"></a>装系统</h3><p>本以为,虽没装过操作系统,应该也能搞定.<br>殊不知,没搞定.<br>然后找了个专业装系统的,花了120,++.(没有启动盘).<br><img src="\images_source\20190307\003.png" alt="Markdown"><br>真是惭愧~</p>
-<h3 id="装软件"><a href="#装软件" class="headerlink" title="装软件"></a>装软件</h3><p>软件就比较简单了(但也不尽然,比如TF-GPU就没装好😢,道行还是不够啊).</p>
-<h3 id="写代码跑起来"><a href="#写代码跑起来" class="headerlink" title="写代码跑起来"></a>写代码跑起来</h3><p>测测GPU的安装成功与否.运行CUDA sample下的deviceQuery代码.<br><img src="\images_source\20190307\002.jpeg" alt="Markdown"></p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>平台搭好,只是开始.<br><img src="\images_source\20190307\004.jpeg" alt="Markdown"><br>后面的路还长.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/02/24/015_%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/02/24/015_%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">不确定性与确定性的一点思考</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-02-24 14:00:00" itemprop="dateCreated datePublished" datetime="2019-02-24T14:00:00+08:00">2019-02-24</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:02:00" itemprop="dateModified" datetime="2019-11-09T23:02:00+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>人工智能的发展时间在计算机时代的历史中应该也不算短了.</p>
-<p>至今(2019-02)所谓的强人工智能仍是一个遥不可及的问题.</p>
-<p>要接受人的控制就必须要能够预测整个“智能”若干步骤后的状态,即没有不确定性,一切尽在掌控.那么这种掌控有可能产生智能吗?今天的人工智能行业的探索或许将给我们答案.</p>
-<p>如果受基因进化思想的影响(交叉变异,环境选择),那么智能的发展过程中可能是充满不确定性的,这就从根本上与我们要求的控制形成了冲突和矛盾.</p>
-<p>如果我们真的需要拥抱不确定性的话,初初想来确实也蛮可怕的.</p>
-<p>我个人其实倾向于加入不确定性方可产生新的智能的方案.那么可能存在的问题应该怎么思考呢?<br>个人感觉可以参考人这个系统的方案,人中有好人和坏人.机器智能中有好的机器智能和坏的机器智能,是否可以将为人设计的机制以某种方式参照到机器智能中去呢?这样对于现存的人这个系统来说是不是就可以接受了?</p>
-<p>目标是,只要加入了整个机器智能的系统后,带来的增益是大于成本的,总体上来说这个机制应该就可以存在下去.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -662,7 +666,7 @@
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
