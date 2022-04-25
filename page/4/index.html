@@ -179,20 +179,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -241,6 +241,124 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/06/08/023_Pytorch%20model%20Production%E9%83%A8%E7%BD%B2%E6%8E%A2%E7%B4%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/08/023_Pytorch%20model%20Production%E9%83%A8%E7%BD%B2%E6%8E%A2%E7%B4%A2/" class="post-title-link" itemprop="url">Pytorch model Production部署探索</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-08 01:20:00" itemprop="dateCreated datePublished" datetime="2019-06-08T01:20:00+08:00">2019-06-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:11" itemprop="dateModified" datetime="2019-11-09T23:01:11+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>利用Pytorch 训练好模型后,如何在生产环境部署目前还是一个探索中的问题,尚未形成比较统一的方案.<br>不像TensorFlow有比较好的生态,生产环境中可以将模型放到Serving上.<br>那为什么不到TensorFlow中进行模型的开发呢?主要是:觉得TensorFlow中开发太慢了,不太熟悉,更喜欢Pytorch.</p>
+<p>那么尚没有比较完整生态的Pytorch模型应该怎么部署呢?<br>主要有几种不同的场景:</p>
+<ul>
+<li>客户端部署(例如消费端本地,APP内等)</li>
+<li>服务端</li>
+<li>API封装调用</li>
+</ul>
+<p>API封装调用本质上来讲也是服务端部署,只是架构上做了一层分离,更容易scale,但是也可能需要付出更多的通信成本.<br>除了区分不同场景外,还有几种主要的操作方式,主要有:直接嵌入/模型服务(微服务/C++服务/云端部署/框架部署(MLFlow, Kubeflow, RedisAI,甚至TensorFlow Serving))<br>几种方式的基本介绍在Pytorch官网有一篇blog,谈了目前推荐的一些方案,可参考.<a target="_blank" rel="noopener" href="https://pytorch.org/blog/model-serving-in-pyorch/">Model Serving in PyTorch</a>(<a target="_blank" rel="noopener" href="https://pytorch.org/blog/model-serving-in-pyorch/">https://pytorch.org/blog/model-serving-in-pyorch/</a>)</p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>针对服务端做了两个尝试:</p>
+<ul>
+<li>模型直接嵌入在web框架中(Django)</li>
+<li>用C++ 起了一个服务,进行API调用</li>
+</ul>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>mbp/Django/python3.6/torch1.1.0<br>这里可能需要说一下的是,如果torch版本不是最新稳定版本的话,可能需要注意一下,对结果影响也是挺大的.</p>
+<h1 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h1><ul>
+<li>简洁性</li>
+<li>速度/并发</li>
+</ul>
+<p>其实主要测的还是并发,因为如果速度优势足够大的话牺牲一点简洁性也是可以接受的.</p>
+<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ul>
+<li><h3 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h3>不在本篇讨论范围内.<br>默认得到一个python环境下的模型.</li>
+<li><h3 id="C-部署"><a href="#C-部署" class="headerlink" title="C++部署"></a>C++部署</h3></li>
+</ul>
+<ul>
+<li>需要先将模型转译到C++环境,可以参考:<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/advanced/cpp_export.html">LOADING A PYTORCH MODEL IN C++</a>(<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/advanced/cpp_export.html">https://pytorch.org/tutorials/advanced/cpp_export.html</a>)</li>
+<li><p>起一个C++web服务,具体我已将repo传到GitHub,详见:<a target="_blank" rel="noopener" href="https://github.com/LG-1/Pytorch-NLP-serving-inference-example">Pytorch-NLP-serving-inference-example</a>(<a target="_blank" rel="noopener" href="https://github.com/LG-1/Pytorch-NLP-serving-inference-example">https://github.com/LG-1/Pytorch-NLP-serving-inference-example</a>)</p>
+<p>  repo是完整的,环境OK的话可以运行测试.</p>
+</li>
+</ul>
+<ul>
+<li><h3 id="Django嵌入部署"><a href="#Django嵌入部署" class="headerlink" title="Django嵌入部署"></a>Django嵌入部署</h3></li>
+</ul>
+<ul>
+<li>模型直接在服务启动是setting中load</li>
+<li>在项目内部调用</li>
+</ul>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>其实步骤都比较简单<br>最关键的其实是我想记录一下测试结果.<br>原本想着用C++起服务可能会比较快一点,但是结果测下来,发现然而并没有(也有可能是我不熟悉C++的原因).<br>C++的RPS只能到20左右<br>Django嵌入可以到50左右.<br>另外,当然是后者的方式更简洁一些.</p>
+<p>再另外,如果需要要在C++中做比较多的处理步骤,可能就会更不方便,比如分词.<br>所以,如果是图像一类,如果做得合适,还有可能用C++起个服务,但是NLP一类可能会更困难一些.<br>相对来说,Django嵌入的方式应该简单多了.</p>
+<p>再再另外,<br>模型对系统版本,框架版本,部署线程等其实也挺敏感的,多试几次就好了++,搜索空间也不大.<br>Ubuntu 16.04/torch1.1.0/ gunicorn<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.set_num_threads(<span class="number">3</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunicorn --env DJANGO_SETTINGS_MODULE=xxxx.settings xxxx.wsgi:application -w 3 -b 0.0.0.0:8001 -k gthread --thread 3 --max-requests 4096 --max-requests-jitter 512 --log-level=debug --timeout 120 --preload</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -524,95 +642,6 @@
 </ul>
 <h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>句子级别的聚类,特别是多句子(也可以扩展到篇章)的效果很好,当然会比平均复杂一点点,但是效果好太多.</p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>有了一个新的模型架构,<br>有点引入了无监督对抗的味道,<br>使用了数据本身做标签,不依赖结果标签,也就实现了无监督,哈哈,我真棒!</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/03/29/018_Bert%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/03/29/018_Bert%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/" class="post-title-link" itemprop="url">Bert使用备注</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-03-29 12:00:00" itemprop="dateCreated datePublished" datetime="2019-03-29T12:00:00+08:00">2019-03-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2020-01-05 19:02:12" itemprop="dateModified" datetime="2020-01-05T19:02:12+08:00">2020-01-05</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>由于最近的工作有涉及到一些NLP的研究,而<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1810.04805.pdf">Bert</a>的效果看起来不错,所以在原有方案上,基于相同的数据集(内部的任务数据集,所以暂时不会公开),做了一下效果对比.</p>
-<p>只做一些简单的记录,以备自己将来回溯.</p>
-<p>背景是基于中文句子分类.任务数据集在100万左右.</p>
-<p>2080 on Pytorch.</p>
-<h1 id="原有方案"><a href="#原有方案" class="headerlink" title="原有方案"></a>原有方案</h1><p>word2vec(200维度) + LSTM + <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1706.03762.pdf">Attention</a><br>网络结构比较简单,常规操作<br>训练 5 epoch大概需要10分钟左右.<br>准确率在77%左右.</p>
-<h1 id="Bert效果"><a href="#Bert效果" class="headerlink" title="Bert效果"></a>Bert效果</h1><p>中文预训练模型<br>训练 1 epoch大概需要200分钟.<br>准确率在76%左右.</p>
-<h2 id="Bert的一些备注"><a href="#Bert的一些备注" class="headerlink" title="Bert的一些备注"></a>Bert的一些备注</h2><p>Bert有三个嵌入层,向量(Token)、上下部分(Segment)、位置(Position), 具体的一些解释可以<a target="_blank" rel="noopener" href="https://medium.com/@_init_/why-bert-has-3-embedding-layers-and-their-implementation-details-9c261108e28a">参考</a><br>维度为768,所以比原来的高不少,这慢的一个原因(还有是因为网络结构比较复杂)<br>基于预训练模型在现有任务上训练一个epoch的效果最好,好像并不是训练的epoch越多越好,还不知道是为什么</p>
-<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>具体可以参考<a target="_blank" rel="noopener" href="https://github.com/huggingface/pytorch-pretrained-BERT">pytorch-pretrained-BERT</a>,里面不止有Bert的预训练模型,还有一些其它模型的Pytorch实现,想要快速上手可以参考,特别是examples目录下的代码++</p>
-<p>Bert是好,但并不一定在你的场景下也好,正式投产前还是需要做一些研究的.毕竟NLP这类的机器学习任务的数据集变化对模型的影响是很大的.</p>
-<h1 id="在Keras-中自定义可训练层"><a href="#在Keras-中自定义可训练层" class="headerlink" title="在Keras 中自定义可训练层"></a>在Keras 中自定义可训练层</h1><p>Bert预训练模型有12层或者24层,一般在起上层的Finetune任务会对所有层参数进行微调,也还有可能会在后面再接一些Layer.<br>但是,如果对所有层都进行微调的话,需要调整的参数量可能过大,12(约1.1亿), 24(2.2亿),耗时会比较久,如果只对后面几层或者特定层进行微调,可以是微调参数大大减少,训练实现也会加快.<br>主要可有参考:<br><a target="_blank" rel="noopener" href="https://towardsdatascience.com/fine-tuning-bert-with-keras-and-tf-module-ed24ea91cff2">Fine-tuning BERT with Keras and tf.Module</a><br><a target="_blank" rel="noopener" href="https://colab.research.google.com/drive/1ofSfThTBlWjOx5dqXmdsIol-MdiqCyZC#scrollTo=cOyKrgZRRqZe&amp;forceEdit=true&amp;sandboxMode=true">Finetuning BERT with Keras and tf.Module.ipynb</a><br><a target="_blank" rel="noopener" href="https://github.com/gaphex/bert_experimental">bert_experimental</a><br><a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Layer?version=stable#non_trainable_weights">TensorFlow Documentions</a><br><a target="_blank" rel="noopener" href="https://keras.io/">Keras Documentions</a>    </p>
 
       
     </div>

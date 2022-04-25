@@ -179,20 +179,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -241,6 +241,112 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">Python的路径引用问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-03 15:00:00" itemprop="dateCreated datePublished" datetime="2019-09-03T15:00:00+08:00">2019-09-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-10 10:17:53" itemprop="dateModified" datetime="2019-11-10T10:17:53+08:00">2019-11-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本来,我以为这是一个不太需要关注的问题,之前也遇到过几次了,但是都是搜索引擎一搜然后解决了就没管了.</p>
+<p>然后今天在写一个包的过程中又遇到了,又坑了我半天时间,而且搜索引擎找到的解释也大都模凌两可(包括Google),这让我深深的觉得自己离理解这个bug还有点距离,故要记录一下.感觉不搞清楚一点以后还会被坑.</p>
+<h1 id="状况"><a href="#状况" class="headerlink" title="状况"></a>状况</h1><p>我觉这里的状况还有几个层级,但是导致的结果都是[你的包不能用啦!你走错路啦!]<br>(因为原来会把这个问题想得很简单,找到一个方案之后,感觉自己似乎已经解决了,但还是报错,就会一直盯着看直到怀疑人生)</p>
+<p>目前主要有3点,及解决方式.</p>
+<h3 id="遇到的3种情况"><a href="#遇到的3种情况" class="headerlink" title="遇到的3种情况"></a>遇到的3种情况</h3><ul>
+<li>‘<strong>main</strong>‘ is not a package</li>
+</ul>
+<ul>
+<li>Unresolved reference</li>
+</ul>
+<ul>
+<li>ModuleNotFoundError: No module named ‘dir1’</li>
+</ul>
+<p>接下来我要比较详细的记录一下几个问题的过程及处理步骤,主要是深化自己的理解,也希望会对遇到同样问题的同学能有帮助.<br>当然我的理解可能也不是基础理解,可能会有错漏,所以也请谨慎参考,欢迎拍砖交流.</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">testmodule</span><br><span class="line">├── dir1</span><br><span class="line">│   ├── dir1_1_f.py</span><br><span class="line">│   └── dir1_2_f.py</span><br><span class="line">├── dir2</span><br><span class="line">│   └── dir2_f.py</span><br><span class="line">└── test_main.py</span><br></pre></td></tr></table></figure>
+<p>整个目录放在testmodule的根目录下,有一个主测试文件test_main.py和两个子文件夹,内容分别如下:<br>testmodule/test_main.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dir1.dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"><span class="keyword">from</span> dir2.dir2_f <span class="keyword">import</span> dir2_fun</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_main</span>():</span></span><br><span class="line">    dir1_1_fun()</span><br><span class="line">    dir2_fun()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test_main()</span><br></pre></td></tr></table></figure></p>
+<p>testmodule/dir1/dir1_1_f.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dir1_1_fun</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;dir1_1_fun&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<p>testmodule/dir1/dir1_2_f.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dir1_2_fun</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;dir1_2_fun&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    dir1_1_fun()</span><br></pre></td></tr></table></figure></p>
+<p>testmodule/dir2/dir2_f.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dir2_fun</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;dir2_fun&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h1><p><img src="\images_source\31\001.PNG" alt="Markdown"><br><img src="\images_source\31\002.PNG" alt="Markdown"><br>可以看出其实不加__init__.py文件也是可以跑的,使用的是相对路径.<br>所以不打包时,有无__init__.py都不重要,因为相关的执行文件都在,是都可以执行的.</p>
+<p>但是如果打包的时候没有__init__.py的话,那么相关的子模块是不打包的,所以肯定会报错.</p>
+<h2 id="‘main‘-is-not-a-package"><a href="#‘main‘-is-not-a-package" class="headerlink" title="‘main‘ is not a package"></a>‘<strong>main</strong>‘ is not a package</h2><p>使用相对路径导入且通过 python xxx/xxx.py调用时会出现<br>例如:将test_main.py中<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dir1.dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"><span class="keyword">from</span> dir2.dir2_f <span class="keyword">import</span> dir2_fun</span><br></pre></td></tr></table></figure><br>改成:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .dir1.dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"><span class="keyword">from</span> .dir2.dir2_f <span class="keyword">import</span> dir2_fun</span><br></pre></td></tr></table></figure><br>通过<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python testmodule/test_main.py</span><br></pre></td></tr></table></figure><br>调用便会报上面错误.<br>需要通过<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m testmodule.test_main</span><br></pre></td></tr></table></figure><br>调用</p>
+<h2 id="Unresolved-reference"><a href="#Unresolved-reference" class="headerlink" title="Unresolved reference"></a>Unresolved reference</h2><p>“项目结构”中的代码在pycharm中应该会提示如上信息,因为示例代码中的引用还是绝对引用,但是却没有根目录信息,虽然可以执行,但是会有如上提示.<br>一是改成相对路径,二是在前面再加上根目录名称,三是在Django中将根文件夹设置成source(但是这一步只是消除提示,并不解决代码结构问题)</p>
+<h2 id="ModuleNotFoundError-No-module-named-‘dir1’"><a href="#ModuleNotFoundError-No-module-named-‘dir1’" class="headerlink" title="ModuleNotFoundError: No module named ‘dir1’"></a>ModuleNotFoundError: No module named ‘dir1’</h2><p>这个就是在代码目录中使用了相对路径,但是在包调用的时候只将包名import了,使用的时候希望将其它函数索引出来便会遇到这个问题,因为是相对引用,所以仅导入包名时并不能索引到其下层函数.<br>这个代码结构不用改,需要在import的时候使用全路径import.<br>例如:<br>使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> testmodule.test_main <span class="keyword">import</span> test_main</span><br></pre></td></tr></table></figure><br>而不是<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> testmodule</span><br><span class="line">testmodule.test_main.test_main  <span class="comment"># 这个便会报错: ModuleNotFoundError: No module named &#x27;test_main&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><a target="_blank" rel="noopener" href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c10/p03_import_submodules_by_relative_names.html">参考:使用相对路径导入包中子模块</a></p>
+<p>在本地执行(不通过setup.py打包)的时候,有无__init__.py是没关系的,但是如果要打包且要使用子模块的话就必须含有__init__.py才能被视为子模块</p>
+<p>建议都是用相对路径引用,在子模块之间使用“.”,“..”<br>使用相对路径后:<br>在本地测试的时候不能用python xxx/xxx.py来运行单元测试.需要改成python -m xxx.xxx<br>在打包后使用时,需要在import时使用全路径,不能是只导入顶层包名,然后通过包名索引</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -507,124 +613,6 @@
 <p>速度上来讲,120长度,基于CPU需要200ms左右,基于GPU需要30ms左右.<br>句子长度(需要保留的长度)越长速度也会越慢,层越往后也会越慢.</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>目前Sentence2Vec基于最佳的Bert可以得到最好效果.<br>通过聚类可以发现,能够较好的刻画关键信息,即使句子比较长(&lt;512),长度500左右基本可以覆盖中短篇章.<br>再往后估计需要期待下一步的NLP发展,仍需探索.</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1]. <a target="_blank" rel="noopener" href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf">Distributed Representations of Sentences and Documents</a><br>[2]. <a target="_blank" rel="noopener" href="https://machinelearningmastery.com/gentle-introduction-bag-words-model/">A Gentle Introduction to the Bag-of-Words Model</a><br>[3]. <a target="_blank" rel="noopener" href="https://github.com/google-research/bert">BERT</a><br>[4]. <a target="_blank" rel="noopener" href="https://github.com/hanxiao/bert-as-service">bert-as-service</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/06/08/023_Pytorch%20model%20Production%E9%83%A8%E7%BD%B2%E6%8E%A2%E7%B4%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/06/08/023_Pytorch%20model%20Production%E9%83%A8%E7%BD%B2%E6%8E%A2%E7%B4%A2/" class="post-title-link" itemprop="url">Pytorch model Production部署探索</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-06-08 01:20:00" itemprop="dateCreated datePublished" datetime="2019-06-08T01:20:00+08:00">2019-06-08</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:01:11" itemprop="dateModified" datetime="2019-11-09T23:01:11+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>利用Pytorch 训练好模型后,如何在生产环境部署目前还是一个探索中的问题,尚未形成比较统一的方案.<br>不像TensorFlow有比较好的生态,生产环境中可以将模型放到Serving上.<br>那为什么不到TensorFlow中进行模型的开发呢?主要是:觉得TensorFlow中开发太慢了,不太熟悉,更喜欢Pytorch.</p>
-<p>那么尚没有比较完整生态的Pytorch模型应该怎么部署呢?<br>主要有几种不同的场景:</p>
-<ul>
-<li>客户端部署(例如消费端本地,APP内等)</li>
-<li>服务端</li>
-<li>API封装调用</li>
-</ul>
-<p>API封装调用本质上来讲也是服务端部署,只是架构上做了一层分离,更容易scale,但是也可能需要付出更多的通信成本.<br>除了区分不同场景外,还有几种主要的操作方式,主要有:直接嵌入/模型服务(微服务/C++服务/云端部署/框架部署(MLFlow, Kubeflow, RedisAI,甚至TensorFlow Serving))<br>几种方式的基本介绍在Pytorch官网有一篇blog,谈了目前推荐的一些方案,可参考.<a target="_blank" rel="noopener" href="https://pytorch.org/blog/model-serving-in-pyorch/">Model Serving in PyTorch</a>(<a target="_blank" rel="noopener" href="https://pytorch.org/blog/model-serving-in-pyorch/">https://pytorch.org/blog/model-serving-in-pyorch/</a>)</p>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>针对服务端做了两个尝试:</p>
-<ul>
-<li>模型直接嵌入在web框架中(Django)</li>
-<li>用C++ 起了一个服务,进行API调用</li>
-</ul>
-<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>mbp/Django/python3.6/torch1.1.0<br>这里可能需要说一下的是,如果torch版本不是最新稳定版本的话,可能需要注意一下,对结果影响也是挺大的.</p>
-<h1 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h1><ul>
-<li>简洁性</li>
-<li>速度/并发</li>
-</ul>
-<p>其实主要测的还是并发,因为如果速度优势足够大的话牺牲一点简洁性也是可以接受的.</p>
-<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ul>
-<li><h3 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h3>不在本篇讨论范围内.<br>默认得到一个python环境下的模型.</li>
-<li><h3 id="C-部署"><a href="#C-部署" class="headerlink" title="C++部署"></a>C++部署</h3></li>
-</ul>
-<ul>
-<li>需要先将模型转译到C++环境,可以参考:<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/advanced/cpp_export.html">LOADING A PYTORCH MODEL IN C++</a>(<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/advanced/cpp_export.html">https://pytorch.org/tutorials/advanced/cpp_export.html</a>)</li>
-<li><p>起一个C++web服务,具体我已将repo传到GitHub,详见:<a target="_blank" rel="noopener" href="https://github.com/LG-1/Pytorch-NLP-serving-inference-example">Pytorch-NLP-serving-inference-example</a>(<a target="_blank" rel="noopener" href="https://github.com/LG-1/Pytorch-NLP-serving-inference-example">https://github.com/LG-1/Pytorch-NLP-serving-inference-example</a>)</p>
-<p>  repo是完整的,环境OK的话可以运行测试.</p>
-</li>
-</ul>
-<ul>
-<li><h3 id="Django嵌入部署"><a href="#Django嵌入部署" class="headerlink" title="Django嵌入部署"></a>Django嵌入部署</h3></li>
-</ul>
-<ul>
-<li>模型直接在服务启动是setting中load</li>
-<li>在项目内部调用</li>
-</ul>
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>其实步骤都比较简单<br>最关键的其实是我想记录一下测试结果.<br>原本想着用C++起服务可能会比较快一点,但是结果测下来,发现然而并没有(也有可能是我不熟悉C++的原因).<br>C++的RPS只能到20左右<br>Django嵌入可以到50左右.<br>另外,当然是后者的方式更简洁一些.</p>
-<p>再另外,如果需要要在C++中做比较多的处理步骤,可能就会更不方便,比如分词.<br>所以,如果是图像一类,如果做得合适,还有可能用C++起个服务,但是NLP一类可能会更困难一些.<br>相对来说,Django嵌入的方式应该简单多了.</p>
-<p>再再另外,<br>模型对系统版本,框架版本,部署线程等其实也挺敏感的,多试几次就好了++,搜索空间也不大.<br>Ubuntu 16.04/torch1.1.0/ gunicorn<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.set_num_threads(<span class="number">3</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunicorn --env DJANGO_SETTINGS_MODULE=xxxx.settings xxxx.wsgi:application -w 3 -b 0.0.0.0:8001 -k gthread --thread 3 --max-requests 4096 --max-requests-jitter 512 --log-level=debug --timeout 120 --preload</span><br></pre></td></tr></table></figure></p>
 
       
     </div>

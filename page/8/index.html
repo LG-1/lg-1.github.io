@@ -179,20 +179,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -241,6 +241,89 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/09/28/003_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/09/28/003_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" class="post-title-link" itemprop="url">机器学习中的评价指标理解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-09-28 10:50:00" itemprop="dateCreated datePublished" datetime="2018-09-28T10:50:00+08:00">2018-09-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 22:43:26" itemprop="dateModified" datetime="2019-11-09T22:43:26+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="精准率与召回率"><a href="#精准率与召回率" class="headerlink" title="精准率与召回率"></a>精准率与召回率</h2><p>看到的很多文章好像都挺喜欢用正类反类来作为例子进行公式说明。<br>但我在理解之后，觉得这样好像不是十分妥当。<br>一是，针对我的业务我可能需要去理解什么是正类，什么是反类，不是label为0就是反类吧。<br>二是，基于一，就有了问题，何为正？何为反？正反的定义对于指标的理解是否有意义或是帮助？我认为，正反的定义是不必要的。</p>
+<p>所以，我觉得。直接使用（某类-另一类）或（某类-[其它类]）可以更好的理解指标意义。<br>总而言之，精准率与召回率指标的定义与所谓正反是无关的，它是基于某类的。<br>所以：<br>    精准率：某类预测量中实际正确所占比例<br>    召回率：某类实际量中预测正确所占比例</p>
+<p>使用某类则可以直接扩展到多类的场景而不需要做什么多余的改变。每个类别都会有自己的精准率与召回率，所以使用某类。<br>例子就贴一张sklearn.metrics计算的几个指标值以及混淆矩阵，可以手动带入公式看看具体是怎么算的，有助于理解。<img src="\images_source\20180928\001.PNG" alt="Markdown"></p>
+<p>classification report中的avg是使用加权平均计算的，权为样本数量。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -478,90 +561,6 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 循环有序(递增)序列查找</span></span><br><span class="line"><span class="comment"># 循环有序区间的性质：从中间将原序列进行切分，会得到一个有序序列和一个更小的循环序列。</span></span><br><span class="line"><span class="comment">## 同样采用二分查找的思路，只是多做一步，在采取中间拆分的时候需要多判断一步是否是递增</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cycle_binary_serch</span>(<span class="params">alist, target</span>):</span></span><br><span class="line">    low = <span class="number">0</span></span><br><span class="line">    high = <span class="built_in">len</span>(alist) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> low &lt;= high:</span><br><span class="line">        mid = (low + high)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> alist[mid] == target:</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">if</span> alist[low] &lt;= alist[mid]: <span class="comment"># 若前半部分是有序的</span></span><br><span class="line">            <span class="keyword">if</span> (alist[low] &lt;= target) <span class="keyword">and</span> (target &lt; alist[mid]): <span class="comment">#  判断目标值是否在有序区间</span></span><br><span class="line">                high = mid - <span class="number">1</span>  <span class="comment">#  若目标在有序区间范围，则在有序区间中查找</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                low = mid + <span class="number">1</span>  <span class="comment">#  若目标不在有序区间范围，则在另一循环有序区间查找</span></span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># 若后半部分是有序的</span></span><br><span class="line">            <span class="keyword">if</span> (alist[mid] &lt; target) <span class="keyword">and</span> (target &lt;= alist[high]):  <span class="comment"># 判断目标是否在有序区间</span></span><br><span class="line">                low = mid + <span class="number">1</span>  <span class="comment"># 若目标在有序区间，则在有序区间中查找</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                high = mid - <span class="number">1</span>  <span class="comment"># 若目标不再有序区间，则在另一循环有序区间查找</span></span><br><span class="line"></span><br><span class="line">cycle_binary_serch([<span class="number">5</span>,<span class="number">6</span>,<span class="number">30</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
 <p>另附二分查找实现：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 二分查找</span></span><br><span class="line"><span class="comment">## 注意：需要针对的是有序的序列。</span></span><br><span class="line"><span class="comment">## 流程：截取中间的值与目标值匹配，查看值在那个区间，然后以1/2的速度缩小搜索区间。以达到加快搜索的目的。</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary_search</span>(<span class="params">alist,target</span>):</span></span><br><span class="line">    low = <span class="number">0</span></span><br><span class="line">    high = <span class="built_in">len</span>(alist) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> low &lt;= high:</span><br><span class="line">        mid = (low + high)//<span class="number">2</span></span><br><span class="line">        guess = alist[mid]</span><br><span class="line">        <span class="keyword">if</span> guess &lt; target:</span><br><span class="line">            low = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> guess &gt; target:</span><br><span class="line">            high = mid - <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> mid</span><br><span class="line">binary_search([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">30</span>,<span class="number">10</span>],<span class="number">30</span>)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/08/28/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/08/28/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">图像处理学习笔记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-08-28 16:45:00" itemprop="dateCreated datePublished" datetime="2018-08-28T16:45:00+08:00">2018-08-28</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:00:22" itemprop="dateModified" datetime="2019-11-09T23:00:22+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>图像分类是图像级别的，图像语义分割是到像素点级别的。</p>
-<p>FCN可作为图像语义分割的基础框架参考。<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1411.4038">FCN论文</a>,<a target="_blank" rel="noopener" href="https://github.com/shelhamer/fcn.berkeleyvision.org">FCN原作代码</a></p>
-<p>FCN的提出主要解决了：一般的CNN分类网络，如VGG和Resnet，会在网络的最后加入全连接层，经过softmax获取类别概率信息，但这个概率是一维的，所以只能对整个图片进行分类，是谓图像级别。</p>
-<p>FCN结构提出将后面几个全连接替换成卷积，便可以获得一张2维的feature map，然后再接softmax便可获得每个像素点的分类信息，是谓像素点级别。可以支持解决图像语义分割问题。</p>
-<p>图像语义分割整体流程：下采样+上采样 &gt; 特征融合 &gt; 获取像素级别类别判断</p>
-
       
     </div>
 

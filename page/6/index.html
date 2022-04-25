@@ -179,20 +179,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -241,6 +241,96 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/08/012_An%20efficient%20NLP%20Word2Vec%20usage%20method/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/01/08/012_An%20efficient%20NLP%20Word2Vec%20usage%20method/" class="post-title-link" itemprop="url">An efficient NLP Word2Vec usage method</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-01-08 12:00:00" itemprop="dateCreated datePublished" datetime="2019-01-08T12:00:00+08:00">2019-01-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:02:30" itemprop="dateModified" datetime="2019-11-09T23:02:30+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This article mainly introduces a word embedding trick when performing deep learning tasks in the NLP field.<a target="_blank" rel="noopener" href="https://github.com/LG-1/w2vembeddings">w2vembeddings</a>。Reduce unnecessary memory usage and 95% load time. It also greatly enhances the management ability and reusability of the word embedding library.</p>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>When performing NLP tasks, Word2Vec is generally used for embedding. Generate a word vector matrix based on the current task. As below.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span>(<span class="params">embeddings_index, word_index, max_features</span>):</span>            </span><br><span class="line">    embed_size = embeddings_index.get(<span class="string">&#x27;a&#x27;</span>).shape[<span class="number">0</span>]</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_vector = embeddings_index.get(word, np.zeros(embed_size))</span><br><span class="line">        embedding_matrix[i] = embedding_vector</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EMBEDDING_FILE = <span class="string">&#x27;../input/embeddings/glove.840B.300d/glove.840B.300d.txt&#x27;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_coefs</span>(<span class="params">word,*arr</span>):</span> <span class="keyword">return</span> word, np.asarray(arr, dtype=<span class="string">&#x27;float32&#x27;</span>)</span><br><span class="line">embeddings_index = <span class="built_in">dict</span>(get_coefs(*o.split(<span class="string">&quot; &quot;</span>)) <span class="keyword">for</span> o <span class="keyword">in</span> <span class="built_in">open</span>(EMBEDDING_FILE))</span><br><span class="line">embedding_matrix, embed_size = embedding_matrix_p(embeddings_index, word_index, max_features)</span><br></pre></td></tr></table></figure>
+<p>But this have a problem, if you need to parse from the file (txt/bin) each time, it is time consuming, and the loaded into the memory vectors is not all used. If there are only 20,000 words divisions in a certain task, but the word vector files are generally contains several millions, the real effect is only a few percent. So how to solve this part of unnecessary time waste and memory usage?</p>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>After understanding some of the ways to deploy word2vec, I found that there are probably two of them:<br>    1、Load to memory from local file.<br>    2、REST API.<br>Solution 1 is also the mode described above. time and memory are wasted.<br>Solution 2 is to serve the request vector separately, and the architecture will be clearer. But if you need to use the global word vector, it will be more troublesome, and it is really necessary to start a service so complicated?</p>
+<p>In my leisure time, reference<a target="_blank" rel="noopener" href="https://github.com/vzhong/embeddings">embeddings</a> and do some other works<a target="_blank" rel="noopener" href="https://github.com/LG-1/w2vembeddings">w2vembeddings</a>。<br>The main thing is to transfer the word vector content to SQLite. In essence, it is to change word2vec to a storage format. But since SQLite is a database and there is no server. So it is convenient and efficient, and the query is fast (you don’t need to use the write function, except when you convert the format for the first time).</p>
+<p>Mainly functions:<br>    Word vector library management<br>    Word vector instant call, ready to use</p>
+<p>Instructions：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> w2vembeddings.w2vemb <span class="keyword">import</span> EMB</span><br><span class="line">emb = EMB(name=<span class="string">&#x27;tencent&#x27;</span>, dimensions=<span class="number">200</span>)  <span class="comment"># Load the word vector library, equivalent to the original step of loading from the file</span></span><br><span class="line"><span class="comment"># Extract word vector matrix on demand</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span>(<span class="params">emb, word_index, max_features</span>):</span>    </span><br><span class="line">    embed_size = <span class="built_in">len</span>(emb.get_vector(<span class="string">&#x27;a&#x27;</span>))</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_matrix[i] = np.array(emb.get_vector(word))</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure>
+<p>It can save almost all unnecessary memory usage and 95% of the time.</p>
+<h1 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem"></a>Problem</h1><p>Of course, this solution has problems. Like the REST API, it is not convenient to use the global information of the word vector. If you have such a requirement, it is recommended to refer to gensim.<br>This method is mainly for those who often use word2vec for research, as well as small online deployment scenarios.<br><a href="https://www.ourantech.club/2019/01/06/011_一种高效的NLP%20Word2Vec使用方法/">Originally published in</a><br>and<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Lc6ti634aN31D1Z0T-N2eA">Wechat</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -451,7 +541,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-25 19:35:53" itemprop="dateModified" datetime="2021-05-25T19:35:53+08:00">2021-05-25</time>
+        <time title="Modified: 2022-04-25 20:11:07" itemprop="dateModified" datetime="2022-04-25T20:11:07+08:00">2022-04-25</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -493,89 +583,11 @@
     - How to develop full API
 </code></pre><h2 id="论文资源"><a href="#论文资源" class="headerlink" title="论文资源"></a>论文资源</h2><pre><code>画图: sane_tikz
 </code></pre><h2 id="GPU-模型-debug"><a href="#GPU-模型-debug" class="headerlink" title="GPU 模型 debug"></a>GPU 模型 debug</h2><pre><code>如果模型在GPU上报错,可能给出的报错信息非常的笼统, 这时如果把模型放到CPU端执行,可能给出的报错信息会更加的具体.
+</code></pre><h2 id="运筹优化求解器评测"><a href="#运筹优化求解器评测" class="headerlink" title="运筹优化求解器评测"></a>运筹优化求解器评测</h2><pre><code>由 Hans Mittelmann组织
+[1]. http://plato.asu.edu/bench.html
+[2]. http://plato.asu.edu/ftp/milp.html
+![image](\images_source\_010_\or-sovler.png)
 </code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/12/28/009_%E7%AE%97%E6%B3%95%E9%BB%91%E7%9B%92%E4%B8%8E%E4%B8%9A%E5%8A%A1%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%9A%84%E6%8A%98%E4%B8%AD%E6%80%9D%E8%80%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/12/28/009_%E7%AE%97%E6%B3%95%E9%BB%91%E7%9B%92%E4%B8%8E%E4%B8%9A%E5%8A%A1%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%9A%84%E6%8A%98%E4%B8%AD%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">算法黑盒与业务可解释性的折中思考</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-12-28 12:30:00" itemprop="dateCreated datePublished" datetime="2018-12-28T12:30:00+08:00">2018-12-28</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:02:48" itemprop="dateModified" datetime="2019-11-09T23:02:48+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="算法黑盒"><a href="#算法黑盒" class="headerlink" title="算法黑盒"></a>算法黑盒</h1><p>各种算法，除了决策树一类的模型可解释比较好一点之外，其他的模型的可解释性就目前来说都比较差，黑盒输出。<br>在某些场景下黑盒算法的效果确实很好，但是为什么就无法说明了。</p>
-<h1 id="业务可解释"><a href="#业务可解释" class="headerlink" title="业务可解释"></a>业务可解释</h1><p>某些场景，业务的推进尽量希望结果是可复现可控制可解释的。</p>
-<h1 id="折中思考"><a href="#折中思考" class="headerlink" title="折中思考"></a>折中思考</h1><p>可否利用模型融合的思想，将可解释及效果比较好的特征手动提取出来，结合黑盒模型的输出，进行加权运用（或者类似于决策树一类的模型）。这样便可以两者优势互补。</p>
-
       
     </div>
 

@@ -179,20 +179,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -241,6 +241,95 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/03/29/018_Bert%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/03/29/018_Bert%E4%BD%BF%E7%94%A8%E5%A4%87%E6%B3%A8/" class="post-title-link" itemprop="url">Bert使用备注</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-03-29 12:00:00" itemprop="dateCreated datePublished" datetime="2019-03-29T12:00:00+08:00">2019-03-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-01-05 19:02:12" itemprop="dateModified" datetime="2020-01-05T19:02:12+08:00">2020-01-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>由于最近的工作有涉及到一些NLP的研究,而<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1810.04805.pdf">Bert</a>的效果看起来不错,所以在原有方案上,基于相同的数据集(内部的任务数据集,所以暂时不会公开),做了一下效果对比.</p>
+<p>只做一些简单的记录,以备自己将来回溯.</p>
+<p>背景是基于中文句子分类.任务数据集在100万左右.</p>
+<p>2080 on Pytorch.</p>
+<h1 id="原有方案"><a href="#原有方案" class="headerlink" title="原有方案"></a>原有方案</h1><p>word2vec(200维度) + LSTM + <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1706.03762.pdf">Attention</a><br>网络结构比较简单,常规操作<br>训练 5 epoch大概需要10分钟左右.<br>准确率在77%左右.</p>
+<h1 id="Bert效果"><a href="#Bert效果" class="headerlink" title="Bert效果"></a>Bert效果</h1><p>中文预训练模型<br>训练 1 epoch大概需要200分钟.<br>准确率在76%左右.</p>
+<h2 id="Bert的一些备注"><a href="#Bert的一些备注" class="headerlink" title="Bert的一些备注"></a>Bert的一些备注</h2><p>Bert有三个嵌入层,向量(Token)、上下部分(Segment)、位置(Position), 具体的一些解释可以<a target="_blank" rel="noopener" href="https://medium.com/@_init_/why-bert-has-3-embedding-layers-and-their-implementation-details-9c261108e28a">参考</a><br>维度为768,所以比原来的高不少,这慢的一个原因(还有是因为网络结构比较复杂)<br>基于预训练模型在现有任务上训练一个epoch的效果最好,好像并不是训练的epoch越多越好,还不知道是为什么</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>具体可以参考<a target="_blank" rel="noopener" href="https://github.com/huggingface/pytorch-pretrained-BERT">pytorch-pretrained-BERT</a>,里面不止有Bert的预训练模型,还有一些其它模型的Pytorch实现,想要快速上手可以参考,特别是examples目录下的代码++</p>
+<p>Bert是好,但并不一定在你的场景下也好,正式投产前还是需要做一些研究的.毕竟NLP这类的机器学习任务的数据集变化对模型的影响是很大的.</p>
+<h1 id="在Keras-中自定义可训练层"><a href="#在Keras-中自定义可训练层" class="headerlink" title="在Keras 中自定义可训练层"></a>在Keras 中自定义可训练层</h1><p>Bert预训练模型有12层或者24层,一般在起上层的Finetune任务会对所有层参数进行微调,也还有可能会在后面再接一些Layer.<br>但是,如果对所有层都进行微调的话,需要调整的参数量可能过大,12(约1.1亿), 24(2.2亿),耗时会比较久,如果只对后面几层或者特定层进行微调,可以是微调参数大大减少,训练实现也会加快.<br>主要可有参考:<br><a target="_blank" rel="noopener" href="https://towardsdatascience.com/fine-tuning-bert-with-keras-and-tf-module-ed24ea91cff2">Fine-tuning BERT with Keras and tf.Module</a><br><a target="_blank" rel="noopener" href="https://colab.research.google.com/drive/1ofSfThTBlWjOx5dqXmdsIol-MdiqCyZC#scrollTo=cOyKrgZRRqZe&amp;forceEdit=true&amp;sandboxMode=true">Finetuning BERT with Keras and tf.Module.ipynb</a><br><a target="_blank" rel="noopener" href="https://github.com/gaphex/bert_experimental">bert_experimental</a><br><a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/Layer?version=stable#non_trainable_weights">TensorFlow Documentions</a><br><a target="_blank" rel="noopener" href="https://keras.io/">Keras Documentions</a>    </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -527,96 +616,6 @@
 </code></pre><h1 id="矩阵相除"><a href="#矩阵相除" class="headerlink" title="矩阵相除"></a>矩阵相除</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sma.rows.<span class="built_in">zip</span>(smb.rows).<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x[<span class="number">0</span>]/x[<span class="number">1</span>]).collect()</span><br></pre></td></tr></table></figure>
 <pre><code>[DenseVector([0.5, 0.6667]), DenseVector([3.0, 1.0])]
 </code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/08/012_An%20efficient%20NLP%20Word2Vec%20usage%20method/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/01/08/012_An%20efficient%20NLP%20Word2Vec%20usage%20method/" class="post-title-link" itemprop="url">An efficient NLP Word2Vec usage method</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-01-08 12:00:00" itemprop="dateCreated datePublished" datetime="2019-01-08T12:00:00+08:00">2019-01-08</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:02:30" itemprop="dateModified" datetime="2019-11-09T23:02:30+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This article mainly introduces a word embedding trick when performing deep learning tasks in the NLP field.<a target="_blank" rel="noopener" href="https://github.com/LG-1/w2vembeddings">w2vembeddings</a>。Reduce unnecessary memory usage and 95% load time. It also greatly enhances the management ability and reusability of the word embedding library.</p>
-<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>When performing NLP tasks, Word2Vec is generally used for embedding. Generate a word vector matrix based on the current task. As below.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span>(<span class="params">embeddings_index, word_index, max_features</span>):</span>            </span><br><span class="line">    embed_size = embeddings_index.get(<span class="string">&#x27;a&#x27;</span>).shape[<span class="number">0</span>]</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_vector = embeddings_index.get(word, np.zeros(embed_size))</span><br><span class="line">        embedding_matrix[i] = embedding_vector</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EMBEDDING_FILE = <span class="string">&#x27;../input/embeddings/glove.840B.300d/glove.840B.300d.txt&#x27;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_coefs</span>(<span class="params">word,*arr</span>):</span> <span class="keyword">return</span> word, np.asarray(arr, dtype=<span class="string">&#x27;float32&#x27;</span>)</span><br><span class="line">embeddings_index = <span class="built_in">dict</span>(get_coefs(*o.split(<span class="string">&quot; &quot;</span>)) <span class="keyword">for</span> o <span class="keyword">in</span> <span class="built_in">open</span>(EMBEDDING_FILE))</span><br><span class="line">embedding_matrix, embed_size = embedding_matrix_p(embeddings_index, word_index, max_features)</span><br></pre></td></tr></table></figure>
-<p>But this have a problem, if you need to parse from the file (txt/bin) each time, it is time consuming, and the loaded into the memory vectors is not all used. If there are only 20,000 words divisions in a certain task, but the word vector files are generally contains several millions, the real effect is only a few percent. So how to solve this part of unnecessary time waste and memory usage?</p>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>After understanding some of the ways to deploy word2vec, I found that there are probably two of them:<br>    1、Load to memory from local file.<br>    2、REST API.<br>Solution 1 is also the mode described above. time and memory are wasted.<br>Solution 2 is to serve the request vector separately, and the architecture will be clearer. But if you need to use the global word vector, it will be more troublesome, and it is really necessary to start a service so complicated?</p>
-<p>In my leisure time, reference<a target="_blank" rel="noopener" href="https://github.com/vzhong/embeddings">embeddings</a> and do some other works<a target="_blank" rel="noopener" href="https://github.com/LG-1/w2vembeddings">w2vembeddings</a>。<br>The main thing is to transfer the word vector content to SQLite. In essence, it is to change word2vec to a storage format. But since SQLite is a database and there is no server. So it is convenient and efficient, and the query is fast (you don’t need to use the write function, except when you convert the format for the first time).</p>
-<p>Mainly functions:<br>    Word vector library management<br>    Word vector instant call, ready to use</p>
-<p>Instructions：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> w2vembeddings.w2vemb <span class="keyword">import</span> EMB</span><br><span class="line">emb = EMB(name=<span class="string">&#x27;tencent&#x27;</span>, dimensions=<span class="number">200</span>)  <span class="comment"># Load the word vector library, equivalent to the original step of loading from the file</span></span><br><span class="line"><span class="comment"># Extract word vector matrix on demand</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">embedding_matrix_p</span>(<span class="params">emb, word_index, max_features</span>):</span>    </span><br><span class="line">    embed_size = <span class="built_in">len</span>(emb.get_vector(<span class="string">&#x27;a&#x27;</span>))</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_matrix[i] = np.array(emb.get_vector(word))</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure>
-<p>It can save almost all unnecessary memory usage and 95% of the time.</p>
-<h1 id="Problem-1"><a href="#Problem-1" class="headerlink" title="Problem"></a>Problem</h1><p>Of course, this solution has problems. Like the REST API, it is not convenient to use the global information of the word vector. If you have such a requirement, it is recommended to refer to gensim.<br>This method is mainly for those who often use word2vec for research, as well as small online deployment scenarios.<br><a href="https://www.ourantech.club/2019/01/06/011_一种高效的NLP%20Word2Vec使用方法/">Originally published in</a><br>and<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Lc6ti634aN31D1Z0T-N2eA">Wechat</a></p>
-
       
     </div>
 

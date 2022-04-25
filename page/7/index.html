@@ -179,20 +179,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -241,6 +241,88 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/12/28/009_%E7%AE%97%E6%B3%95%E9%BB%91%E7%9B%92%E4%B8%8E%E4%B8%9A%E5%8A%A1%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%9A%84%E6%8A%98%E4%B8%AD%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/12/28/009_%E7%AE%97%E6%B3%95%E9%BB%91%E7%9B%92%E4%B8%8E%E4%B8%9A%E5%8A%A1%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%9A%84%E6%8A%98%E4%B8%AD%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">算法黑盒与业务可解释性的折中思考</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-12-28 12:30:00" itemprop="dateCreated datePublished" datetime="2018-12-28T12:30:00+08:00">2018-12-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:02:48" itemprop="dateModified" datetime="2019-11-09T23:02:48+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="算法黑盒"><a href="#算法黑盒" class="headerlink" title="算法黑盒"></a>算法黑盒</h1><p>各种算法，除了决策树一类的模型可解释比较好一点之外，其他的模型的可解释性就目前来说都比较差，黑盒输出。<br>在某些场景下黑盒算法的效果确实很好，但是为什么就无法说明了。</p>
+<h1 id="业务可解释"><a href="#业务可解释" class="headerlink" title="业务可解释"></a>业务可解释</h1><p>某些场景，业务的推进尽量希望结果是可复现可控制可解释的。</p>
+<h1 id="折中思考"><a href="#折中思考" class="headerlink" title="折中思考"></a>折中思考</h1><p>可否利用模型融合的思想，将可解释及效果比较好的特征手动提取出来，结合黑盒模型的输出，进行加权运用（或者类似于决策树一类的模型）。这样便可以两者优势互补。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -489,89 +571,6 @@
 <h2 id="基于词向量的主题模型"><a href="#基于词向量的主题模型" class="headerlink" title="基于词向量的主题模型"></a>基于词向量的主题模型</h2><p>基于词袋的LDA主题模型，无法考虑词语顺序、词意，仅能表示相同词语在不同句子中的存在与否、存在频率关系。所以在对问题进行主题分类的任务中应该不会有很好的表现，在实际测试中也确实表现不如人意。</p>
 <p>可以基于词向量对模型进行修改，进行主题建模的根本还是衡量句子间距离（在整个句子空间上），将所有句子分成若干类。能将句子有效表示成向量，就变成了经典的聚类问题。<br>在基于词向量表示句子向量时，使用了tfidf对各词语进行了加权平均得到句子向量表示，然后再进一步将从句子中得到关键词（一个）的向量加到加权平均句子向量上。（这一步相当于再次加权）。得到最终句子平均向量。</p>
 <p>对得到向量表示句子进行无监督聚类，效果不错。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/09/28/003_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/09/28/003_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" class="post-title-link" itemprop="url">机器学习中的评价指标理解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-09-28 10:50:00" itemprop="dateCreated datePublished" datetime="2018-09-28T10:50:00+08:00">2018-09-28</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 22:43:26" itemprop="dateModified" datetime="2019-11-09T22:43:26+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="精准率与召回率"><a href="#精准率与召回率" class="headerlink" title="精准率与召回率"></a>精准率与召回率</h2><p>看到的很多文章好像都挺喜欢用正类反类来作为例子进行公式说明。<br>但我在理解之后，觉得这样好像不是十分妥当。<br>一是，针对我的业务我可能需要去理解什么是正类，什么是反类，不是label为0就是反类吧。<br>二是，基于一，就有了问题，何为正？何为反？正反的定义对于指标的理解是否有意义或是帮助？我认为，正反的定义是不必要的。</p>
-<p>所以，我觉得。直接使用（某类-另一类）或（某类-[其它类]）可以更好的理解指标意义。<br>总而言之，精准率与召回率指标的定义与所谓正反是无关的，它是基于某类的。<br>所以：<br>    精准率：某类预测量中实际正确所占比例<br>    召回率：某类实际量中预测正确所占比例</p>
-<p>使用某类则可以直接扩展到多类的场景而不需要做什么多余的改变。每个类别都会有自己的精准率与召回率，所以使用某类。<br>例子就贴一张sklearn.metrics计算的几个指标值以及混淆矩阵，可以手动带入公式看看具体是怎么算的，有助于理解。<img src="\images_source\20180928\001.PNG" alt="Markdown"></p>
-<p>classification report中的avg是使用加权平均计算的，权为样本数量。</p>
 
       
     </div>

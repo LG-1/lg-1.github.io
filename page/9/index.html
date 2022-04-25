@@ -179,20 +179,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -241,6 +241,90 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/08/28/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/28/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">图像处理学习笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-08-28 16:45:00" itemprop="dateCreated datePublished" datetime="2018-08-28T16:45:00+08:00">2018-08-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:00:22" itemprop="dateModified" datetime="2019-11-09T23:00:22+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>图像分类是图像级别的，图像语义分割是到像素点级别的。</p>
+<p>FCN可作为图像语义分割的基础框架参考。<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1411.4038">FCN论文</a>,<a target="_blank" rel="noopener" href="https://github.com/shelhamer/fcn.berkeleyvision.org">FCN原作代码</a></p>
+<p>FCN的提出主要解决了：一般的CNN分类网络，如VGG和Resnet，会在网络的最后加入全连接层，经过softmax获取类别概率信息，但这个概率是一维的，所以只能对整个图片进行分类，是谓图像级别。</p>
+<p>FCN结构提出将后面几个全连接替换成卷积，便可以获得一张2维的feature map，然后再接softmax便可获得每个像素点的分类信息，是谓像素点级别。可以支持解决图像语义分割问题。</p>
+<p>图像语义分割整体流程：下采样+上采样 &gt; 特征融合 &gt; 获取像素级别类别判断</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -495,137 +579,6 @@ gp.fit(train_train_X, train_train_Y)
           <p>线性代数：<br>线性讲的是关系。<br>代数讲的是形式。</p>
 <p>比如还有非线性代数，那是什么呢？</p>
 <p>学堂上为什么要把行列式放在矩阵前面讲呢？讲了一堆的计算法则与矩阵的生态却是容易混淆的。<br>为什么不先讲矩阵及其生态，讲行列式作为一种特殊的计算形式进行讲解推进呢？<br>是因为难易程度吗？</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/07/22/install-aml-workbench-failure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/07/22/install-aml-workbench-failure/" class="post-title-link" itemprop="url">Install Azure ML WorkBench Failure</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-07-22 01:00:00" itemprop="dateCreated datePublished" datetime="2018-07-22T01:00:00+08:00">2018-07-22</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 22:59:26" itemprop="dateModified" datetime="2019-11-09T22:59:26+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>I want to install AML to explore its capabilities,to gauge whether it will help my machine learning works.<br>I follow the <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/quickstart-installation#install-and-log-in-to-workbench">official installation steps</a>.<br>But I am unfavorable.Repeated failed many times and got the following log(There are a lot of logs, I only intercepted some of them that seem to be related to the reason for the failure.):</p>
-<pre><code>......
-2018/7/13 2:37:56 30: Installer [Information] - 0: Executing command: /Users/liguang/Library/Caches/AmlWorkbench/Python/bin/python -s -E -m conda install --no-deps --yes --force --offline &quot;/private/tmp/AmlInstaller/six.macos-1.11.0/six-1.11.0-py35_1.tar.bz2&quot;
-2018/7/13 2:37:58 33: Installer [Information] - 0: Returned exit code 1
-2018/7/13 2:37:58 33: Installer [Information] - 0: Output: [02:37:58] StandardError: An unexpected error has occurred.
-[02:37:58] StandardError: Please consider posting the following information to the
-[02:37:58] StandardError: conda GitHub issue tracker at:
-[02:37:58] StandardError:
-[02:37:58] StandardError: https://github.com/conda/conda/issues
-[02:37:58] StandardError:
-[02:37:58] StandardError:
-[02:37:58] StandardError:
-[02:37:58] StandardError: Current conda install:
-[02:37:58] StandardError:
-[02:37:58] StandardError: platform : osx-64
-[02:37:58] StandardError: conda version : 4.3.27
-[02:37:58] StandardError: conda is private : False
-[02:37:58] StandardError: conda-env version : 4.3.27
-[02:37:58] StandardError: conda-build version : not installed
-[02:37:58] StandardError: python version : 3.5.2.final.0
-[02:37:58] StandardError: requests version : 2.11.1
-[02:37:58] StandardError: root environment : /Users/liguang/Library/Caches/AmlWorkbench/Python (writable)
-[02:37:58] StandardError: default environment : /Users/liguang/Library/Caches/AmlWorkbench/Python
-[02:37:58] StandardError: envs directories : /Users/liguang/Library/Caches/AmlWorkbench/Python/envs
-[02:37:58] StandardError: /Users/liguang/.conda/envs
-[02:37:58] StandardError: package cache : /Users/liguang/Library/Caches/AmlWorkbench/Python/pkgs
-[02:37:58] StandardError: /Users/liguang/.conda/pkgs
-[02:37:58] StandardError: channel URLs : https://repo.continuum.io/pkgs/main/osx-64 (offline)
-[02:37:58] StandardError: https://repo.continuum.io/pkgs/main/noarch (offline)
-[02:37:58] StandardError: https://repo.continuum.io/pkgs/free/osx-64 (offline)
-[02:37:58] StandardError: https://repo.continuum.io/pkgs/free/noarch (offline)
-[02:37:58] StandardError: https://repo.continuum.io/pkgs/r/osx-64 (offline)
-[02:37:58] StandardError: https://repo.continuum.io/pkgs/r/noarch (offline)
-[02:37:58] StandardError: https://repo.continuum.io/pkgs/pro/osx-64 (offline)
-[02:37:58] StandardError: https://repo.continuum.io/pkgs/pro/noarch (offline)
-[02:37:58] StandardError: config file : None
-[02:37:58] StandardError: netrc file : None
-[02:37:58] StandardError: offline mode : True
-[02:37:58] StandardError: user-agent : conda/4.3.27 requests/2.11.1 CPython/3.5.2 Darwin/17.6.0 OSX/10.13.5
-[02:37:58] StandardError: UID:GID : 501:20
-[02:37:58] StandardError:
-[02:37:58] StandardError: $ /Users/liguang/Library/Caches/AmlWorkbench/Python/lib/python3.5/site-packages/conda/__main__.py install --no-deps --yes --force --offline /private/tmp/AmlInstaller/six.macos-1.11.0/six-1.11.0-py35_1.tar.bz2
-[02:37:58] StandardError:
-......
-</code></pre><p>In the case of web search solutions, I did not actually see a solution that directly helped.I once wanted to give up.And, in fact, I don’t know what the wrong keyword is, it’s frustrating.</p>
-<p>Fortunately, I insisted on it again.<br>I went back to read the log again and felt that the reason for the failure might be related to conda.<br>With a try attitude:</p>
-<ul>
-<li>manually installed <a target="_blank" rel="noopener" href="https://www.anaconda.com/download/#macos">anaconda3</a>.</li>
-<li>then, install AML again</li>
-</ul>
-<p>This is a success for me, I don’t know why, just try to succeed.Maybe not for others, because I don’t know why.</p>
-<p>In addition, after installing anaconda3, it seems that some of the original python packages disappear, such as xgboost,LightGBM,tensorflow, etc. I also don’t know why, just install them again.+_+</p>
 
       
     </div>
