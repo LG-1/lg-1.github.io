@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.3.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -179,14 +179,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -241,6 +241,198 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/08/06/025_Ubuntu%20%E5%BC%80%E5%90%AF%20cron%20job/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/08/06/025_Ubuntu%20%E5%BC%80%E5%90%AF%20cron%20job/" class="post-title-link" itemprop="url">Ubuntu 开启 cron job</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-06 12:20:00" itemprop="dateCreated datePublished" datetime="2019-08-06T12:20:00+08:00">2019-08-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:00" itemprop="dateModified" datetime="2019-11-09T23:01:00+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ul>
+<li>将要执行的内容编写到.sh脚本中(要注意路径和环境变量)</li>
+<li>创建修改定时任务: crontab -e</li>
+<li><p>打开日志(不是必须,但是最好打开,便于debug):<br>vi /etc/rsyslog.d/50-default.conf<br>sudo service rsyslog restart</p>
+</li>
+<li><p>重启服务<br>service cron restart</p>
+</li>
+<li><p>查看执行记录:cat /var/log/cron.log<br>检查执行记录及最终结果,执行记录有报错一定没执行成功,可以根据报错debug;执行记录没报错也不一定是执行成功,因为sh脚本可能做了相应的报错隐藏,要检查一下实际的执行结果确认.</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/06/15/024_Sentence2Vec%20%E6%8E%A2%E7%B4%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/15/024_Sentence2Vec%20%E6%8E%A2%E7%B4%A2/" class="post-title-link" itemprop="url">Sentence2Vec 探索</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-15 13:20:00" itemprop="dateCreated datePublished" datetime="2019-06-15T13:20:00+08:00">2019-06-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:05" itemprop="dateModified" datetime="2019-11-09T23:01:05+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>Word2Vec应用已经比较普遍.<br>基于类似思路,希望对句子级别内容实现向量化,以便后期使用时可以高效运算,比如寻找相似句子等.</p>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>本篇练习主要讨论:</p>
+<ul>
+<li>如何评价句子向量化效果</li>
+<li>进一步探索必要性的背景</li>
+<li>参考的一些论文及阅读思考</li>
+<li>实际探索的方向</li>
+<li>探索实验结果</li>
+</ul>
+<h1 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h1><p>在无标签情况下,或可使用最近邻查找或聚类等效果用以反映向量化的效果,作为特征进行分类可考虑.<br>特别地,<a target="_blank" rel="noopener" href="https://github.com/spotify/annoy">Annoy</a>挺好用.<br>另外,也可试试二维或者三维可视化看看效果.</p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>基于Word2Vec,尝试了最简单的词向量平均及TFIDF加权平均,结果表明,在短句(&lt;20左右)的情况下,效果还不错.<br>但是句子一旦稍长,结果就不甚可用.文章级别就更勿论.<br>NIPS 2013 Deep Learning Workshop:<a target="_blank" rel="noopener" href="https://drive.google.com/file/d/0B7XkCwpI5KDYRWRnd1RzWXQ2TWc/edit?usp=sharing">NNforText.pdf</a>中page20处也早就提到了这一点,亲身肉测发现确实.<br>(要是文档链接看不了的可以跟我吱一声)</p>
+<p>想想其实可理解,不管是平均或者加权平均,都丢掉了句子结构信息,在短句情况下,句子结构本来也比较简单一些,所以可能信息丢失不多,尚可.<br>句子越长越复杂,结构越复杂,平均丢掉的信息也就越多,结果就扑街.</p>
+<p>所以,基于Word2Vec,捕捉句子结构及顺序,可能会是一种值得探索的方向.</p>
+<p>另外,不久之前的Bert或可考虑是否有用.当然,如果准备用Bert中间层导出,基本也就不用考虑LSTM模型了,因为结果肯定是有差距的.</p>
+<h1 id="论文阅读"><a href="#论文阅读" class="headerlink" title="论文阅读"></a>论文阅读</h1><p><a target="_blank" rel="noopener" href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf">Distributed Representations of Sentences and Documents</a><br>介绍了将文章视为另一个词的方法,文章所代表的“词”将刻画哪些未出现在当前上下文中的信息,故称:Distributed Memory Model of Paragraph Vectors(PV-DM).上下文信息通过滑动窗口得到.<br>论文介绍的Paragraph Vector方法从逻辑到实现上都比较通畅明晰,训练时间论文提到的是2.5万(平均230词)句子在16核机器上需要30分钟.个人觉得可以实验一下.<br>而且文章也间接总结了之前相关的一些论文,也可以作为索引.<br>ps1:在gensim的Doc2vec实现方法上用300万的中文句子做了尝试.结果表明,还是只能对短句起到比较好的效果,长句仍无法达到推进生产的标准.(所耗时间倒是跟论文所提差不多)<br>ps2:还试了一个Pytorch版本的Paragraph2vec,效果也不是很好,且面对新句子没法推导vec.但是思路还是可以借鉴的,或可在此基础上改进一下.</p>
+<p><a target="_blank" rel="noopener" href="https://supernlp.github.io/2018/11/26/sentreps/">On sentence representations</a><br>是一篇介绍文章,主要介绍了句子表示方法.比较详细的介绍了最近的/较早的-监督/无监督句子表示方法.可以作为综述文章阅读.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/google-research/bert">BERT</a><br><a target="_blank" rel="noopener" href="https://github.com/hanxiao/bert-as-service">bert-as-service</a><br>这个项目写得挺好的,耦合比较规范,但我就是不知道作者为啥把代码都写在了<strong>init</strong>.py中,但项目仍然是个非常好的项目.<br>直接可用.</p>
+<h1 id="探索方向"><a href="#探索方向" class="headerlink" title="探索方向"></a>探索方向</h1><p>主要实验了mean Word2Vec/ paragraph vector / Bert embedding</p>
+<p>Bert embedding的操作是输入句子,利用Bert预训练模型得到中间层结果(实验以得到的第12层为基准)<br>层越往前,可能效果会越有损失,但是速度可能会更快一点.</p>
+<h1 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h1><p>文章从6月中开始写,但是伴随着实验结果不理想以及方法的探索,一直写到7月底,速度也是够慢的.</p>
+<p>结果是,使用Bert embedding能够得到目前可以获取的最好结果,效果基本可以达到Word2Vec水平.<br>所以基本达到了可以应用的水平.<br>可以达到聚类可用的水平,近邻搜索用于召回或许还有点问题.</p>
+<p>速度上来讲,120长度,基于CPU需要200ms左右,基于GPU需要30ms左右.<br>句子长度(需要保留的长度)越长速度也会越慢,层越往后也会越慢.</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>目前Sentence2Vec基于最佳的Bert可以得到最好效果.<br>通过聚类可以发现,能够较好的刻画关键信息,即使句子比较长(&lt;512),长度500左右基本可以覆盖中短篇章.<br>再往后估计需要期待下一步的NLP发展,仍需探索.</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[1]. <a target="_blank" rel="noopener" href="https://cs.stanford.edu/~quocle/paragraph_vector.pdf">Distributed Representations of Sentences and Documents</a><br>[2]. <a target="_blank" rel="noopener" href="https://machinelearningmastery.com/gentle-introduction-bag-words-model/">A Gentle Introduction to the Bag-of-Words Model</a><br>[3]. <a target="_blank" rel="noopener" href="https://github.com/google-research/bert">BERT</a><br>[4]. <a target="_blank" rel="noopener" href="https://github.com/hanxiao/bert-as-service">bert-as-service</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -341,7 +533,7 @@
 </ul>
 <h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>其实步骤都比较简单<br>最关键的其实是我想记录一下测试结果.<br>原本想着用C++起服务可能会比较快一点,但是结果测下来,发现然而并没有(也有可能是我不熟悉C++的原因).<br>C++的RPS只能到20左右<br>Django嵌入可以到50左右.<br>另外,当然是后者的方式更简洁一些.</p>
 <p>再另外,如果需要要在C++中做比较多的处理步骤,可能就会更不方便,比如分词.<br>所以,如果是图像一类,如果做得合适,还有可能用C++起个服务,但是NLP一类可能会更困难一些.<br>相对来说,Django嵌入的方式应该简单多了.</p>
-<p>再再另外,<br>模型对系统版本,框架版本,部署线程等其实也挺敏感的,多试几次就好了++,搜索空间也不大.<br>Ubuntu 16.04/torch1.1.0/ gunicorn<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.set_num_threads(<span class="number">3</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunicorn --env DJANGO_SETTINGS_MODULE=xxxx.settings xxxx.wsgi:application -w 3 -b 0.0.0.0:8001 -k gthread --thread 3 --max-requests 4096 --max-requests-jitter 512 --log-level=debug --timeout 120 --preload</span><br></pre></td></tr></table></figure></p>
+<p>再再另外,<br>模型对系统版本,框架版本,部署线程等其实也挺敏感的,多试几次就好了++,搜索空间也不大.<br>Ubuntu 16.04/torch1.1.0/ gunicorn<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.set_num_threads(<span class="number">3</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunicorn --<span class="built_in">env</span> DJANGO_SETTINGS_MODULE=xxxx.settings xxxx.wsgi:application -w 3 -b 0.0.0.0:8001 -k gthread --thread 3 --max-requests 4096 --max-requests-jitter 512 --log-level=debug --<span class="built_in">timeout</span> 120 --preload</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -452,214 +644,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/" class="post-title-link" itemprop="url">一种为评估文本分类效果的改进指标</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-04-04 01:00:00" itemprop="dateCreated datePublished" datetime="2019-04-04T01:00:00+08:00">2019-04-04</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:01:28" itemprop="dateModified" datetime="2019-11-09T23:01:28+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.<br>指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之.</p>
-<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification#evaluation">详参</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1903.04561.pdf">论文参考</a><br><a target="_blank" rel="noopener" href="https://www.kaggle.com/dborkan/benchmark-kernel/log">使用案例</a></p>
-<p>只是做一些学习记录,如有遗误,望请指教.</p>
-<h1 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h1><p>$${score}=w_{0} A U C_{\text {overall}}+\sum_{a=1}^{A} w_{a} M_{p}\left(m_{s, a}\right)$$</p>
-<p>最终得分由 整体AUC 与 广义偏差AUC均值 们 加权 得到.<br>本次涉及到3种偏差AUC(Subgroup_AUC/BPSN_AUC/BNSP_AUC).</p>
-<p>整体AUC值是常规操作,详可参sklearn.</p>
-<p>其中:</p>
-<ul>
-<li>$A$表示子指标数量 本次为3</li>
-<li>$m_{s, a}$表示子组s的第a中偏差指标</li>
-<li>$w_{a}$ 表示对应的 广义均值 权重, 本次所有权重都为0.25,即等权.</li>
-</ul>
-<ul>
-<li><h2 id="M-p-left-m-s-a-right-含义"><a href="#M-p-left-m-s-a-right-含义" class="headerlink" title="$M_{p}\left(m_{s, a}\right)$ 含义"></a>$M_{p}\left(m_{s, a}\right)$ 含义</h2>  即广义均值<br>  本次计算广义偏差AUC均值<br>  公式为:<br>  $$<br>  M_{p}\left(m_{s}\right)=\left(\frac{1}{N} \sum_{s=1}^{N} m_{s}^{p}\right)^{\frac{1}{p}}<br>  $$<br>  其中:<ul>
-<li>$M_{p}$表示p级广义均值, 本次取p=-5</li>
-<li>$m_{s}$表示子组s的偏差指标</li>
-<li>$N$ 表示子组数量</li>
-</ul>
-</li>
-</ul>
-<p>进一步, 公式的重点是定义了三种偏差AUC.</p>
-<h1 id="三种偏差AUC含义"><a href="#三种偏差AUC含义" class="headerlink" title="三种偏差AUC含义"></a>三种偏差AUC含义</h1><p>三种偏差AUC的计算公式其实一样,都是计算AUC,不同的是基于不同的数据子集计算.</p>
-<ul>
-<li><h2 id="Subgroup-AUC"><a href="#Subgroup-AUC" class="headerlink" title="Subgroup_AUC"></a>Subgroup_AUC</h2><p>基于 满足身份识别的样本所构成的子数据集计算的AUC,这个指标越低表示在特定需求(身份识别)上模型表现越差.</p>
-</li>
-<li><h2 id="BPSN-AUC"><a href="#BPSN-AUC" class="headerlink" title="BPSN_AUC"></a>BPSN_AUC</h2><p>即 Background Positive, Subgroup Negative AUC<br>基于提及身份的正面和不提及身份的负面样本所构成的子数据集计算的AUC,这个指标越低表示模型混淆了身份识别,只要提及了身份识别就可能被预测得到更高的值,这不是希望的最佳模型.</p>
-</li>
-<li><h2 id="BNSP-AUC"><a href="#BNSP-AUC" class="headerlink" title="BNSP_AUC"></a>BNSP_AUC</h2><p>即 Background Negative, Subgroup Positive AUC<br>基于提及身份的负面和不提及身份的正面样本所构成的子数据集计算的AUC.</p>
-</li>
-</ul>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>所以同理,<br>将来也可以基于此思路,针对其它的特定需求,设计特定的评价指标.在模型训练的时候就依据需求进行加权.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/02/019_%E6%97%A0%E7%9B%91%E7%9D%A3NN%E8%81%9A%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/02/019_%E6%97%A0%E7%9B%91%E7%9D%A3NN%E8%81%9A%E7%B1%BB/" class="post-title-link" itemprop="url">无监督NN聚类探索</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-04-02 12:00:00" itemprop="dateCreated datePublished" datetime="2019-04-02T12:00:00+08:00">2019-04-02</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:01:36" itemprop="dateModified" datetime="2019-11-09T23:01:36+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量.</p>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>希望可以对中文句子进行无监督聚类.<br>最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.<br>但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降.</p>
-<p>另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(而不是使用平均)–也就可以展到更高的维度空间去,然后使用使用KMEANS模型.<br>所以关键就是如何使用NN进行特征提取.</p>
-<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><ul>
-<li>与传统的NLP任务相似,需要有一步补齐操作,如果在多个句子的词场景下,是不是可以在更高一个维度上进行补齐操作后就与传统NLP任务类似了呢?(高了一个维度)</li>
-<li>基于word2vec,和补齐\嵌入等操作,直接将高维空间展成二维向量,然后聚类,(这种思路有点将word2vec也视为预训练模型的感觉),也可以再降降维什么的</li>
-<li>采用迁移学习的思路,利用其它任务的得到的模型进行中间层输出得到特征</li>
-</ul>
-<p>几个思路都可以一试.具体效果可能需要到不同的场景下结合数据进行验证.(对的,是”可能”,不然怎么讲是实验科学呢++)</p>
-<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><ul>
-<li><h2 id="Autoencoder"><a href="#Autoencoder" class="headerlink" title="Autoencoder"></a>Autoencoder</h2><p>使用变分自动编码是一种操作,主要也是利用降维的思路.<br>参考:<br><a target="_blank" rel="noopener" href="http://ufldl.stanford.edu/tutorial/unsupervised/Autoencoders/">Autoencoders</a><br><a target="_blank" rel="noopener" href="https://nlp.stanford.edu/~socherr/sparseAutoencoder_2011new.pdf">Sparse autoencoder</a><br><a target="_blank" rel="noopener" href="https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fayearofai.com%2Flenny-2-autoencoders-and-word-embeddings-oh-my-576403b0113a">Autoencoders and Word embeddings</a><br><a target="_blank" rel="noopener" href="https://nbviewer.jupyter.org/github/domreichl/blog-post-clustering/blob/master/blog_post_clustering.ipynb">Blog Post Clustering</a><br><a target="_blank" rel="noopener" href="https://github.com/L1aoXingyu/pytorch-beginner/blob/master/08-AutoEncoder/Variational_autoencoder.py">Variational Autoencoder base on pytorch</a></p>
-</li>
-<li><h2 id="针对NLP的自动编码"><a href="#针对NLP的自动编码" class="headerlink" title="针对NLP的自动编码"></a>针对NLP的自动编码</h2><p>图像领域一般可以用变分自动编码.<br>那么sentence级别的是不是可以考虑用LSTM进行自编码呢?<br>可谓之LSTM自动编码++<br>经过实验表明:是可以的.</p>
-</li>
-<li><h2 id="针对句子无监督聚类的双路LSTM-Attention自动编码"><a href="#针对句子无监督聚类的双路LSTM-Attention自动编码" class="headerlink" title="针对句子无监督聚类的双路LSTM+Attention自动编码"></a>针对句子无监督聚类的双路LSTM+Attention自动编码</h2><p>经过实验表明,效果很好很好<br>我要把它称作: Unsupervised Clustering base on double LSTM&amp;Attention<br>思路就是使用上面提到的思路,当然具体过程需要有一些操作.结果表明效果很好,不仅可以捕获到内容,还可以捕获到结构,远远不是平均的效果可以匹敌的.哈哈哈哈,真棒.<br>后面可能单独开一篇做一些介绍,先上线再说,哈哈……</p>
-</li>
-</ul>
-<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>句子级别的聚类,特别是多句子(也可以扩展到篇章)的效果很好,当然会比平均复杂一点点,但是效果好太多.</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>有了一个新的模型架构,<br>有点引入了无监督对抗的味道,<br>使用了数据本身做标签,不依赖结果标签,也就实现了无监督,哈哈,我真棒!</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -695,7 +679,7 @@
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

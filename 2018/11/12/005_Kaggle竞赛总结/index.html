@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.3.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -184,14 +184,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -321,7 +321,7 @@
 <p>其它学到的东西估计就是对于整个流程的熟悉了。</p>
 <p>由于后面将开启一个新的project，所以关于这个项目的数据将暂时移出电脑，本来还想将top方案跑一跑学习一下的，现在可能只会去看看代码了。</p>
 <h1 id="Elo-Merchant-Category-Recommendation"><a href="#Elo-Merchant-Category-Recommendation" class="headerlink" title="Elo Merchant Category Recommendation"></a>Elo Merchant Category Recommendation</h1><p>Private Leaderboard 137/4221</p>
-<p>1-连续数值的最后stack,建议使用BayesianRidge操作,并尽量不在后续再叠加人工权重与其它模型集成.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> BayesianRidge</span><br></pre></td></tr></table></figure><br>2-NN用得好几乎可以达到lgb同等的效果,不过要看数据集/模型/参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ann</span>(<span class="params">input_shape</span>):</span></span><br><span class="line">	“”“</span><br><span class="line">	just <span class="keyword">for</span> this project maybe helpful.</span><br><span class="line">	”“”</span><br><span class="line">    model = Sequential()</span><br><span class="line">    model.add(Dense(<span class="number">2</span> ** <span class="number">10</span>, input_dim = input_shape, init=<span class="string">&#x27;random_uniform&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">    model.add(Dropout(<span class="number">0.25</span>))    </span><br><span class="line">    model.add(BatchNormalization())</span><br><span class="line">    model.add(Dense(<span class="number">2</span> ** <span class="number">9</span>, init=<span class="string">&#x27;random_uniform&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">    model.add(BatchNormalization())</span><br><span class="line">    model.add(Dropout(<span class="number">0.25</span>)) </span><br><span class="line">    model.add(Dense(<span class="number">2</span> ** <span class="number">5</span>, init=<span class="string">&#x27;random_uniform&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">    model.add(BatchNormalization())</span><br><span class="line">    model.add(Dropout(<span class="number">0.25</span>))      </span><br><span class="line">    model.add(Dense(<span class="number">1</span>))</span><br><span class="line">    model.<span class="built_in">compile</span>(loss=<span class="string">&#x27;mean_squared_error&#x27;</span>, optimizer=<span class="string">&#x27;adam&#x27;</span>) </span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure></p>
+<p>1-连续数值的最后stack,建议使用BayesianRidge操作,并尽量不在后续再叠加人工权重与其它模型集成.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> BayesianRidge</span><br></pre></td></tr></table></figure><br>2-NN用得好几乎可以达到lgb同等的效果,不过要看数据集/模型/参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ann</span>(<span class="params">input_shape</span>):</span><br><span class="line">	“”“</span><br><span class="line">	just <span class="keyword">for</span> this project maybe helpful.</span><br><span class="line">	”“”</span><br><span class="line">    model = Sequential()</span><br><span class="line">    model.add(Dense(<span class="number">2</span> ** <span class="number">10</span>, input_dim = input_shape, init=<span class="string">&#x27;random_uniform&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">    model.add(Dropout(<span class="number">0.25</span>))    </span><br><span class="line">    model.add(BatchNormalization())</span><br><span class="line">    model.add(Dense(<span class="number">2</span> ** <span class="number">9</span>, init=<span class="string">&#x27;random_uniform&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">    model.add(BatchNormalization())</span><br><span class="line">    model.add(Dropout(<span class="number">0.25</span>)) </span><br><span class="line">    model.add(Dense(<span class="number">2</span> ** <span class="number">5</span>, init=<span class="string">&#x27;random_uniform&#x27;</span>, activation=<span class="string">&#x27;relu&#x27;</span>))</span><br><span class="line">    model.add(BatchNormalization())</span><br><span class="line">    model.add(Dropout(<span class="number">0.25</span>))      </span><br><span class="line">    model.add(Dense(<span class="number">1</span>))</span><br><span class="line">    model.<span class="built_in">compile</span>(loss=<span class="string">&#x27;mean_squared_error&#x27;</span>, optimizer=<span class="string">&#x27;adam&#x27;</span>) </span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -389,7 +389,7 @@
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

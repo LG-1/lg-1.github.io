@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.3.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -179,14 +179,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -241,6 +241,214 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/04/020_%E4%B8%80%E7%A7%8D%E4%B8%BA%E8%AF%84%E4%BC%B0%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%88%E6%9E%9C%E7%9A%84%E6%94%B9%E8%BF%9B%E6%8C%87%E6%A0%87/" class="post-title-link" itemprop="url">一种为评估文本分类效果的改进指标</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-04 01:00:00" itemprop="dateCreated datePublished" datetime="2019-04-04T01:00:00+08:00">2019-04-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:28" itemprop="dateModified" datetime="2019-11-09T23:01:28+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>相比sklearn 中已有的,可以直接调的评价指标来说,本文提及的指标会复杂一些.<br>指标的改进是为了针对特定的需求,使模型朝着希望的路径演变,本质上来说是一种加权,针对特定需求朝着特定方向的加权.本文参考的使用案例则是希望能够在分类的时候对身份识别能够有特定的加权,故特改进之.</p>
+<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/c/jigsaw-unintended-bias-in-toxicity-classification#evaluation">详参</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1903.04561.pdf">论文参考</a><br><a target="_blank" rel="noopener" href="https://www.kaggle.com/dborkan/benchmark-kernel/log">使用案例</a></p>
+<p>只是做一些学习记录,如有遗误,望请指教.</p>
+<h1 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h1><p>$${score}=w_{0} A U C_{\text {overall}}+\sum_{a=1}^{A} w_{a} M_{p}\left(m_{s, a}\right)$$</p>
+<p>最终得分由 整体AUC 与 广义偏差AUC均值 们 加权 得到.<br>本次涉及到3种偏差AUC(Subgroup_AUC/BPSN_AUC/BNSP_AUC).</p>
+<p>整体AUC值是常规操作,详可参sklearn.</p>
+<p>其中:</p>
+<ul>
+<li>$A$表示子指标数量 本次为3</li>
+<li>$m_{s, a}$表示子组s的第a中偏差指标</li>
+<li>$w_{a}$ 表示对应的 广义均值 权重, 本次所有权重都为0.25,即等权.</li>
+</ul>
+<ul>
+<li><h2 id="M-p-left-m-s-a-right-含义"><a href="#M-p-left-m-s-a-right-含义" class="headerlink" title="$M_{p}\left(m_{s, a}\right)$ 含义"></a>$M_{p}\left(m_{s, a}\right)$ 含义</h2>  即广义均值<br>  本次计算广义偏差AUC均值<br>  公式为:<br>  $$<br>  M_{p}\left(m_{s}\right)=\left(\frac{1}{N} \sum_{s=1}^{N} m_{s}^{p}\right)^{\frac{1}{p}}<br>  $$<br>  其中:<ul>
+<li>$M_{p}$表示p级广义均值, 本次取p=-5</li>
+<li>$m_{s}$表示子组s的偏差指标</li>
+<li>$N$ 表示子组数量</li>
+</ul>
+</li>
+</ul>
+<p>进一步, 公式的重点是定义了三种偏差AUC.</p>
+<h1 id="三种偏差AUC含义"><a href="#三种偏差AUC含义" class="headerlink" title="三种偏差AUC含义"></a>三种偏差AUC含义</h1><p>三种偏差AUC的计算公式其实一样,都是计算AUC,不同的是基于不同的数据子集计算.</p>
+<ul>
+<li><h2 id="Subgroup-AUC"><a href="#Subgroup-AUC" class="headerlink" title="Subgroup_AUC"></a>Subgroup_AUC</h2><p>基于 满足身份识别的样本所构成的子数据集计算的AUC,这个指标越低表示在特定需求(身份识别)上模型表现越差.</p>
+</li>
+<li><h2 id="BPSN-AUC"><a href="#BPSN-AUC" class="headerlink" title="BPSN_AUC"></a>BPSN_AUC</h2><p>即 Background Positive, Subgroup Negative AUC<br>基于提及身份的正面和不提及身份的负面样本所构成的子数据集计算的AUC,这个指标越低表示模型混淆了身份识别,只要提及了身份识别就可能被预测得到更高的值,这不是希望的最佳模型.</p>
+</li>
+<li><h2 id="BNSP-AUC"><a href="#BNSP-AUC" class="headerlink" title="BNSP_AUC"></a>BNSP_AUC</h2><p>即 Background Negative, Subgroup Positive AUC<br>基于提及身份的负面和不提及身份的正面样本所构成的子数据集计算的AUC.</p>
+</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>所以同理,<br>将来也可以基于此思路,针对其它的特定需求,设计特定的评价指标.在模型训练的时候就依据需求进行加权.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/04/02/019_%E6%97%A0%E7%9B%91%E7%9D%A3NN%E8%81%9A%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/02/019_%E6%97%A0%E7%9B%91%E7%9D%A3NN%E8%81%9A%E7%B1%BB/" class="post-title-link" itemprop="url">无监督NN聚类探索</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-02 12:00:00" itemprop="dateCreated datePublished" datetime="2019-04-02T12:00:00+08:00">2019-04-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:01:36" itemprop="dateModified" datetime="2019-11-09T23:01:36+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>传统无监督聚类方法一般使用KMEANS及其变类,原理使用距离度量.</p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>希望可以对中文句子进行无监督聚类.<br>最简单的实现可以是利用word2vec求句子平均向量,然后建立KMEANS模型.<br>但是,显而易见,这个过程中使用平均使得信息的丢失是比较多的,特别是句子或者文章比较长的情况下,越长信息的丢失也就越多,必然导致模型的可用性下降.</p>
+<p>另一种思路是使用NN来对句子\多个句子或者文章这种序列进行特征提取(而不是使用平均)–也就可以展到更高的维度空间去,然后使用使用KMEANS模型.<br>所以关键就是如何使用NN进行特征提取.</p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><ul>
+<li>与传统的NLP任务相似,需要有一步补齐操作,如果在多个句子的词场景下,是不是可以在更高一个维度上进行补齐操作后就与传统NLP任务类似了呢?(高了一个维度)</li>
+<li>基于word2vec,和补齐\嵌入等操作,直接将高维空间展成二维向量,然后聚类,(这种思路有点将word2vec也视为预训练模型的感觉),也可以再降降维什么的</li>
+<li>采用迁移学习的思路,利用其它任务的得到的模型进行中间层输出得到特征</li>
+</ul>
+<p>几个思路都可以一试.具体效果可能需要到不同的场景下结合数据进行验证.(对的,是”可能”,不然怎么讲是实验科学呢++)</p>
+<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><ul>
+<li><h2 id="Autoencoder"><a href="#Autoencoder" class="headerlink" title="Autoencoder"></a>Autoencoder</h2><p>使用变分自动编码是一种操作,主要也是利用降维的思路.<br>参考:<br><a target="_blank" rel="noopener" href="http://ufldl.stanford.edu/tutorial/unsupervised/Autoencoders/">Autoencoders</a><br><a target="_blank" rel="noopener" href="https://nlp.stanford.edu/~socherr/sparseAutoencoder_2011new.pdf">Sparse autoencoder</a><br><a target="_blank" rel="noopener" href="https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fayearofai.com%2Flenny-2-autoencoders-and-word-embeddings-oh-my-576403b0113a">Autoencoders and Word embeddings</a><br><a target="_blank" rel="noopener" href="https://nbviewer.jupyter.org/github/domreichl/blog-post-clustering/blob/master/blog_post_clustering.ipynb">Blog Post Clustering</a><br><a target="_blank" rel="noopener" href="https://github.com/L1aoXingyu/pytorch-beginner/blob/master/08-AutoEncoder/Variational_autoencoder.py">Variational Autoencoder base on pytorch</a></p>
+</li>
+<li><h2 id="针对NLP的自动编码"><a href="#针对NLP的自动编码" class="headerlink" title="针对NLP的自动编码"></a>针对NLP的自动编码</h2><p>图像领域一般可以用变分自动编码.<br>那么sentence级别的是不是可以考虑用LSTM进行自编码呢?<br>可谓之LSTM自动编码++<br>经过实验表明:是可以的.</p>
+</li>
+<li><h2 id="针对句子无监督聚类的双路LSTM-Attention自动编码"><a href="#针对句子无监督聚类的双路LSTM-Attention自动编码" class="headerlink" title="针对句子无监督聚类的双路LSTM+Attention自动编码"></a>针对句子无监督聚类的双路LSTM+Attention自动编码</h2><p>经过实验表明,效果很好很好<br>我要把它称作: Unsupervised Clustering base on double LSTM&amp;Attention<br>思路就是使用上面提到的思路,当然具体过程需要有一些操作.结果表明效果很好,不仅可以捕获到内容,还可以捕获到结构,远远不是平均的效果可以匹敌的.哈哈哈哈,真棒.<br>后面可能单独开一篇做一些介绍,先上线再说,哈哈……</p>
+</li>
+</ul>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>句子级别的聚类,特别是多句子(也可以扩展到篇章)的效果很好,当然会比平均复杂一点点,但是效果好太多.</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>有了一个新的模型架构,<br>有点引入了无监督对抗的味道,<br>使用了数据本身做标签,不依赖结果标签,也就实现了无监督,哈哈,我真棒!</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -443,196 +651,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/02/24/015_%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/02/24/015_%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">不确定性与确定性的一点思考</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-02-24 14:00:00" itemprop="dateCreated datePublished" datetime="2019-02-24T14:00:00+08:00">2019-02-24</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:02:00" itemprop="dateModified" datetime="2019-11-09T23:02:00+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>人工智能的发展时间在计算机时代的历史中应该也不算短了.</p>
-<p>至今(2019-02)所谓的强人工智能仍是一个遥不可及的问题.</p>
-<p>要接受人的控制就必须要能够预测整个“智能”若干步骤后的状态,即没有不确定性,一切尽在掌控.那么这种掌控有可能产生智能吗?今天的人工智能行业的探索或许将给我们答案.</p>
-<p>如果受基因进化思想的影响(交叉变异,环境选择),那么智能的发展过程中可能是充满不确定性的,这就从根本上与我们要求的控制形成了冲突和矛盾.</p>
-<p>如果我们真的需要拥抱不确定性的话,初初想来确实也蛮可怕的.</p>
-<p>我个人其实倾向于加入不确定性方可产生新的智能的方案.那么可能存在的问题应该怎么思考呢?<br>个人感觉可以参考人这个系统的方案,人中有好人和坏人.机器智能中有好的机器智能和坏的机器智能,是否可以将为人设计的机制以某种方式参照到机器智能中去呢?这样对于现存的人这个系统来说是不是就可以接受了?</p>
-<p>目标是,只要加入了整个机器智能的系统后,带来的增益是大于成本的,总体上来说这个机制应该就可以存在下去.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/27/014_Spark%E4%B8%AD%E7%9A%84%E7%9F%A9%E9%98%B5%E2%80%9C%E7%9B%B8%E9%99%A4%E2%80%9D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LG">
-      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="险峰风景">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/01/27/014_Spark%E4%B8%AD%E7%9A%84%E7%9F%A9%E9%98%B5%E2%80%9C%E7%9B%B8%E9%99%A4%E2%80%9D/" class="post-title-link" itemprop="url">Spark中的矩阵“相除”</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2019-01-27 23:00:00" itemprop="dateCreated datePublished" datetime="2019-01-27T23:00:00+08:00">2019-01-27</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2019-11-09 23:02:10" itemprop="dateModified" datetime="2019-11-09T23:02:10+08:00">2019-11-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的.</p>
-<p>所以这里讲的相除其实是两个维度完全一样的矩阵对应点一一相除的意思.</p>
-<p>类似于python 中np.array/np.array</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">b = np.array([[<span class="number">2</span>,<span class="number">3</span>], [<span class="number">1</span>,<span class="number">4</span>]])</span><br><span class="line">print(<span class="string">&quot;mat a is: \n &#123;0&#125; \n mat b is:\n &#123;1&#125; \n mat a/b is: \n &#123;2&#125;&quot;</span>.<span class="built_in">format</span>(a, b, a/b))</span><br></pre></td></tr></table></figure>
-<pre><code>mat a is: 
- [[1 2]
- [3 4]] 
- mat b is:
- [[2 3]
- [1 4]] 
- mat a/b is: 
- [[0.5        0.66666667]
- [3.         1.        ]]
-</code></pre><p>但是查阅Spark的<a target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/index.html">官方文档</a></p>
-<p>矩阵的乘法运算是通过 rowmatrix mutiply densematrix 来实现的,加法和减法都没有问题.</p>
-<p>但是对应点一一相除则没有相关的方法来达到目的,所以需要自己做一些变通,其实也非常简单.</p>
-<p>但是,由于Spark是在RDD的进行并行计算的,所以不能将数据拿出来到比如np.array来实现相关的算法,因为这需要将所有数据collect到某个节点的内存中进行,显然不OK.</p>
-<p>注意到DenseVector在Spark中是有除法的,所以结果也很简单,将两个矩阵构造在两个Densevector 矩阵的RDD中,然后通过RDD1.zip(RDD2)同时操作两个RDD矩阵实现矩阵的除法.</p>
-<h1 id="构造矩阵"><a href="#构造矩阵" class="headerlink" title="构造矩阵"></a>构造矩阵</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkContext</span><br><span class="line"><span class="keyword">from</span> pyspark.mllib.linalg.distributed <span class="keyword">import</span> RowMatrix</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(<span class="string">&#x27;local&#x27;</span>, <span class="string">&#x27;local_test_recommend&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rowsa = sc.parallelize([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line">rowsb = sc.parallelize([[<span class="number">2</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">4</span>]])</span><br><span class="line">sma = RowMatrix(rowsa)</span><br><span class="line">smb = RowMatrix(rowsb)</span><br><span class="line">print(sma.rows.collect())</span><br><span class="line">print(smb.rows.collect())</span><br></pre></td></tr></table></figure>
-<pre><code>[DenseVector([1.0, 2.0]), DenseVector([3.0, 4.0])]
-[DenseVector([2.0, 3.0]), DenseVector([1.0, 4.0])]
-</code></pre><h1 id="矩阵相除"><a href="#矩阵相除" class="headerlink" title="矩阵相除"></a>矩阵相除</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sma.rows.<span class="built_in">zip</span>(smb.rows).<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x[<span class="number">0</span>]/x[<span class="number">1</span>]).collect()</span><br></pre></td></tr></table></figure>
-<pre><code>[DenseVector([0.5, 0.6667]), DenseVector([3.0, 1.0])]
-</code></pre>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -668,7 +686,7 @@
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.3.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -184,14 +184,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -347,7 +347,7 @@
 </ul>
 <h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>其实步骤都比较简单<br>最关键的其实是我想记录一下测试结果.<br>原本想着用C++起服务可能会比较快一点,但是结果测下来,发现然而并没有(也有可能是我不熟悉C++的原因).<br>C++的RPS只能到20左右<br>Django嵌入可以到50左右.<br>另外,当然是后者的方式更简洁一些.</p>
 <p>再另外,如果需要要在C++中做比较多的处理步骤,可能就会更不方便,比如分词.<br>所以,如果是图像一类,如果做得合适,还有可能用C++起个服务,但是NLP一类可能会更困难一些.<br>相对来说,Django嵌入的方式应该简单多了.</p>
-<p>再再另外,<br>模型对系统版本,框架版本,部署线程等其实也挺敏感的,多试几次就好了++,搜索空间也不大.<br>Ubuntu 16.04/torch1.1.0/ gunicorn<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.set_num_threads(<span class="number">3</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunicorn --env DJANGO_SETTINGS_MODULE=xxxx.settings xxxx.wsgi:application -w 3 -b 0.0.0.0:8001 -k gthread --thread 3 --max-requests 4096 --max-requests-jitter 512 --log-level=debug --timeout 120 --preload</span><br></pre></td></tr></table></figure></p>
+<p>再再另外,<br>模型对系统版本,框架版本,部署线程等其实也挺敏感的,多试几次就好了++,搜索空间也不大.<br>Ubuntu 16.04/torch1.1.0/ gunicorn<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.set_num_threads(<span class="number">3</span>)</span><br></pre></td></tr></table></figure><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunicorn --<span class="built_in">env</span> DJANGO_SETTINGS_MODULE=xxxx.settings xxxx.wsgi:application -w 3 -b 0.0.0.0:8001 -k gthread --thread 3 --max-requests 4096 --max-requests-jitter 512 --log-level=debug --<span class="built_in">timeout</span> 120 --preload</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -415,7 +415,7 @@
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

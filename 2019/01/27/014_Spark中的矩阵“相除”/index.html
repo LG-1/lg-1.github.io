@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 6.3.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -183,14 +183,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -311,7 +311,7 @@
         <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>我们知道,线性代数的矩阵中,其实是没有矩阵除法这个概念的.</p>
 <p>所以这里讲的相除其实是两个维度完全一样的矩阵对应点一一相除的意思.</p>
 <p>类似于python 中np.array/np.array</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">b = np.array([[<span class="number">2</span>,<span class="number">3</span>], [<span class="number">1</span>,<span class="number">4</span>]])</span><br><span class="line">print(<span class="string">&quot;mat a is: \n &#123;0&#125; \n mat b is:\n &#123;1&#125; \n mat a/b is: \n &#123;2&#125;&quot;</span>.<span class="built_in">format</span>(a, b, a/b))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>,<span class="number">4</span>]])</span><br><span class="line">b = np.array([[<span class="number">2</span>,<span class="number">3</span>], [<span class="number">1</span>,<span class="number">4</span>]])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;mat a is: \n &#123;0&#125; \n mat b is:\n &#123;1&#125; \n mat a/b is: \n &#123;2&#125;&quot;</span>.<span class="built_in">format</span>(a, b, a/b))</span><br></pre></td></tr></table></figure>
 <pre><code>mat a is: 
  [[1 2]
  [3 4]] 
@@ -328,7 +328,7 @@
 <p>注意到DenseVector在Spark中是有除法的,所以结果也很简单,将两个矩阵构造在两个Densevector 矩阵的RDD中,然后通过RDD1.zip(RDD2)同时操作两个RDD矩阵实现矩阵的除法.</p>
 <h1 id="构造矩阵"><a href="#构造矩阵" class="headerlink" title="构造矩阵"></a>构造矩阵</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkContext</span><br><span class="line"><span class="keyword">from</span> pyspark.mllib.linalg.distributed <span class="keyword">import</span> RowMatrix</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(<span class="string">&#x27;local&#x27;</span>, <span class="string">&#x27;local_test_recommend&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rowsa = sc.parallelize([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line">rowsb = sc.parallelize([[<span class="number">2</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">4</span>]])</span><br><span class="line">sma = RowMatrix(rowsa)</span><br><span class="line">smb = RowMatrix(rowsb)</span><br><span class="line">print(sma.rows.collect())</span><br><span class="line">print(smb.rows.collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rowsa = sc.parallelize([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line">rowsb = sc.parallelize([[<span class="number">2</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">4</span>]])</span><br><span class="line">sma = RowMatrix(rowsa)</span><br><span class="line">smb = RowMatrix(rowsb)</span><br><span class="line"><span class="built_in">print</span>(sma.rows.collect())</span><br><span class="line"><span class="built_in">print</span>(smb.rows.collect())</span><br></pre></td></tr></table></figure>
 <pre><code>[DenseVector([1.0, 2.0]), DenseVector([3.0, 4.0])]
 [DenseVector([2.0, 3.0]), DenseVector([1.0, 4.0])]
 </code></pre><h1 id="矩阵相除"><a href="#矩阵相除" class="headerlink" title="矩阵相除"></a>矩阵相除</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sma.rows.<span class="built_in">zip</span>(smb.rows).<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x[<span class="number">0</span>]/x[<span class="number">1</span>]).collect()</span><br></pre></td></tr></table></figure>
@@ -399,7 +399,7 @@
 
 <div class="copyright">
   &copy; 2016 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
