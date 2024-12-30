@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="读者悉知本文译自 Max Kuhn and Kjell Johnson 2018-05-24《Feature Engineering and Selection: A Practical Approach for Predictive Models》译者：李光联系邮箱：ourantech@163.comupdate by 20180915 本书的内容尚在更新之中，最终将以网络及Chapman &amp;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习中的特征工程-译">
+<meta property="og:url" content="https://www.ourantech.club/2018/06/21/feature-engineering/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="读者悉知本文译自 Max Kuhn and Kjell Johnson 2018-05-24《Feature Engineering and Selection: A Practical Approach for Predictive Models》译者：李光联系邮箱：ourantech@163.comupdate by 20180915 本书的内容尚在更新之中，最终将以网络及Chapman &amp;a">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-06-21T09:50:00.000Z">
+<meta property="article:modified_time" content="2019-11-09T14:59:46.944Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="特征工程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.ourantech.club/2018/06/21/feature-engineering/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>机器学习中的特征工程-译 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E8%80%85%E6%82%89%E7%9F%A5"><span class="nav-text">读者悉知</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/06/21/feature-engineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机器学习中的特征工程-译
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-06-21 17:50:00" itemprop="dateCreated datePublished" datetime="2018-06-21T17:50:00+08:00">2018-06-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 22:59:46" itemprop="dateModified" datetime="2019-11-09T22:59:46+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="读者悉知"><a href="#读者悉知" class="headerlink" title="读者悉知"></a>读者悉知</h2><p>本文译自 Max Kuhn and Kjell Johnson 2018-05-24<br><a target="_blank" rel="noopener" href="http://www.feat.engineering/index.html">《Feature Engineering and Selection: A Practical Approach for Predictive Models》</a><br>译者：李光<br>联系邮箱：<a href="mailto:ourantech@163.com">ourantech@163.com</a><br>update by 20180915</p>
+<p>本书的内容尚在更新之中，最终将以网络及Chapman &amp; Hall/CRC发表。<br>1-6章已经完成(虽如此，也希望读者的反馈可以使之改进)，剩余部分仍在创作中，将在网站持续更新。<br>本书原版的已发布初始版本以获取更多优秀的反馈，可以通过<a target="_blank" rel="noopener" href="https://github.com/topepo/FES/issues">GitHub</a>提交反馈。编写尚未完成，所有书中某些内容可能是有风险的。前期的主要工作在于将架构组织起来，并确保质量。<br>代码将在所有工作完成之后公开。<br>另外，感谢花费时间阅读。<br>© 2018 by Taylor &amp; Francis Group, LLC. Except as permitted under U.S. copyright law, no part of this book may be reprinted, reproduced, transmitted, or utilized in any form by an electronic, mechanical, or other means, now known or hereafter invented, including photocopying, microfilming, and recording, or in any information storage or retrieval system, without written permission from the publishers.</p>
+<p>/*</p>
+<hr>
+<p>由于涉及到版权原因，经作者和版权出版商沟通，本版本内容将暂不发布，如有后续，敬请期待。<br>抱歉，<br>感谢。</p>
+<!-- >
+
+
+## 序言
+应用预测模型，在于基于历史数据构建模型去预测未来的数据。
+整个流程包括数据预处理、划分训练/测试数据、参数调整、模型构建、模型评估。
+
+建模过程形成了一些良好的实践方法，包括但不限于了解建模问题的专业知识、收集相关数据，建立因子与目标之间变化的关系，在可能的情况下，最小化这种变化的不确定性，便可以预测未来。但这一目标需要确保收集的因子与目标之间确有关系，并利用一系列模型来揭示这种关系。
+
+整个过程中，尽管遵循最佳实践进行工作，有时仍令人失望，因为模型的表现不尽人意。有时为了迁就模型的可解释性导致模型过于简单。有时收集专家指导的预测因子也并不能使模型充分的响应目标变量，有时关键关系无法在目标变量与以下因子之间直接使用： 
++ 转换后的因子
++ 两个或多个因子(产品或比率)的相互作用
++ 因子之间的函数关系
++ 因子的等价重新表示
+
+调整和修改预测因子以使模型更好地发现预测因子-目标变量之间关系的过程被称为特征工程。工程的前提是假设我们知道对于模型性能好坏的衡量指标并以此为依据进行调整优化。但是，我们经常不知道预测因子最好的再表示形式(模型的性能可能需要通过准确性和效率等指标来衡量)。且在特征工程过程中制造大量的再表示新特征可能会导致模型过拟合。因此，在创建模型的过程中必须谨慎以避免过拟合。
+
+特征处理和选择的目标是提供特征再表示的工具使模型具有更好的效果，这些工具的使用经验需要再实践中不断的积累。我们人的这个学习过程也是需要迭代的+_+。在开始写书的时候，尚无法找到基于预测模型性能指标来改进模型的全面参考文献和描述(不仅仅是关于图像和文字)。
+
+基于<Applied Predictive Modeling>，本书使用R作为计算引擎。这样选择的原因有。第一，R不是唯一的选择，但其在数据分析领域被广泛使用和证明是有效的。第二，R是开源和免费的，可以在任何地方安装，修改，并查看计算是如何进行的。第三，有广泛的论坛及资源提供支持，包括[StackOverflow](https://stackoverflow.com/questions/tagged/r)和[RStudio Community](https://community.rstudio.com/)。合理的，可重复的问题基本都可以得到回复。
+
+另外，基于我们前期的经验，软件和数据的免费可用是非常重要的。这可以使得每个人都重现工作，寻找bugs/errors，并扩展方法。数据集和R代码将放在[GitHub仓库](https://github.com/topepo/FES)中。
+
+© 2018 by Taylor & Francis Group, LLC. Except as permitted under U.S. copyright law, no part of this book may be reprinted, reproduced, transmitted, or utilized in any form by an electronic, mechanical, or other means, now known or hereafter invented, including photocopying, microfilming, and recording, or in any information storage or retrieval system, without written permission from the publishers.
+
+#### 参考
+Raimondi, Chris. 2010. “How I Won the Predict Hiv Progression Data Mining Competition.” http://blog.kaggle.com/2010/08/09/how-i-won-the-hiv-progression-prediction-data-mining-competition/.
+
+Jahani, Meysam, and Mahdi Mahdavi. 2016. “Comparison of Predictive Models for the Early Diagnosis of Diabetes.” Healthcare Informatics Research 22 (2):95–100.
+
+Luo, Gang. 2016. “Automatically Explaining Machine Learning Prediction Results: A Demonstration on Type 2 Diabetes Risk Prediction.” Health Information Science and Systems 4 (1):2.
+
+Stanković, Jelena, Ivana Marković, and Miloš Stojanović. 2015. “Investment Strategy Optimization Using Technical Analysis and Predictive Modeling in Emerging Markets.” Procedia Economics and Finance 19:51–62.
+
+Thomson, Jason, Kjell Johnson, Robert Chapin, Donald Stedman, Steven Kumpf, and Terence RS Ozolinš. 2011. “Not a Walk in the Park: The Ecvam Whole Embryo Culture Model Challenged with Pharmaceuticals and Attempted Improvements with Random Forest Design.” Birth Defects Research Part B: Developmental and Reproductive Toxicology 92 (2):111–21.
+
+
+### 译者注
+我也是新手，希望能够在翻译的过程中不断的学习，虽然主要是过程的学习，但还是希望能对这个过程有一些记录，所以，聊作翻译记录在此，是非正式的。同时也欢迎有想法和建议的同学一起交流。 -- 李光
+
+
+# 1 介绍
+统计模型已经变得越来越重要，因为它们已经在现代社会中无处不在，在我们的日常生活中产生各种类型的预测。例如，医生从模型得到一般规则，识别哪些特定患者群体具有增加特定疾病的风险。对航班到达时间的预测有助于了解我们的飞机是否有可能延误。在其他场景下，模型能够有效地告诉我们什么是重要的或具体的。例如，律师可能会利用统计模型来量化发生偶然潜在招聘偏倚的可能性，或者判断这是否一个系统性问题。
+
+在每种情况下，模型都是通过现有数据找到具有可接受数据保真度的数学表示形成。从这样的模型中，统计的重要性可以被估计。在航空公司延误的场景下，预测结果(到达时间)是感兴趣的数值。招聘偏差可能性的估计可以通过特定的模型参数来揭示。招聘偏差估计通常通过比较数据中的不确定性(即噪声)与结果的相似度，基于这种结果与噪声的相似程度进行确定 - 通常称为“统计意义“。这种类型的模型通常被认为是推论性的：为了理解自然状态而达成了一个结论。相反，对特定值(如到达时间)的预测反映的是估算问题，我们的目标不一定要了解趋势或事实是否真实，而是集中精力确定该值。预测的不确定性是另一个重要的量，是衡量模型价值的可信度指标。
+
+无论模型是用于推断还是估计，都需要知道一些重要的原则。简单模型通常比复杂模型更受欢迎，特别是当推论目标时。例如，在具有较少参数的模型中指定分布假设更容易。简单也使模型具有更好的解释性。例如，一位经济学家可能有兴趣量化研究生教育对工资的好处。一个简单的模型可能代表教育年数与工作薪金之间的这种线性关系。参数化将很容易促进关于教育潜在利益的统计推断。但是，假设这种关系在职业之间存在很大差异和/或不是线性关系。一个更复杂的模型在捕获数据模式方面会做得更好，但也会更难解释。
+
+但是，简单与模型准确性是需要平衡的，应当考虑结构风险最小化，而非一味的追求准确性或是模型的简单性。一个简单的模型可能易于解释，但如果它不能保持可接受的数据保真度，则不会成功;如果一个模型只有50％的准确性，它是否应该用来作出推论或预测？复杂性通常是精确度较差的解决方案。通过使用附加参数或使用固有非线性模型，我们可能会提高准确度，但解释性可能会受到很大影响。这种权衡是模型构建的一个关键考虑因素。
+
+迄今为止，讨论一直集中在模型的各个方面。然而，进入模型的变量(以及它们如何表示)对成功同样重要。在不讨论模型的情况下谈论建模是不可能的，但本书的目标之一是增加对模型中预测因子的强调。
+
+在命名方面，被建模或预测的数量被称为：结果，响应或目标变量。用于建模结果的变量称为预测因子，特征或变量，取决于上下文。例如，在对房屋的销售价格(结果)进行建模时，可以将房产的特征(例如平方英尺，卧室数量和浴室数量)用作预测因子(术语特征也是合适的)。但是，考虑一个或多个变量组合的人造模型术语，例如每间浴室的卧室数量。这种类型的变量可能更适合称为特征。无论如何，特征和预测因子被用来解释模型中的结果。
+
+正如所期望，将预测变量输入到模型中有好的和坏的方法。在很多情况下，可以通过多种方式来表示或编码底层信息。考虑一个物业销售价格的模型。该地点可能是至关重要的，可以用不同的方式表示。图1.1显示了2006年至2010年间出售的Ames Iowa及其周边物业的位置。在此图像中，颜色代表所报告的居住区。这里有28个社区，每个社区的房产数量从Landmark的单一房产到北艾姆斯的443个。数据中位置的第二个表示是经度和纬度。房地产经纪人可能会建议在该模型中使用邮政编码作为学区的替代指标，因为这对于有孩子的购房者来说可能是一个重要的考虑因素。但从信息论的角度来看，经纬度为测量物理位置提供了最为明确的特征，并且人们可能会认为这种表示具有较高程度的信息内容(假设这一特定信息是预测性的)。
+
+在模型中表示预测变量的方法不同，以及其中一些表示比其他表示更好的想法导致了特征工程的概念 - 特征工程 - 创建数据表示以提高模型有效性的过程。
+
+需要注意是，模型的有效性受许多因素影响。显然，如果预测因子与结果无关，那么它的表示就无关紧要。认识到存在多种类型的模型并且每个模型都有其自己的敏感性和需求是非常重要的。例如：
++ 有些模型不能容忍测量相同基础数量的预测变量(即预测变量之间的多重共线性或相关性)
++ 许多模型不能使用包含缺少值的样本
++ 当数据中存在不相关的预测变量时，某些模型会受到严重影响
+
+特征工程和变量选择可以帮助减轻许多这些问题。本书的目标是通过关注预测因素来帮助从业者建立更好的模型。“更好”取决于问题的背景，但很可能涉及以下因素：准确性，简单性和可靠性。为了实现这些特征或者在它们之间取得良好的平衡，理解模型中使用的预测变量与模型类型之间的相互作用是至关重要的。通过以更适合模型的方式表示数据或通过减少使用的变量数量，有时可以提高准确性和/或简单性。为了演示这一点，下一节将展示一个带两个预测变量的简单示例。此外，在1.3节中讨论了一个更实际的例子，它更接近于实践中的建模过程。
+
+
+## 1.1 简单例子
+为了解释特征工程如何影响模型，首先参考图1.2a，其中显示了两个相关预测变量(标记为A和B)。数据点由其结果着色，具有两个可能值(“PS”和“WS”)的离散变量。这些数据来自Hill等人的实验。([2007](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340))包括更大的预测器集。对于他们的任务，模型需要高度准确，但不需要用于推理。对于此图示，将仅考虑这两个预测变量。在该图中，两个类之间明显存在对角线分离。这里将使用简单的逻辑回归模型(Hosmer and Lemeshow [2000](https://www.amazon.com/Applied-Logistic-Regression-David-Hosmer/dp/0470582472))从这两个变量创建预测。该模型使用以下等式：$$log(p/(1-p)) = β_0 + β_1A + β_2B$$
+
+其中p是样本是“PS”类的概率，β值是需要从数据估计的模型参数。![Markdown](\images_source\20180621\1-001.PNG)
+
+标准程序(最大似然估计)用于从数据估计三个回归参数。作者使用1009个数据点来估计参数(即训练集)并严格保留1010个样本用于估计性能(测试集)5。使用训练集，估计参数:$\hat{β_0} = 1.73,\hat{β_1} = 0.003,\hat{β_2} = -0.064$
+
+为了评估模型，在测试集上进行预测。逻辑回归自然地产生类概率，其给出每个类的可能性的指示。虽然通常使用50％的截止值来进行硬类预测，但从此默认值中获得的性能可能会产生误导。为避免应用概率截止，此处使用称为接收器操作特性(ROC)曲线的技术。ROC曲线评估所有可能的截止值的结果，并绘制真阳性率与假阳性率的关系图。该示例的曲线如图1.2b所示。最好的曲线是尽可能靠近左上角移动的曲线，而无效的模型将沿着虚线对角线保持不变。此技术的常见汇总值是使用ROC曲线下的区域，其中值1.0对应于完美模型，而接近0.5的值表示没有预测能力的模型。对于当前的逻辑回归模型，ROC曲线下的面积为0.794，这表明对响应进行分类的中等准确度。
+
+给定这两个预测变量，尝试对这些数据进行不同的变换和编码以尝试增加ROC曲线下的面积是有意义的。由于预测变量都大于零并且似乎具有右倾斜分布，因此可能倾向于采用比率A/B并仅在模型中输入该项。或者，我们还可以评估每个预测变量的简单变换是否有用。一种方法是Box-Cox变换，它在逻辑回归模型之前使用单独的估计程序，可以将预测变量放在新的尺度上。使用这种方法，Box-Cox估计程序建议两个预测器应该以反比例使用(即1/A而不是A)。数据的表示如图1.3a所示。当将这些变换值输入逻辑回归模型代替原始值时，ROC曲线下面积从0.794变为0.848，这是一个显着增加。图1.3b显示了两条曲线。在这种情况下，对应于变换的预测变量的ROC曲线统一地优于原始结果。![Markdown](\images_source\20180621\1-002.PNG)
+
+此示例演示了预测变量的更改(仅做了简单的变换)如何可以改善模型的有效性。当比较图1.2a和图1.3a中的数据时，更容易在视觉上区分两组数据。在单独转换数据时，我们启用了逻辑回归模型来更好地分离类。根据预测变量的性质，使用原始数据的倒数可能会使推理分析更加困难。
+
+但是，不同的模型对数据有不同的要求。如果原始预测变量的偏度是影响逻辑回归模型的问题，则存在对该特征不具有相同敏感性的其他模型。例如，神经网络也可用于拟合这些数据，而无需使用预测变量的逆变换。该模型能够在ROC曲线下获得0.844的面积，这大致相当于改进的逻辑模型结果。可以得出结论，神经网络模型本质上总是比逻辑回归更好，因为神经网络不易受预测变量的分布方面的影响。但是由于“无免费午餐”定理，我们不应该像这样得出全面的结论(参见第1.2.3节)。此外，神经网络模型也有其自身的缺点：它完全无法解释，需要进行大量的参数调整才能获得良好的结果。根据模型的使用方式，这些模型中的一个可能比其它模型更好利用了数据。
+
+第1.3节对不同特征如何以不同方式影响模型进行了更全面的总结。在那之前，下一节将讨论将在本文中使用的几个关键概念。
+
+
+
+
+## 1.2 重要概念
+在继续讨论具体的策略和方法之前，应该讨论一些关键概念。这些概念涉及建模的理论及实践，本节主要解释概念，后面的章节中将提供细节及参考。
+
+### 1.2.1 过拟合
+过拟合是指模型非常适合当前数据但在预测新样本时失败。它通常发生在模型过度依赖当前数据集中的模式和趋势。由于模型只能拟合当前数据集，因此无法理解新数据，所以需要避免这种情况。例如，在图1.1所示的住房数据中，人们可以确定平方英尺在1267.5和1277之间且包含三间卧室的房产的预售价格在1207美元之内。但是，满足这些条件的其他房屋(不在此数据集中)的准确性会更差。这是一个无法向新数据推广的趋势示例。
+
+通常，非常灵活的模型(在1.2.5节中称为“低偏差模型”)具有过度拟合数据的可能性。这些模型在用于创建模型的数据集上做得非常好并不困难，并且如果没有一些预防机制，很容易无法推广到新数据。正如将在后面的章节中看到的那样，特别是第3.5节，过拟合是建模中的主要风险之一，应该是从业者关注的问题。
+
+虽然模型可能过拟合，例如上面举例的房屋数据，特征选择技术也可能会导致过拟合。当变量在当前数据集中显示相关但在新数据集中与结果没有实际关系。当数据量很少并且预测变量的数量非常大时，这种过拟合情况的风险尤其危险。应当采取足够的预警手段关注可能出现这种情况的风险。
+
+### 1.2.2 监督和无监督
+监督分析涉及识别预测变量与要建模或预测的识别结果之间的模式，而无监督技术仅关注于预测变量之间的模式。
+
+两种类型的分析通常都涉及一定程度的探索。探索性数据分析(EDA)(Tukey 1977)用于理解预测变量和结果的主要特征，以便在建模之前发现与数据相关的任何特定挑战。这可以调查变量中的相关结构、缺失数据的模式、模型的初始期望、数据中的异常主题等。
+
+显然，预测模型是严格监督的，因为直接关注于找到预测因子和结果之间的关系。无监督分析包括聚类分析，主成分分析和用于发现数据模式的类似方法。
+
+监督和非监督分析都容易过拟合，但监督特别倾向于发现数据中的错误模式以预测结果。简而言之，我们可以使用这些技术来创建一个预测。例如，分析人员对数据进行监督分析以检测哪些预测因子与结果显著相关。然后将这些预测变量用于相同数据的可视化(例如热图或聚类分析)，但仅使用重要的预测变量。毫不奇怪，可视化可靠地证明了结果和预测因子之间存在明确的模式，并且似乎提供了它们重要性的证据。但是，由于显示了相同的数据，因此可视化基本上是挑选仅对此数据适用的结果，并且不太可能推广到新数据。
+
+### 1.2.3 没有免费午餐
+“无免费午餐”定理(Wolpert，1996)的观点是，如果没有任何关于问题或手头数据的具体知识，没有一个预测模型可以说是最好的。有许多模型针对某些数据特征进行了优化(例如缺失值或共线预测变量)。在这些情况下，假设它们比其他模型做得更好(所有其他条件相同)可能是合理的。在实践中，事情并非如此简单。针对共线预测器优化的一个模型可能受限于对数据中的线性趋势进行建模，并且对数据中的缺失敏感。特别是在数据出现之前，很难预测最佳模型。
+
+已经有实验来判断哪些模型平均比其他模型更好，尤其是Demsar(2006)和Fernandez-Delgado等。(2014)。这些分析表明，某些模型倾向于产生最准确的模型，但“获胜”的速度不足以制定“始终使用模型X”的策略。
+
+在实践中，最好尝试一些不同类型的模型来探测哪些模型适合您的特定数据集。
+
+所以，这个实践的过程可能需要在了解方法与工具的情况下仍需要一些探索，故这顿午餐不是免费的，而本书存在的价值也就是让这顿午餐比之前便宜一点罢了。
+
+### 1.2.4 模型与建模过程
+开发有效模型的过程既是迭代的又是启发式的。在使用之前很难知道任何数据集的需求，并且在最终确定模型之前评估和修改许多方法是很常见的。许多书籍和资源仅关注建模技术，但这项活动通常只是整个过程的一小部分。图1.4显示了为典型问题创建模型的整个过程。![Markdown](\images_source\20180621\1-003.PNG)
+
+初始活动在标记(a)处开始，其中使用探索性数据分析来研究数据。在初步探索之后，标记(b)指示可能发生早期数据分析的位置。这可能包括评估简单的汇总度量或确定与结果具有强相关性的预测变量。该过程可能在可视化和分析之间进行迭代，直到建模者确信数据被充分理解为止。在里程碑(c)，基于先前的分析创建了关于如何在模型中表示预测变量的初稿。
+
+此时，可以使用初始特征集评估几种不同的建模方法。但是，许多模型可能包含需要调优的超参数。这在标记(d)处表示，其中四个模型簇显示为细红色标记。这表示正在评估的四个不同模型，但是每个模型在一组候选超参数值上被多次评估。该模型调整过程将在第3.6节中讨论，并在后面的章节中进行了多次说明。一旦调整了四个模型，就会对数据进行数值评估，以了解它们的性能特征(e)。每个模型的汇总度量(例如模型精度)用于了解问题的难度级别，并确定哪些模型最适合数据。基于这些结果，可以对模型结果(f)进行更多的EDA，例如残差分析。对于前一个预测房屋销售价格的例子，可以检查预测不良的房产，以了解该模型是否存在任何系统性问题。例如，可能存在难以准确评估的特定邮政编码。因此，可以使用另一轮特征工程(g)来补偿这些障碍。到目前为止，可能很明显哪些模型倾向于最好地解决手头的问题，而另一种更广泛的模型调整可以在更少的模型上进行(h)。在对预测器表示进行更多调整和修改之后，两个候选模型(＃2和＃4)已经完成。这些模型可以在外部测试集上进行评估，作为模型(i)之间的最终“烘烤”。然后选择最终模型(j)，这个拟合模型将用于预测新样本或做出推论。
+
+该示意图的要点是说明该过程中的活动远远多于简单地拟合单个数学模型。对于大多数问题，通常会有反馈循环来评估和重新评估模型/功能集组合的执行情况。[重要]
+
+### 1.2.5 模型偏差和方差
+方差是一个很好理解的概念。当用于数据时，它描述了值可以波动的程度。如果多次测量相同的物体，观察到的测量值将在某种程度上不同。在统计学中，偏差通常被认为是某种东西偏离其真实的程度。例如，当试图估计一个主题的公众舆论时，如果被调查的人过度代表一个特定的人口统计数据，那么民意调查可能会有系统性的偏差。由于民意调查错误地估计了期望的目标，将发生偏差。
+
+模型也可以根据方差和偏差进行评估。如果用于估计参数的基础数据的微小变化导致这些参数(或模型结构)发生相当大的变化，则模型具有高方差。例如，一组数据点的样本均值具有比样本中值更高的方差。后者仅使用数据分布中心的值，因此，它对值的适度变化不敏感。具有低方差的模型的一些示例是线性回归，逻辑回归和偏最小二乘。高方差模型包括使用单个数据点来定义其参数的模型，例如分类或回归树，最近邻模型和神经网络。为了对比低方差和高方差模型，考虑线性回归，或者，最近邻模型。线性回归使用所有数据来估计斜率参数，虽然它可能对异常值敏感，但它比最近邻模型灵敏度低得多。
+
+模型偏差反映了模型符合数据的基础理论结构的能力。低偏差模型可以是高度灵活的并且具有适合各种不同形状和图案的能力。高偏差模型无法估计接近其真实理论对应的值。线性方法通常具有高偏差，因为在不做修改的情况下，无法描述预测变量中的非线性模式。基于树的模型，支持向量机，神经网络等可以非常适应数据并具有低偏差。
+
+正如人们所预料的那样，模型偏差和方差往往相互对立;为了实现低偏差，模型往往表现出高方差(反之亦然)。方差偏差权衡是统计学中的共同主题。在许多情况下，模型具有控制模型灵活性的参数，从而影响结果的方差和偏差属性。考虑一个简单的数据序列，例如每日股票价格。移动平均模型将通过当天某个窗口内的数据点的平均值来估计给定日期的股票价格。窗口的大小可以调整方差和偏差。对于小窗口，平均值对数据的响应更快，并且具有匹配潜在趋势的高潜力。但是，它也继承了对窗口中这些数据的高度敏感性，这增加了方差。加宽窗口将平均更多点并将减少模型中的方差，但也会通过冒险过度平滑数据(从而增加偏差)来降低模型拟合潜力。
+
+考虑图1.5a中的示例，其中包含单个预测变量和结果，其中它们的关系是非线性的。右侧面板(b)显示两种模型拟合。首先，使用简单的三点移动平均值(绿色)。这条趋势线崎岖不平，但在跟踪数据的非线性趋势方面做得很好。紫色线显示标准线性回归模型的结果，该模型包括预测值的项和预测值的平方的项。线性回归在模型参数中是线性的，并且向模型添加多项式可以是允许模型识别非线性模式的有效方式。由于数据点在y轴上开始较低，达到预测值0.3附近的顶点然后减小，二次回归模型将是建模这些数据的合理的第一次尝试。该模型非常平滑(显示低方差)，但在拟合数据中看到的非线性趋势(即高偏差)方面做得不是很好。![Markdown](\images_source\20180621\1-004.PNG)
+
+为了进一步强调这一点，原始数据通过向其值添加少量随机噪声而多次“抖动”。这样做了二十次，对于每个版本的数据，相同的两个模型适合于抖动数据。拟合曲线如图1.6所示。移动平均线在回归预测中显示出显著程度的噪声，但平均而言，设法很好地跟踪数据模式。二次模型没有被额外的噪声混淆，并产生非常相似(虽然不准确)的模型拟合。
+
+模型偏差和方差的概念是本文思想的核心。如前所述，简单性是模型的重要特征。创建低方差，低偏差模型的一种方法是用适当的数据表示来增加低方差模型并减小偏差。第1.1节中的示例是此过程的一个简单示例;通过修改预测变量来改进逻辑回归(高偏差，低方差)，并且能够显示与神经网络模型(低偏差)相同的结果。作为另一个例子，使用以下等式生成图1.5a中的数据$$y = x^3 + [β_1 exp(β_2(x-β_3)^2)] + \epsilon$$
+
+从理论上讲，如果可以从数据中确定这种函数形式，那么最好的模型将是非线性回归模型(低方差，低偏差)。在使用重采样测量性能的例子中，我们将在第3.4节中重新讨论方差偏差关系。
+
+以类似的方式，由于不相关的预测因子导致过多的模型变化，模型可能具有较差的表现。特征选择技术通过减少额外变量噪声来改进模型。![Markdown](\images_source\20180621\1-005.PNG)
+
+### 1.2.6 经验驱动建模和数据驱动建模
+如果之前未对数据进行建模，则可能会出现项目。例如，假设新的客户数据库可用，并且此数据库包含大量可能的预测变量字段。主题专家可以根据以前的经验很好地了解模型中应该具有哪些特征。这些知识使专家能够准确地说明要使用哪些变量以及如何表示这些变量。鉴于他们的专业知识，应该充分考虑他们的推理。然而，由于模型根据数据估计参数，因此强烈希望成为数据驱动而非经验驱动。
+
+许多类型的模型能够凭经验辨别哪些预测变量应该在模型中，并且可以导出可以最大化性能的预测变量的表示(基于可用数据)。这种方法中的感知(通常是真实的)危险是双重的。首先，如前所述，数据驱动方法存在过度拟合数据中错误模式的风险。其次，他们可能会产生高度复杂的模型，可能没有任何明显的理性解释。在后一种情况下，可能会出现一个循环论证，即从业者只接受量化他们已经知道但却比人类手工评估所能提供的结果更好的模型。例如，如果发现一个意外的，新颖的预测因子与结果有很强的关系，这可能会挑战当前的传统智慧并被怀疑地看待(因为可能无法从因果关系来解释，如果可以从从因果关系解释的话，大概率的情况下早已被之前的行业专业们发现并解释了，到建模的时候还没有，那么也就是说明这个新变量至少不是那么容易发现和解释的)。
+
+在经验驱动建模和数据驱动建模之间存在一些冲突是很常见的。每种方法都有其优点和缺点。在实践中，我们发现只要双方都看到对比方法的价值，两种方法的组合效果最好。如果主题专家认为用于发现特征的方法足够严格以避免虚假结果，则他可能对新模型特征更有信心。同样，数据建模者可能会在专家的建议中发现有利于最初减少大量预测变量或至少帮助在建模过程中确定优先级。此外，特征工程的过程需要与建模内容相关的一定程度的专业知识。很难就如何在真空中表示预测变量或在不了解项目背景的情况下提出建议。例如，在1.1节的简单示例中，预测变量的逆变换对于有经验的从业者来说似乎是显而易见的。
+
+### 1.2.7 大数据
+大数据的定义有点模糊。通常，该术语意味着大量数据点(与变量相对)，需要注意的是，有效样本量可能小于实际数据量。例如，如果存在严重的类别不平衡或罕见事件率，则数据中的事件数量可能相当于行人。在线广告的点击率就是一个很好的例子。另一个例子是当预测因子空间的一个特定区域被大量采样时。假设一个数据集有数十亿条记录，但大多数对应于特定年龄范围内的白人男性。不同样本的数量可能较低，导致数据集不是多样的。
+
+大数据集可能无效的一种情况是在数据主流中添加样本。这简单地增加了变量分布的粒度，并且在某一点之后，可能无助于数据分析。当累积新的人口区域时，更多行数据可能会有所帮助。换句话说，大数据并不一定意味着更好的数据。
+
+虽然大数据的好处已被广泛支持，但存在一些潜在的缺点。首先，它可能无法解决分析中遇到的问题。大数据不能自动地引起预测因子和结果之间的关系。其次，当存在大量数据时可能导致一些计算问题。许多高方差/低偏差模型往往非常复杂且计算要求苛刻，并且适合这些模型的时间可能随着数据大小而增加，并且在某些情况下，增加可能是非线性的。添加更多数据使这些模型能够更准确地反映数据的复杂性，但需要专业的解决方案才能实现。除非解决方案具有使用的限制条件，否则这本身不成问题。最好依据问题决定所需的模型类型。
+
+此外，并非所有模型都可以利用大量数据。对于高偏差，低方差模型，大数据倾向于简单地降低参数估计的标准误差。例如，在对一百万条数据记录创建的线性回归中，将训练数据量加倍或三倍不可能将参数估计值提高到任何实际程度(所有其他条件相同)。
+
+但是，有些模型可以有效地利用大型数据集。在某些领域，可能会有大量未标记的数据，其中结果未知，但已经测量或计算了预测变量。经典示例是图像和文本，但未标记的数据可能在其他情况下发生。例如，制药公司拥有大型化学化合物数据库，这些化学化合物已经设计但其重要特征尚未测量(这可能很昂贵)。其他例子包括公共政府数据库，其中存在大量未与特定结果相关的数据。
+
+未标记的数据可用于解决某些特定的建模问题。对于需要形式概率规范的模型，确定多变量分布可能非常困难。大量的预测变量数据可以帮助估计或指定这些分布。第6.3.2节中讨论的自动编码器是可以对预测值进行去噪或平滑的模型。创建自动编码器不需要结果，因此未标记的数据可能会改善这种情况。
+
+总的来说，当遇到(或提供)大量数据时，人们可能会想：
++ 你用它做什么用的？它能解决一些未满足的需求吗？
++ 它会挡路吗？
+
+
+## 1.3 稍复杂例子
+为了说明模型和特征之间的相互作用，我们提出了一个更现实的例子。这里讨论的案例研究涉及预测芝加哥“L”列车的乘客量(即每天进入特定车站的人数)。如果可以建立足够预测的模型，芝加哥交通管理局可以使用这种模型来适当地配备每列所需的列车和车辆数量。第4.1节将更详细地讨论此数据集，但本节描述了在最初分析数据时评估的一系列模型。![Markdown](\images_source\20180621\1-006.PNG)
+
+首先，考虑了一组简单的四个预测变量。标记为“第1组”的这些初始预测因子的开发是因为它们易于计算，并且可视化显示出与乘客的紧密关系(结果)。评估了各种不同的模型，并使用重采样方法估算了均方根误差(RMSE)。图1.7显示了几种不同类型模型的结果(例如，基于树的模型，线性模型等)。初始特征集的RMSE值介于每天2331和3248之间。使用相同的特征集，基于树的模型具有最佳性能，而线性模型具有最差的结果。另外，模型类型中的RMSE结果的变化非常小(即，线性模型结果倾向于彼此相似)。
+
+为了提高模型性能，花费了一些时间来推导出第二组预测因子，这些预测因子可能用于增加原始的四个组。由此确定了128个数字预测因子，这些预测因子是不同站点乘客的滞后版本。例如，为了预测将来一周的乘客量，今天的乘客量将被用作预测因子(即七天滞后)。第二组预测因子总体上具有有益效果，但对线性模型特别有帮助(参见图1.7中的{1,2}的x轴值)。但是，模型和模型类型之间的好处各不相同。
+
+由于滞后变量对于预测结果很重要，因此使用8到14天之间的滞后创建了更多的滞后变量。其中许多变量显示出与其他预测因子的强相关性。然而，具有预测因子集1,2和3的模型在前一组模型之上和之外没有显示出有意义的改进，并且对于一些模型，结果更差。一个特定的线性模型受到影响，因为这个扩展集具有高度的变量间相关性。这种情况通常被称为多重共线性，对某些模型来说尤其令人不安。因为这一扩展的滞后变量组现在总体上没有显示出太大的好处，所以没有进一步考虑。
+
+当集思广益接下来可以添加哪些预测因子时，认为天气状况可能影响乘客量似乎是合理的。为了评估这个猜想，计算了第四组18个预测因子，并将其用于前两组(标记为{1,2,4})的模型中。与第三组一样，天气与预测火车乘客量没有任何关联。
+
+在对具有第1组和第2组的模型相关的残差图进行探索性数据分析之后，开发了第五组49个二元预测器，以解决当前最佳模型表现不佳的日子。这些预测因素导致模型误差大幅下降并得以保留。请注意，改进对模型的影响不同，并且对于特征集1,2和5，简单线性模型产生的结果与更复杂的建模技术相同。
+
+从这个演示中应该理解的总点是：
++ 在对数据建模时，几乎不会有单一的模型拟合或功能集立即解决问题。这个过程更有可能成为试验和错误的运动，以达到最佳效果。
++ 特征集的效果可以比不同模型的效果大得多。
++ 模型和功能之间的相互作用是复杂的，有些不可预测。
++ 使用正确的预测变量，许多不同类型的模型可以达到相同的性能水平。最初，线性模型的性能最差，但最终表现出一些最佳性能。
+
+后续章节将讨论发现，再表示，添加和减少特征的技术。
+
+
+## 1.4 特征选择
+在前面的示例中，按顺序派生新的特征集以提高模型的性能。开发这些集合，添加到模型中，然后使用重新取样来评估它们的效用。在将新预测因子添加到模型之前，未对其进行前瞻性筛选以获得统计显着性。这将是一个监督程序，必须注意确保不发生过度拟合。
+
+在该示例中，证明了一些预测因子具有足够的基础信息来支持预测结果(例如第1,2和5组)。但是，这些预测因子也可能同时包含非信息变量，这可能会在一定程度上影响性能。为了将预测因子设置为仅包含必要信息的较小集合，可以使用监督特征选择技术。此外，由于这些集合中的所有非信息性变量，第3组和第4组中可能存在少量重要预测因子，其效用未被发现。
+
+在其他情况下，所有原始预测因子都是已知的，并且在建模过程开始时可用。在这种情况下，可以通过简单地使用特征选择例程来尝试排序最佳和最差预测变量来使用较少顺序的方法。
+
+可以应用监督特征选择的许多不同策略，这些将在第11章中讨论。方法之间的主要区别在于如何导出子集：
++ 包装器方法使用外部搜索过程来选择整个预测因子集的不同子集以在模型中进行评估。这种方法将特征搜索过程与模型拟合过程分开。这种方法的例子是向后或逐步选择以及遗传算法。
++ 嵌入式方法是特征选择过程在模型拟合过程中自然发生的模型。这里的一个例子是一个简单的决策树，当模型在分割中使用它们时，选择变量。如果从未在分裂中使用预测变量，则预测方程在功能上与该变量无关，并且已经选择了该预测变量。
+
+与模型拟合一样，特征选择过程中主要关注的是过度拟合。当使用包装器方法和/或如果训练集中的数据量相对于预测因子的数量较小时尤其如此。
+
+最后，无监督选择方法可以对模型性能产生非常积极的影响。回想一下第1节中讨论的艾姆斯房屋数据。房产的邻域可能是模型中有用的预测因子。由于大多数模型需要预测因子的数字表示，因此通常将这些数据编码为虚拟或指示变量。在这种情况下，具有28个可能值的单个邻域预测器被转换为一组27个二进制变量，当属性在该邻域中时具有值1，否则为零。虽然这是一种众所周知且常用的方法(也就是传说中的独热编码)，但这里导致两个邻域在这些数据中只有一个或两个属性的情况，这小于整个集合的1％。在如此低的频率下，这样的预测器可能对某些模型(例如线性回归)产生不利影响，并且在构建模型之前将其移除可能是可取的。
+
+在搜索变量子集时，重要的是要意识到可能没有一组独特的预测变量可以产生最佳性能。通常存在补偿效应，当一个看似重要的变量被移除时，模型使用剩余变量进行调整。当解释变量之间存在某种程度的相关性或使用低偏差模型时尤其如此。因此，不应将特征选择用作确定特征重要性的形式方法。更传统的推理统计方法是评估预测因子对基础模型或数据集的贡献的更好解决方案。[这个观点和认识蛮重要的]
+
+
+## 1.5 本书轮廓
+本文的目的是提供有效的工具，以发现新预测因子的相关和预测性有用的工程。这些工具将成为预测建模过程的参考。在该过程的开始，我们将探索增强预测因子集的技术。然后在过程结束时，我们将提供过滤增强预测变量集的方法，以最终生成更好的模型。这些概念将在第2章至第11章详述如下。
+
+我们首先简要介绍建模和特征工程过程之间的相互作用(第2章)。在本例中，我们使用特征工程和特征选择方法来提高模型预测缺血性卒中风险的能力。
+
+在第3章中，我们将回顾开发预测模型的过程，其中将包括数据分割，验证方法选择，模型调整和未来预测的性能评估步骤的说明。本章还将介绍如何在跨多个模型循环模型构建过程时使用反馈循环。数据的探索性可视化对于理解预测变量之间以及预测变量与响应之间的关系至关重要，尤其是对于高维数据。此外，可视化可用于帮助理解各个预测变量的性质，包括预测变量的偏度和缺失的数据模式。
+
+第4章将说明有用的可视化技术，以探索预测因子之间的关系。还将介绍用于评估模型缺乏拟合的图形方法。
+
+第5章将重点介绍编码离散或分类预测变量的方法。在这里，我们将总结用于表示分类或有序(有序分类)预测变量的标准技术。分类预测器(如特征哈希)的特征工程方法被引入作为使用现有信息创建新预测器的方法，以更好地发现有意义的关系。本章还将提供有关实际问题的指导，例如如何处理分类预测器中的稀有级别以及为基于树和规则的模型创建虚拟变量的影响。基于日期的预测变量存在于许多数据集中，可以视为分类预测变量。还将演示编码日期的方法。
+
+工程数值预测因子将在第6章中讨论。如上所述，原始数据中收集的数字预测因子可能不是预测响应的最佳选择。单变量和多变量变换是寻找更好形式的数字预测变量的第一步。更高级的方法是使用基础扩展来创建原始预测变量的更好表示。在某些情况下，将连续预测变换为分类或序数分档可以减少变化并有助于提高预测模型的性能。还将提供用于分级数值预测器的注意事项。
+
+到本书的这一点，一个特征被认为是数据中观察到的预测因子之一。在第7章中，我们将说明预测模型的重要特征也可能是两个或多个原始预测变量之间的相互作用。将探索用于确定哪些预测变量彼此相互作用的定量工具以及用于评估这些类型的影响的重要性的图形方法。本章还将讨论交互可估计性的概念。
+
+使用时间序列(纵向)，细胞到细胞和图像数据等配置文件数据将在第9章中介绍。这些数据通常收集在金融，制药，情报，运输和天气等领域。预测，这种特殊的数据结构为许多模型带来了独特的挑战。一些现代预测建模工具(如偏最小二乘法)可以自然地处理这种格式的数据。但是许多其他强大的建模技术没有直接使用这种数据的方法。这些模型要求在建模之前汇总或折叠配置文件数据。本章将说明在创建可用于预测模型的格式的同时努力保留预测信息的方式使用此类信息的技术。
+
+每个使用真实数据的从业者都会在某些时候遇到缺失的数据。虽然一些预测模型(例如树)具有处理缺失数据的新方法，但其他模型不需要完整数据。第8章探讨了导致缺失数据的机制，并提供了用于调查缺失数据模式的可视化工具。提供了用于移除或输入缺失数据的传统和现代工具。此外，对连续和分类预测器的插补方法进行评估。
+
+很容易使用前面章节中提供的工具，将它们应用于现有数据，然后在新创建的功能上构建预测模型。然而，这些步骤的天真方法将导致过度拟合模型。第10章将介绍在创建新功能时防止过度拟合所需的步骤。本章将提供用于确定模型术语的最佳表示的策略，以最小化过度拟合的风险。
+
+第5-9章中描述的特征工程过程可以导致比原始数据中包含的更多预测变量。虽然一些额外的预测变量可能会提高模型性能，但并非所有原始预测变量和新预测变量都可能对预测有用。最后一章将讨论特征选择和特征选择策略，作为提高模型预测性能的总体策略。重要方面包括：特征选择的目标，无关预测因子的后果，通过正则化进行的选择比较，以及如何避免过度拟合(在特征选择过程中)。还讨论了传统逐步方法的无效性。
+
+
+## References
+Hill, A, P LaPan, Y Li, and S Haney. 2007. “Impact of Image Segmentation on High-Content Screening Data Quality for SK-BR-3 Cells.” BMC Bioinformatics 8 (1):340.
+Hosmer, D, and S Lemeshow. 2000. Applied Logistic Regression. 2nd ed. New York: John Wiley & Sons.
+Tukey, John W. 1977. Exploratory Data Analysis. Reading, Mass.
+Wolpert, D. 1996. “The Lack of a Priori Distinctions Between Learning Algorithms.” Neural Computation 8 (7). MIT Press:1341–90.
+Demsar, J. 2006. “Statistical Comparisons of Classifiers over Multiple Data Sets.” Journal of Machine Learning Research 7 (Jan):1–30.
+Fernandez-Delgado, M, E Cernadas, S Barro, and D Amorim. 2014. “Do We Need Hundreds of Classifiers to Solve Real World Classification Problems?” Journal of Machine Learning Research 15 (1):3133–81.
+Also, to some extent, the choice of these terms is driven by whether a person is more computer science-centric or statistics-centric.
+These types of data sets are discussed more in Section 3.3.
+This technique is discussed in more detail in Section 3.2
+The predictor values were normalized to have mean zero and a standard deviation of one, as is needed for this model. However, this does not affect the skewness of the data.
+This assumes that the data have been sufficiently cleaned and that no erroneous values are present. Data cleaning can easily take an extended amount of time depending on the source of the data.
+Discussed more in Section 3.6.
+This example will be analyzed at length in later chapters.
+A RMSE value of 3000 can correspond to $R^2$ values of between 0.80 and 0.90 in these data. However, as discussed in Section 3.2.1,$R^2$can be misleading here due to the nature of these data.
+
+
+
+
+
+
+# 2 说明性例子：预测缺血性中风的风险
+作为特征工程的入门课程，我们给出了一个简化的例子，其建模过程类似于图1.4所示的过程。为了便于说明，此示例将通过单个模型(逻辑回归)的示例来关注探索，分析拟合和特征工程。
+
+将基于预测缺血性中风风险的应用(完善中)，说明特征工程对于提高模型性能的价值。历史上，动脉狭窄(堵塞)程度已被用于识别患者的中风风险(Lian et al. 2012)。为了降低中风的风险，一般建议堵塞(>70％)的患者进行外科手术以清除堵塞物(Levinson and Rodriguez 1998)。然而，历史证据表明，单独阻塞的程度实际上并非良好的预测指标(Meier et al. 2010)。这可能是由于，虽然阻塞可能具有相同的大小，但斑块阻塞的组成也与中风的风险相关。斑块大而稳定会比斑块小而不稳定的情况风险小。
+
+![Markdown](\images_source\20180621\2-001.PNG)上图是基于软件生成的颈动脉预测因子图像。(a)一个严重狭窄的颈动脉，由中间的微小开口代表。(b)具有钙化斑块(绿色)和富含脂质的坏死核心(黄色)的颈动脉。(c)颈动脉有严重狭窄和积极的重塑斑块。
+
+为了研究这个假设，选择了一组具有一系列颈动脉阻塞的患者。数据由126名患者组成，其中44名患者的堵塞率大于70％。所有患者都进行了计算机血管断层扫描造影(CTA)，以产生详细的三维可视化和堵塞表征。然后通过Elucid Bioimaging的vascuCAP(TM)软件分析这些图像，该软件产生解剖结构估计值，例如狭窄百分比，动脉壁厚度和组织特征如富含脂质的坏死核心和钙化。作为一个例子，考虑图2.1(a)代表颈动脉有严重的狭窄，以管状开口为代表，穿过动脉中部。使用该图像，软件可以按面积(MaxStenosisByArea)和直径(MaxStenosisByDiameter)计算最大横截面狭窄。此外，该图中的灰色区域代表为动脉壁提供结构支撑的大分子(如胶原蛋白，弹性蛋白，糖蛋白和蛋白聚糖)。这个结构区域可以通过其面积来量化(MATXArea)。图2.1(b)显示了一个严重狭窄和钙化斑块(绿色)和富含脂质的坏死核心(黄色)的动脉。认为斑块和富含脂质的坏死核心都会加大中风风险，并且这些区域可以通过它们的体积(CALCVol和LRNCVol)和最大横截面积(MaxCALCArea和MaxLRNCArea)进行量化。2.1(c)中显示动脉严重的狭窄和向外动脉壁生长。顶部箭头描绘最大狭窄(MaxStenosisByDiameter)的横截面，底部箭头描绘最大正壁重塑(MaxRemodelingRatio)的横截面。重塑率是动脉壁的量度，比率小于1表示壁收缩，大于1表示壁生长。这一指标可能很重要，因为这显示冠状动脉与破裂有关(Cilla et al. 2013，Abdeldayem et al. (2015))。MaxRemodelingRatio指标捕捉三维动脉图像中最大比率(在两个白色箭头之间)的区域。基于对动脉的生理学成像表征生成许多其它有意义的预测因子。
+
+本研究中的患者组也有后续时间点是否发生中风的后续信息。表2.1提供了阻塞分类与中风结果之间的关联。对于这些患者，基于卡方关联检验(p = 0.46)，该关联不具有统计学显着性，表明单独的阻塞分类可能不是预测中风风险的良好指标。![Markdown](\images_source\20180621\2-002.PNG)
+
+如果斑块特征确实对于评估中风风险很重要，那么由成像软件提供的斑块特征的测量可以有助于改善中风预测。通过提高预测中风的能力，医生可能会有更多的可操作数据来做出更好的患者管理或临床干预决策。具体而言，有大量(阻塞>70％)但稳定斑块的患者可能不需要手术干预，从而在继续药物治疗的同时使自己免于侵入性手术。另外，斑块较小但斑块不稳定的患者可能确实需要手术干预或更积极的药物治疗来降低中风风险。
+
+每位患者的数据还包括中风风险的常用临床特征，例如患者是否患有心房纤颤，冠状动脉疾病和吸烟史。性别和年龄的人口统计资料也包括在内。这些容易获得的风险因素可以用来评估潜在有用的预测因子。事实上，应首先评估这组预测因子，以评估其预测中风的能力，因为这些预测因子易于收集，并且不需要昂贵的成像技术。
+
+为了评估每组因子的预测能力，我们将单独使用风险预测因子来训练模型，以及与成像预测因子和成像预测因子之间的相互作用一起设置的风险。我们还将探索这些特征的其他表示以提取有益的预测信息。
+
+
+## 2.1 分割
+在构建这些模型之前，我们将数据分成一组，用于开发模型，预处理预测变量，探索预测变量和响应(训练集)之间的关系，另一组将作为预测变量的最终仲裁者。设置/模型组合性能(测试集)。为了对数据进行分区，通过在每个结果类中进行随机分割，以分层方式完成对原始数据集的分割。这将使中风患者的比例保持大致相同(表2.2)。在分裂中，70％的数据被分配给训练集。![Markdown](\images_source\20180621\2-003.PNG)
+
+
+## 2.2 预处理
+建模过程的第一步是了解重要的预测因子特性，例如它们的个体分布、缺失程度、潜在的异常值，预测因子之间的关系以及每个预测因子与目标之间的关系。毫无疑问，随着预测因子数量的增加，我们精心策划每个预测因子的能力会迅速下降。但是，可以使用自动化工具和可视化来实现最初探索过程的良好实践，例如Kuhn(2008)和Wickham和Grolemund(2016)。
+
+对于这些数据，所有受试者和预测因子中只有4个缺失值。许多模型不能容忍任何缺失值。因此，我们必须采取行动消除缺失，以建立各种模型。插补技术用理性值替换缺失值，这些技术将在第8章中讨论。这里我们将用预测因子的中值替换每个缺失值，这是一种简单，无偏见的方法，适用于相对较小的量失踪。
+
+该数据集足够小，可以手动探索，并且可视化预测因子的单变量探索会发现许多有趣的特征。首先，以均值为中心并按比例缩放到单位方差，以实现直接的视觉比较。其次，许多预测因子可视化具有长尾分布，也称为正偏态分布。例如，考虑最大横截面积的分布($mm^2$富含脂质的坏死核心(MaxLRNCArea，如图2.2a所示)。MaxLRNCArea是对狭窄横截面的脂质池和坏死细胞碎片的混合物的测量。最初，我们可能认为偏斜和一些异常高的测量值是由于一小部分患者造成的。我们可能会想要消除这些不寻常的值，因为担心这些会对模型识别预测信号的能力产生负面影响。虽然我们的直觉对于许多模型是正确的，但这里所说明的偏度通常是由于数据的基础分布。相反，分配是我们应该集中注意力的地方。可以使用简单的对数变换或更复杂的Box-Cox或Yeo-Johnson变换将数据放置在分布近似对称的尺度上，从而消除数据中异常值的出现(图2.2b)。对于以指数方式增加的测量，这种转换是有意义的。在这里，脂质区域通过定义如何计算区域而自然地增长。![Markdown](\images_source\20180621\2-004.PNG)![Markdown](\images_source\20180621\2-005.PNG)
+
+接下来，我们将删除高度相关的预测变量($r^2 > 0.9$)与其他预测因子。可以在图2.3中的热图中直观地看到成像预测器之间的相关性，其中列和行的顺序由聚类算法确定。在这里，有三对预测变量显示出不可接受的高相关性：
++ 船体壁体积$mm^2$ (WallVol)和矩阵体积(MATXVol)
++ 最大横截面壁面积$mm^2$(MaxWallArea)和最大矩阵区域(MatMATXArea)
++ 基于面积的最大横截面狭窄(MaxStenosisByArea)和基于直径的最大横截面狭窄(MaxStenosisByDiameter)
+
+这三对在图2.3中沿着corrleation矩阵的对角线以红色方框突出显示。很容易理解为什么第三对具有高相关性，因为面积的计算是直径的函数。因此，我们只需要其中一个表示来进行建模。虽然只有3个预测变量超过了高相关阈值，但还有其他一些预测变量接近阈值。例如，钙化体积(CALCVol)和最大横截面钙化区域$mm^2$(MaxCALCArea)(r = 0.87)，富含脂质的坏死核心(MaxLRNCArea)的最大横截面积和富含脂质的坏死核心体积(LRNCVol)($r = 0.8$)具有中等强度的正相关但不超过阈值。这些可以在沿对角线的大块蓝点中看到。相关阈值是任意的，可能需要根据问题和要使用的模型来提高或降低。第3章包含有关此方法的更多详细信息。
+
+
+## 2.3 探索
+下一步是探索个体预测因子与响应之间以及预测因子对与响应之间的潜在预测关系。
+
+但是，在继续检查数据之前，需要一种机制来确保在这个小数据集中看到的任何趋势都不会被过度解释。因此，将使用重采样技术。第3.4节中描述的重采样方案称为重复10倍交叉验证。这里，创建了训练集的50种变体，并且每当对训练集数据进行分析时，将对这些重新采样中的每一个进行评估。虽然不是绝对可靠的，但它确实提供了一些防止过度拟合的保护。
+
+例如，一个最初的问题是“哪个预测因子与结果有简单关联？”。传统上，将在整个数据集上生成统计假设检验，然后将显示具有统计显着性的预测因子以包括在模型中。这种方法的问题在于它使用所有数据来进行此确定，并且这些相同的数据将用于最终模型中。过拟合的可能性很大，因为为了两个目的批量重用整个数据集。此外，如果预测性能是焦点，则正式假设检验的结果可能与预测性不一致。
+
+作为替代方案，当我们想比较两个模型时($M_1$和$M_2$)，将使用以下程序，将在第3.7节中详细讨论：![Markdown](\images_source\20180621\2-006.PNG)
+
+通过这种方式，在训练集的许多版本中评估第二模型中的潜在改进，并且在相关度量中量化改进。
+
+为了说明该算法，考虑了两个逻辑回归模型。类似于统计“空模型”的简单模型仅包含截距项，而模型复杂模型具有来自风险集的单个预测变量的单个项。这些结果显示在表2.3中，并根据ROC的改善将风险预测因子从最重要到最不重要。对于训练数据，若干预测因子通过ROC的改善来预测中风结果，提供了边际但显著的改善。基于这些结果，我们的直觉将使我们相信重要的风险集预测因子可能是最终预测模型的组成部分。![Markdown](\images_source\20180621\2-007.PNG)
+
+同样，可以探索连续的，成像预测因子和中风结果之间的关系。与风险预测因子一样，仅将截距逻辑回归模型的预测性能与具有每个成像预测因子的模型进行比较。图2.4显示了每个预测因子与卒中结果的分散，以及测试的p值(顶部中心)，以比较零模型和模型与每个预测因子之间ROC的改善。对于该数据，目标的所有横截面上的最厚壁(MaxMaxWallThickness)和最大横截面壁重塑比(MaxRemodelingRatio)与中风结果具有最强关联。让我们考虑MaxRemodelingRatio的结果，它表明笔划类别之间的平均值存在显着变化。该预测因子在中风类别之间的分布的分散仍然具有相当大的重叠。为了了解MaxRemodelingRatio按卒中类别分离患者的情况，创建训练集数据预测器的ROC曲线(图2.5)。该曲线表明该预测器存在一些信号，但该信号可能不足以用作预测工具。![Markdown](\images_source\20180621\2-008.PNG)![Markdown](\images_source\20180621\2-009.PNG)
+
+此时，人们可以直接调整预处理的预测模型并过滤风险和/或训练集的可视预测因子，以了解预测因子识别中风结果的程度。这通常是从业者理解和量化模型性能的下一步。但是，可以采取更多的探索性步骤来确定提高模型预测能力的其他相关且有用的预测变量构造。在这种情况下，其原始形式的数据不包含预测因子之间的交互直接表示。预测因子之间的成对相互作用是探索的主要工作，以发现可能包含与响应的有价值的预测关系。
+
+对于具有少量预测因子的数据，可以创建成对交互。对于数字预测因子，只需通过乘以每个预测因子的值即可生成相互作用。这些新特征可以添加到数据中，并作为预测变量传递给模型。随着预测变量数量的增加，这种方法实际上具有挑战性，并且可能需要筛选大量可能的成对相互作用的其他方法(详见第7章)。对于该示例，为每对可能的原始成像预测器(171个可能的新术语)创建了交互项。对于每个相互作用项，使用相同的重采样算法从仅具有主效应的模型和具有主效应和相互作用项的模型中量化交叉验证的ROC。计算了ROC的改善以及相互作用模型与主效应模型的p值。图2.6显示了由于交互项(在x轴上)导致的ROC改善与改进的log10 p值(y轴越大越显着)之间的关系。单击某个点将显示交互项。点的大小表示主效应模型的ROC曲线下的基线面积。具有相对较小符号的点表示改进是否对于已经表现出良好性能的模型。![Markdown](\images_source\20180621\2-010.PNG)
+
+在171个交互项中，过滤过程表明16个单独提供了对主效应的改进。其中一个交互术语是MaxRemodelingRatio和MaxStenosisByArea之间。图2.7说明了这两个预测因子之间的关系。图(a)是两个预测因子的散点图，其中训练集数据由笔画结果着色。轮廓线代表两个预测因子之间的等效产品值，这有助于突出没有中风结果的患者通常具有这两个预测因子的较低产品值的特征。或者，患有中风结果的患者通常具有更高的产品结果。实际上，这意味着显着的阻塞与血管中的外壁增长相结合会增加中风的风险。(b)中这种相互作用的箱线图表明，中风结果类别之间的分离比单独的预测因子更强。![Markdown](\images_source\20180621\2-011.PNG)
+
+在这一点上，至少有五个预测变量集的渐进组合可以探索其预测能力：单独的原始风险集，单独的成像预测变量，风险和成像预测因子，成像预测因子和成像预测因子的相互作用，以及风险，成像预测因子和成像预测因子的相互作用。我们可以开始在视觉上理解这些多维集合使用降维技术通过中风结果分离患者的预测能力。偏最小二乘判别分析(PLSDA)通过同时尝试考虑最大预测变量集并尝试将样本分离到响应类别来减小预测变量空间的维数。当在高维空间中线性分离组并且数据包含在较低维空间中时，该技术特别有效。PLS的维数降低使我们能够快速地看到可能在更高维空间中发生的组之间的分离的二维视图。理想情况下，如果在较高维空间中发生分离，则这将在二维投影中反映出来。图2.8比较了单独的风险集和成像集加成像交互的前两个PLS组件。黑线表示模型识别边界，背景阴影表示模型预测分类。与背景颜色相同的样品被正确分类，而背景颜色相反的样品被错误分类。这个初始的第一次通过可视化开始显示成像预测器及其相互作用开始改善组之间的分离，并在前两个PLS维度上模型投影中将受试者组织成更紧密的组。![Markdown](\images_source\20180621\2-012.PNG)
+
+
+## 2.4 跨集合预测模型
+由于其固有的可解释性，医生对逻辑回归有强烈的偏好。然而，众所周知，逻辑回归是一种高偏差，低方差模型，其倾向于产生比其他低偏差，高方差模型更低的预测性。逻辑回归的预测性能也因包含相关的非信息预测因子而降低。为了找到最具预测性的逻辑回归模型，应确定最相关的预测因子，以找到预测卒中风险的最佳子集。
+
+考虑到这些数据的特定问题，使用递归特征消除(RFE)例程(第11章)来确定较少的预测变量是否有利。RFE是一种简单的向后选择程序，其中最初使用最大模型，并且从该模型中，每个预测因子的重要性排名。对于逻辑回归，有几种确定重要性的方法，我们将使用每个模型项的回归系数的简单绝对值。RFE程序开始删除最不重要的预测变量，重新构建模型并评估性能。在每个模型拟合时，预测变量通过初始Yeo-Johnson变换以及居中和缩放进行预处理。
+
+我们之前的重采样方案与RFE流程结合使用。这意味着向后选择在90％的训练集上执行了50次，剩余的10％用于评估去除预测因子的效果。使用这些结果确定最佳子集大小，并且最终RFE执行是整个训练集中的一个并且停止在最佳大小。同样，此重采样过程的目标是降低此小数据集中过拟合的风险。
+
+为了理解逻辑回归的预测性能，首先将RFE应用于原始风险预测器。RFE确定最佳模型需要所有8个预测变量，并且与ROC曲线0.632下的交叉验证区域相关联。ROC曲线下面积的这种估计基于对来自不同重采样的整个风险预测器集的50种不同评估。![Markdown](\images_source\20180621\2-013.PNG)
+
+基于我们的探索性工作，人们可以预期成像预测因子和成对预测因子对之间的相互作用可能会改善模型性能。为了探索这种可能性，RFE也应用于增强预测因子集。图2.10中提供了跨预测器集的RFE交叉验证配置文件。![Markdown](\images_source\20180621\2-014.PNG)
+
+表2.4列出了每组中预测变量的总数，RFE选择的预测变量的数量，以及ROC曲线下的交叉验证区域。每组的ROC曲线如图2.9所示。交叉验证结果表明，通过包括成像预测器和成像预测器之间的相互作用，预测性能得到改善。值得注意的是，风险集的模型需要所有8个预测因子，而风险的递归特征消除，成像预测因子和成像预测因子交互集仅需要4个预测因子，以在ROC曲线下实现更好的交叉验证区域。前两个选定的预测变量是MATXVol x MaxMaxWallThickness和MaxMaxWallThickness12。这里有趣的是MaxRemodelingRatio和MaxStenosisByArea之间的相互作用项提供了中风分类中最强的个体分离之一，并且实际上是由RFE过程选择的。明确筛选交互术语是该模型的宝贵资产。
+
+重采样过程表明两个预测逻辑回归模型在ROC曲线下具有0.67的相关区域。图2.10中的重采样曲线显示了AUC的增加趋势，因为预测变量的数量减少，这表明对于这些数据，完整逻辑回归模型通过包括非信息性和/或相关预测变量而受损。![Markdown](\images_source\20180621\2-015.PNG)
+
+
+## 2.5 其它考量
+这里介绍的方法并不是本数据可以采用的唯一方法。例如，如果逻辑回归是被评估的模型，则glmnet模型(Hastie，Tibshirani和Wainwright 2015)是将特征选择结合到逻辑回归拟合过程中的模型。此外，您可能想知道为什么我们选择仅预处理成像预测因子，为什么我们没有探索风险预测因子之间或风险预测因子和成像预测因子之间的相互作用，为什么我们在原始预测器上而不是在预处理预测器上构建交互项，或者为什么我们没有采用不同的建模技术或特征选择程序。你提出这些问题是对的。实际上，可能存在不同的预处理方法，预测变量的不同组合，或者可以导致更好的预测性的不同建模技术。我们在这次短途旅行中的主要观点是说明花费更多时间(有时更多时间)来调查预测变量和预测变量之间的关系可以帮助提高模型预测性。当预测性能的边际收益可以带来显着的好处时尤其如此。在接下来的章节中，我们将重新审视此示例并提供测试集，烘焙结果。
+
+
+
+## References
+
+Lian, K, J White, E Bartlett, A Bharatha, R Aviv, A Fox, and S Symons. 2012. “NASCET Percent Stenosis Semi-Automated Versus Manual Measurement on Cta.” The Canadian Journal of Neurological Sciences 39 (03). Cambridge Univ Press:343–46.
+Levinson, M, and D Rodriguez. 1998. “Endarterectomy for Preventing Stroke in Symptomatic and Asymptomatic Carotid Stenosis. Review of Clinical Trials and Recommendations for Surgical Therapy.” In The Heart Surgery Forum, 147–68.
+Meier, P, G Knapp, U Tamhane, S Chaturvedi, and H Gurm. 2010. “Short Term and Intermediate Term Comparison of Endarterectomy Versus Stenting for Carotid Artery Stenosis: Systematic Review and Meta-Analysis of Randomised Controlled Clinical Trials.” BMJ 340. British Medical Journal Publishing Group:c467.
+Cilla, M, E Pena, MA Martinez, and DJ Kelly. 2013. “Comparison of the Vulnerability Risk for Positive Versus Negative Atheroma Plaque Morphology.” Journal of Biomechanics 46 (7). Elsevier:1248–54.
+Abdeldayem, E, A Ibrahim, A Ahmed, E Genedi, and W Tantawy. 2015. “Positive Remodeling Index by Msct Coronary Angiography: A Prognostic Factor for Early Detection of Plaque Rupture and Vulnerability.” The Egyptian Journal of Radiology and Nuclear Medicine 46 (1). Elsevier:13–24.
+Kuhn, M. 2008. “The caret Package.” Journal of Statistical Software 28 (5):1–26.
+Wickham, H, and G Grolemund. 2016. R for Data Science. O’Reilly. http://​r4ds.​had.​co.​nz.
+Hastie, T, R Tibshirani, and M Wainwright. 2015. Statistical Learning with Sparsity. CRC press.
+One could also make a strong argument to include a third predictor so that the final model includes both main effects that are involved in the interaction term.
+This model will be discused more in Chapter 11.
+
+
+
+
+
+
+
+
+# 3 预测建模过程综述
+在深入研究具体的建模方法和技术之前，首先需要讨论定义。这些主题在经验建模方面相当普遍，包括：用于衡量回归和分类问题性能的度量标准，包括数据分割和重采样在内的最佳数据使用方法，模型调整的最佳实践以及比较模型性能的经验等等。
+
+本章中有两个数据集用于说明这些技术。首先是第一章介绍的艾姆斯房价数据。第二套数据集根据网上交友网站的数据对一个人的职业进行分类。这些数据将在下一节讨论。
+
+
+## 3.1 说明性示例：OkCupid配置文件数据
+OkCupid是一个为国际用户提供服务的在线约会网站。Kim和Escobedo-Land(2015)描述了一个数据集，其中来自旧金山地区的超过50000个配置文件可用，数据可以在GitHub存储库中找到。数据包含几种类型的变量：
++ 与个人兴趣和个人描述相关的公开文章
++ 单一选择类型的领域，如职业，饮食，性别，体型和教育
++ 多种选择领域，如语言和流利的编程语言
+
+在它们的原始形式中，几乎所有原始数据字段都是离散的;只有年龄是数字。在拟合模型之前，将分类预测变量转换为虚拟变量(参见第5章)(至少在本章中)。对于本章中这些数据的分析，开放文本数据将被忽略，但稍后将进行探索(参见第5.6节)。在使用的216个预测变量中，有一组变量用于地理位置(即城镇，p=3)，宗教信仰(p=13)，星座 (p=15)，儿童(p=15)，宠物(p=15)，收入(p=12)，教育(p=31)，体型(p=12)，饮食(p=17)，以及与口语相关的50多个变量。有关此数据集及其处理方式的更多信息，请参阅本书的GitHub存储库。
+
+在本次演示中，我们的目标是预测一个人的职业是否属于STEM领域(科学，技术，工程和数学)。这些数据存在严重的类别不平衡;只有18.5％的配置文件适用于这些领域。虽然不平衡对分析有重大影响，但此处提供的说明主要是通过对实例进行下采样来使这一问题侧重，以使每个类中的配置文件数相等。参见Kuhn和Johnson(2013)第16章，详细描述了处理不常见类别的技巧。
+
+
+## 3.2 测量性能
+虽然经常被忽视，但用于评估模型预测结果的有效性的指标非常重要，可以影响结论。我们选择用于评估模型性能的度量取决于结果，下面的小节描述了使用的主要统计信息。[确实非常重要]
+
+### 3.2.1 回归指标
+当结果是数字时，最常见的度量是均方根误差(RMSE)。要计算此值，我们首先构建一个模型，然后使用此模型来预测结果。残差是观察到的结果和预测结果值之间的差异。为了得到模型的RMSE，我们计算平方残差的平均值，然后我们取这个值的平方根。取平方根将度量值放回原始测量单位。我们可以将RMSE视为样本从其观测值到其预测值的平均距离。简而言之，RMSE越低，模型就越能预测结果。
+
+另一个流行的指标是决定系数，通常称为$R^2$。计算这个值有几个公式(Kvalseth 1985)，但概念最简单的公式找到了观察值和预测值之间的标准相关性(a.k.a. R)和正方形。这个数字的好处是，对于线性模型，它有一个直截了当的解释：$R^2$是模型可以解释的结果中总变异性的比例。接近1.0的值表示几乎完美拟合，而接近零的值是由预测与结果没有线性关联的模型产生的。这个数字的另一个优点是它可以很容易地对不同结果进行比较，因为它是无单位的。
+
+不幸，$R^2$可以是一个欺骗性的指标。主要问题是它是相关性的衡量标准，而不是准确性。在评估模型的预测能力时，我们需要知道观察值和预测值的一致性。模型可以产生与观测值具有强线性关系但预测值不符合45度协议线的预测值是可能的，而且并不罕见。这种现象的一个例子发生在一个模型在结果的一个极端预测不足并且在结果的另一个极端预测不足时。基于树的集合方法(例如随机森林，增强树等)因这些类型的预测而臭名昭着。使用的第二个问题$R^2$作为绩效指标，当结果具有较大差异时，它可以显示非常乐观的结果。最后，$R^2$如果有一些结果值远离观察值和预测值的总体分散，则可能会产生误导。在这种情况下，少数几点可以人为增加$R^2$。[简而言之，相关并不一定准确]
+
+用来说明$R^2$的问题，让我们来看看芝加哥火车乘客数据的一个特定模型的结果。对于这个模型$R^2$估计是0.92;从表面上看，我们可以得出结论，这是一个非常好的模型。然而，高价值主要是由于乘客数量的固有性质在工作周期间较高而在周末相应较低。结果的双峰性质会导致结果差异，反过来又会导致结果差异$R^2$。我们可以看到图3.1(a)中双模结果的影响。图的(b)部分显示残差的直方图，其中一些残差大于10K。该模型的RMSE是2269次乘坐，相对于观察到的乘客值有些大。
+
+使用问题的第二个例证$R^2$通过检查图3.1(a)中的蓝线和黑线可以看出。蓝线是观察值和预测值之间的线性回归拟合，而黑线代表协议线。在这里我们可以看到模型低于预测较小的观测值(左)和过度预测较大的观测值(右)。在这种情况下，偏移量不是很大，但它确实说明了RMSE和$R^2$指标可能会产生不一致的结果。出于这些原因，我们建议使用RMSE而不是$R^2$。
+
+为了解决当数据说明相关性而非协议时相关系数过于乐观的问题，Lawrence和Lin(1989)开发了一致性相关系数(CCC)。该度量提供了相对于协议线的相关性度量，并且被定义为通常的相关系数和来自协议线的偏差度量的乘积。偏差系数的范围为0到1，其中值为1表示数据落在协议线上。数据越偏离一致性，偏差系数越小。因此，CCC可以被认为是相关系数的惩罚版本。如果数据在观察值和预测值之间显示出较差的相关性，或者观察值与预测值之间的关系远离协议线，则将适用惩罚。![Markdown](\images_source\20180621\3-001.PNG)
+
+RMSE和$R^2$对极值非常敏感，因为每个极值都取决于各个样本残差的平方值。因此，具有大残差的样本将对得到的汇总度量产生非常大的影响。通常，这种类型的样本使得模型性能度量标准看起来比没有样本时更糟糕。根据手头的问题，这个特征不一定是恶习，但可能是一种美德。例如，如果建模问题的目标是对新数据点(例如最高消费客户)进行排序，则残差的大小不是问题，只要预测最极端值是最极端的。然而，更常见的情况是我们有兴趣预测实际响应值而不仅仅是排名。在这种情况下，我们需要的指标不会受到一个或几个极端值的偏差。建立稳健性领域是为了研究极值(即异常值)对常用统计指标的影响，并推导出达到相同目的但对异常值影响不敏感或不敏感的替代指标(Hampel等，1972)。作为一个广泛的描述，强大的技术试图找到大多数数据的数字摘要。为了减少极值的影响，强大的方法降低了极端样本的权重，或者它们以极端样本更接近大多数数据的方式转换原始值。对样本进行排序是一种可以减少极值影响的变换。在预测客户支出的假设情况下，排名相关性可能是模型的更好的度量选择，因为它衡量预测与其真实值的排序顺序。该统计量计算数据的等级(例如，1，2等)，并根据这些值计算标准相关统计量。其他有效的回归测量方法是中位数绝对偏差(MAD)(Rousseeuw和Croux 1993)和绝对误差。
+
+
+### 3.2.2 分类指标
+![Markdown](\images_source\20180621\3-002.PNG)
+当结果是一组离散值(即定性数据)时，可以使用两种不同类型的性能指标。下面描述的第一种类型基于定性类别预测(例如词干或其他)，而第二种类型使用预测类别概率来测量模型有效性(例如Pr [stem = 0.254])。
+
+给定一组预测类，理解模型工作情况的第一步是创建一个混淆矩阵，它是观察和预测类的简单交叉列表。对于OkCupid数据，使用上面提到的预测器集构建了一个简单的逻辑回归模型，表3.1显示了产生的混淆矩阵16。
+
+正确预测的样本位于桌子的对角线上。错误预测为非STEM的STEM曲线显示在表格的左下方(n = 1880)，而错误预测的非STEM曲线位于右上角的单元格(n = 6651)。最广泛使用的度量标准是分类准确度，它只是正确预测的结果的比例。在此示例中，精度为0.78 =(5287 + 24991)/(5287 + 6651 + 1880 + 24991)。通过将观察到的准确度值与1 / C进行比较，存在隐含的评估模型性能的趋势，其中C是类的数量。在这种情况下，0.78远大于0.5。但是，只有当每个类中的样本数量几乎相同时，才应进行此比较。当这些数据中的类之间存在不平衡时，精度可能是模型性能的一个非常欺骗性的度量，因为通过将所有轮廓预测为非STEM可以实现0.82的值。
+
+作为准确性的替代方案，另一个名为Cohen的Kappa(Agresti 2012)的统计数据可用于解释类不平衡。该度量标准将错误率标准化为偶然的预期值。Kappa取值在-1和1之间，其中值1表示观察值和预测值之间的完全一致性(因此完美准确度)。值-1是完全不一致的，很少见17。接近零的值表示模型预测与真实结果之间没有关系。Kappa统计量也可以推广到具有两个以上组的问题。
+
+可用于混淆矩阵的可视化技术是马赛克图(见图3.3)。在这些图中，表的每个单元表示为矩形，其面积与单元中的值的数量成比例。这些图可以以多种不同的方式呈现，也可以用于多种尺寸的表。有关更多示例，请参阅Friendly和Meyer(2015)。
+
+当结果有两个类时，还有一组专门的分类指标。要使用它们，必须将其中一个类值指定为感兴趣的事件。这有点主观。在某些情况下，此值可能是最坏的情况(即死亡)，但指定的事件应该是最有兴趣预测的值。
+
+分类指标的第一范式侧重于误报和漏报，并且在有兴趣比较两种类型的错误时最有用。度量灵敏度只是正确预测的事件的比例，是数据中的真实正率。对于我们的例子，
+$$sensitivity = \frac{\\# truly STEM predicted correctly}{\\# truly STEM} = 5287/7167 = 0.738$$
+假阳性率与特异性相关，即
+$$specificity = \frac{\\# truly non-STEM predicted correctly}{\\# truly non-STEM} = 24991/31642 = 0.79$$
+假阳性率为1 - 特异性(在该实施例中为0.21)。
+两类系统的另一个范例植根于信息检索领域，其目标是找到事件。在这种情况下，常用的指标是精确度和召回率。召回相当于灵敏度，并关注模型找到的真实事件的数量。精确度是在预测事件总数中正确预测的事件的比例，或
+$$precision = \frac{\\# truly non-STEM predicted correctly}{\\# predicted STEM} = 5287/11938 = 0.443$$
+
+值得理解的敏感性，特异性和精确性的一个方面是它们是条件统计。例如，灵敏度反映了事件被正确预测的概率，因为样本确实是一个事件。该句的后半部分显示了度量的条件性质。当然，真正的类通常是未知的，如果已知，则不需要模型。在任何情况下，如果Y表示真实类，P表示预测，我们可以将灵敏度写为Pr [P = STEM | Y = STEM]。
+
+一个人真正想知道的问题是“如果我的价值被预测为一个事件，它真正的事件是什么？”或Pr [Y = STEM | P = STEM]。值得庆幸的是，贝叶斯分析领域(McElreath 2016)对这个问题有了答案。在这种背景下，贝叶斯规则指出了这一点
+$$P_r[Y|P] = \frac{P_r[Y] \times\; P_r[P|Y]}{P_r[P]} = \frac{Prior \times\; Likelihood}{Evidence}$$
+
+灵敏度(或特异性，取决于一个人的观点)是该等式的“可能性”部分。先验概率或流行率是我们在野外观察事件的总体速率(可能与我们的训练集中观察到的不同)。通常，人们会在收集数据之前指定整体事件率，并在计算中使用它来确定无条件统计数据。对于灵敏度，其无条件模拟称为阳性预测值(PPV)：
+$$PPV = \frac{sensitivity \times\; prevalence}{(sensitivity \times\; prevalence) + ((1 - specificity) \times\; (1 - prevalence))}$$
+阴性预测值(NPV)与特异性类似，可以计算为
+$$NPV = \frac{specificity \times\; (1 - prevalence)}{((1 - sensitivity) \times\; prevalence) + (specificity \times\; (1 - prevalence))}$$
+
+见DG Altman和Bland(1994b)对这些措施进行了简明扼要的讨论。此外，这些公式的简化版本通常显示为这些统计数据，假设流行率为0.50。这些公式虽然在患病率为0.50时是正确的，但如果患病率与这个数字不同，则会产生非常误导的结果。
+对于OkCupid数据，灵敏度和PPV的差异是：
++ 灵敏度：如果配置文件是真正的STEM，那么它被正确预测的概率是多少？
++ PPV：如果个人资料被预测为STEM，那么它是STEM的概率是多少？
+
+正面和负面预测值通常不用于衡量绩效。这部分是由于流行的性质。如果结果不是很清楚，那么很难提供一个价值(即使在询问专家时也是如此)。当存在足够数量的数据时，通常通过对应于感兴趣事件的结果数据的比例来估计患病率。此外，在其他情况下，患病率可能取决于某些因素。例如，旧金山地区的STEM概况的比例可以从训练集估计为0.18。使用该值作为患病率，我们的估计值为PPV = 0.44和NPV = 0.93。PPV明显小于灵敏度，因为该模型缺少了近26％的真实STEM曲线以及存在于STEM领域的整体可能性已经相当低的事实。
+
+旧金山STEM专业人员的流行程度可能会高于该国其他地区。如果我们认为美国的整体STEM患病率约为5％，那么我们的估计值将变为PPV = 0.16和NPV = 0.98。这些计算仅根据流行率估计而不同，并证明较小的流行率如何影响我们结果的无条件概率。
+
+到目前为止讨论的度量取决于具有硬预测(例如STEM或其他)。大多数分类模型可以将类概率作为软预测产生，通过选择具有最大概率的类，可以将其转换为确定类。可以使用概率创建许多度量标准。
+
+对于两类问题，示例度量是二项式对数似然统计量。为了说明这个统计数据，让我们用$i$代表样本的索引$i=1，2，...，n$,然后用$j$表示结果类数量的数值$j=1，2^{18}$.接下来，我们将使用$y_{ij}$代表真实阶级的指标$i^{th}$样本。那是，$y_{ij}=1$如果$i^th$样品在$j^{th}$类，否则为0。最后，让我们$p_{ij}$代表预测的概率$i^{th}$样本中$j^{th}$类。然后将对数似然计算为$$logℓ = \sum_{i=1}^{n}\sum_{j=1}^{C}y_{ij}log(p_{ij})$$
+
+当C = 2对于两类问题。通常，我们希望最大化对数似然。如果预测所有样本的概率很高，则该值将最大化。
+通常根据类概率计算的另外两个指标是基尼标准(L. Breiman et al.1984)
+$$G = \sum_{i=1}^{n}\sum_{j \neq\; \acute{j}}p_{ij}p_{i\acute{j}}$$
+和熵(H)(MacKay 2003)：
+$$logℓ = \sum_{i=1}^{n}\sum_{j=1}^{C}y_{ij}log_2(p_{ij})$$
+
+与对数似然统计量不同，这两个度量都是类概率中的方差或杂质的度量，应该最小化。![Markdown](\images_source\20180621\3-003.PNG)
+
+在这三个指标中，重要的是要注意可能性统计是唯一使用真实类信息的指标。因此，它以受监督的方式惩罚不良模型。基尼和熵统计只会惩罚模棱两可的模型(即产生大致相等的类概率)。例如，表3.2显示了一个两类示例。如果真实结果是第一类，则第二行中显示的模型结果将是最佳的。似然统计量只考虑了名为“Class 1”的列，因为那是唯一的列$y_{ij}=1$。就可能性统计而言，模棱两可的模型比自信地预测错误类别的模型更好。当考虑基尼和熵时，模棱两可的模型最差，而好的和坏的模型是等价的。
+![Markdown](\images_source\20180621\3-004.PNG)
+
+当存在两个类时，对数似然具有基于硬预测的度量的一个优点是它回避了概率截止的适当性的问题。例如，当讨论准确性，灵敏度，特异性和其他度量时，存在隐含的假设，即用于在软预测到硬预测之间的概率截止是有效的。通常情况并非如此，特别是当数据存在严重的类不平衡时。考虑之前讨论过的OkCupid数据和逻辑回归模型。用于进行表3.1中包含的确定性预测的类概率估计如图3.2所示，其中顶部面板包含真正STEM的轮廓，底部面板具有其他轮廓的类概率分布。常用的50％截止值用于创建按预测类别观察的原始表格。表3.1也可以使用马赛克图显示，如图3.3(b)所示，其中块的大小与每个单元格中的数据量成比例。如果我们对调用配置文件STEM所需的证据级别更加宽容，那么该表会发生什么？我们可能会将事件的阈值降低到20％，而不是使用50％的截止值。在这种情况下，我们将更多的配置文件称为整体STEM。这可能会提高灵敏度，因为真正的STEM配置文件更可能被正确预测，但成本是增加误报的数量。该混淆矩阵的镶嵌图如图3.3(a)所示，其中左上角的蓝色块变大，但右上角的红色块也有增加。在这样做时，我们将灵敏度从0.74增加到0.95，但代价是从0.79降至0.38。将预测STEM曲线所需的证据水平提高到80％，具有与图3.3(c)所示相反的效果。在这里，特异性得到改善，但敏感性受到破坏。![Markdown](\images_source\20180621\3-005.PNG)
+
+然后问题变成“应该使用什么概率截止？”这取决于许多事情，包括哪个错误(误报或假阴性)伤害最大。但是，如果两种类型的错误同样不好，则可能存在比默认值更好的截止值。
+
+接收器操作特性(ROC)(DG Altman和Bland 1994a)曲线可用于缓解此问题。它考虑所有可能的截止值并跟踪灵敏度和特异性的变化。通过绘制假阳性率(1-特异性)与真阳性率来绘制曲线。OkCupid数据的ROC曲线如图3.4(a)所示。最好的模型是拥抱y轴并直接进入左上角(没有出现任何类型的误差)的模型，而完全无效的模型曲线将沿着灰色显示的对角线进行跟踪。该曲线允许用户执行两项重要任务。首先，可以根据一个人对灵敏度或特异性重要性的预期来确定适当的截止值。然后可以使用该截止值进行定性预测。其次，也许更重要的是，它允许评估模型而无需确定最佳截止值。通常，ROC曲线下的面积用于评估模型。如果最佳模型立即进入左上角，则此曲线下的面积为1，而不良模型将产生0.50附近的AUC。应该谨慎使用，因为两个不同型号的两条曲线可能交叉;这表明存在一个模型比另一个更好的区域。作为总结度量，AUC消除了曲线中可见的任何细微差别。对于图3.4(a)中的曲线，AUC为0.847，表明中等偏好。
+
+从信息检索的角度来看，精确回忆曲线更合适(Christopher，Prabhakar和Hinrich 2008)。这类似于ROC曲线，因为两个统计数据是根据数据中的每个可能的截止值计算的。对于OkCupid数据，曲线如图3.4(b)所示。较差的模型会导致精确回忆曲线位于水平灰线附近，该曲线处于观察到的患病率值(此处为0.18)。此处再次使用曲线下面积进行总结，最佳可能值再次为1.0。该曲线下面积为0.612。
+![Markdown](\images_source\20180621\3-006.PNG)
+
+在模型构建的初始阶段，具有两个类的数据集的良好策略是关注来自这些曲线的AUC统计，而不是基于硬类预测的度量。一旦找到合理的模型，就可以仔细检查ROC或精确回忆曲线以找到数据的合理截止值，然后可以使用定性预测度量。
+
+
+
+### 3.2.3 特定上下文指标
+虽然之前讨论的指标可用于开发有效的模型，但它们可能无法回答感兴趣的基本问题。例如，考虑我们收集客户特征数据以及客户是否点击广告的情况。我们的目标可能是将客户特征与客户点击广告的概率联系起来。如果这是目标，上面描述的几个指标将使我们能够评估模型性能。或者，我们可能更感兴趣回答“如果使用此模型预测谁将点击广告，我的公司会赚多少钱？”在另一个背景下，我们可能有兴趣建立一个模型来回答“什么” 当模型用于确定该客户是否会偿还贷款时，我的预期利润是多少？“ 这些问题非常依赖于上下文，并不直接符合之前描述的指标。
+
+以贷款为例。如果要求贷款$M$，我们可以计算预期的利润(或损失)吗？假设我们的模型是在适当的数据集上创建的，并且可以产生类概率$P_r$贷款将按时支付。给定这些数量，利率，费用和其他已知因素，可以为每个数据点计算贷款的总回报，然后可以使用平均值来优化模型。
+
+因此，我们应该让感兴趣的问题引导我们评估模型回答问题的能力的适当度量。我们可以使用常见的现有指标。或者我们可能需要为我们的上下文开发自定义指标。有关其他讨论，请参见Kuhn和Johnson(2013)第16章。
+
+
+
+## 3.3 数据分割
+在开始建模项目时，首先要做的决定之一是如何利用现有数据。一种常见技术是将数据分成两组，通常称为训练和测试集。训练集用于开发模型和特征集; 它们是估算参数，比较模型以及达到最终模型所需的所有其他活动的基础。测试集仅在这些活动结束时用于估计模型性能的最终，无偏的评估。至关重要的是，在此之前不要使用测试装置。查看测试集结果会使结果产生偏差，因为测试数据将成为模型开发过程的一部分。
+
+应该留出多少数据进行测试？ 制定统一的指南极其困难。数据的比例可以由许多因素驱动，包括原始样本池的大小和预测变量的总数。对于大量样本，一旦“足够”的样本包含在训练集中，该决定的关键性就会降低。此外，在这种情况下，数据的简单初始拆分的替代方案可能是个好主意; 有关其他详细信息，请参见下面的3.4.7节 样本数量的比例(n)预测人数(p)也很重要。我们在分割数据时会有更大的灵活性n比p大得多。但是当n小于p，我们也可能遇到建模困难即使是n看起来很大。
+
+有许多方法可以将数据拆分为训练集和测试集。最常见的方法是使用某种版本的随机抽样。完全随机抽样是一种直接的实施策略。然而，当响应在结果中不均匀分布时，这种方法可能会有问题。风险较低的分裂策略是使用基于结果的分层随机样本。对于分类模型，这是通过在每个类中随机选择样本来实现的。这种方法确保结果的频率分布在训练和测试集中大致相等。当结果是数字时，可以基于数据的四分位构造人工层。例如，在Ames住房价格数据中，结果分布的四分位数将数据分成四个包含大约230个房屋的人工组。然后在这四组中进行训练/测试分组，并将四个不同的训练组部分合并在一起(对于测试组也是如此)。
+
+当有充分的理由时，也可以使用非随机抽样。一个这样的情况是当数据存在重要的时间方面时。这里使用最新数据作为测试集可能是谨慎的。这是4.1节中讨论的芝加哥公交数据中使用的方法。
+
+
+
+## 3.4 重抽样
+如前所述，有时需要在不借助测试集的情况下理解模型的有效性。简单地重新训练训练集是有问题的，因此需要一个程序来使用训练集进行评估。重采样方法将用于此目的。
+
+重采样方法可以生成我们训练集的不同版本，可用于模拟模型对新数据的执行情况。这些技术在如何创建重新采样版本的数据以及执行模拟过程的迭代次数方面不同。在每种情况下，重采样方案生成要用于建模的数据的子集，并且另一个用于测量性能。在这里，我们将前者称为“分析集”，将后者称为“评估集”。它们大致类似于本章开头所述的训练和测试集。图3.5显示了具有三个重新采样的示例数据层次结构的图形。
+![Markdown](\images_source\20180621\3-007.PNG)
+有许多不同风格的重采样将在接下来的四个部分中描述。
+
+
+### 3.4.1 V折交叉验证及其变体
+简单的V形交叉验证可创建具有相同近似大小的原始训练集的V个不同版本。每个V评估集包含训练集的1 / V，并且每个评估集排除不同的数据点。分析集包含其余部分(通常称为“折叠”)。假设V = 10，那么对于每个相应的重采样，存在10个不同版本的90％的数据以及10个版本的剩余10％。
+
+要使用V折叠交叉验证，将在第一个折叠处创建模型，并由模型预测相应的评估集。使用所选择的性能测量(例如RMSE，ROC曲线下面积等)总结评估集，并保存这些统计数据。该过程以循环方式进行，以便最终对模型进行V性能估计，并且每个估计在不同的评估集上计算。通过对V个体度量进行平均来计算性能的交叉验证估计。
+
+当结果是分类时，也可以在此应用分层分裂技术，以确保分析和评估集产生相同的结果频率分布。同样，当类不平衡时这是一个好主意，但是否则不太可能有问题。
+
+例如，对于OkCupid数据，使用分层的10倍交叉验证。培训集包含38,809个配置文件，10个评估集中的每一个包含3,881个不同的配置文件。ROC曲线下面积用于测量前面提到的逻辑回归模型的性能。曲线下的10个区域范围为0.833至0.863，平均值为0.847。在不使用测试集的情况下，我们可以使用此统计信息来预测此模型对新数据的执行情况。
+
+正如将在3.4.6节中讨论的那样，重采样方法具有不同的特征。基本V折叠交叉验证的一个缺点是它比其他重采样方案相对嘈杂。补偿这一点的一种方法是进行重复的V折交叉验证。如果使用R重复，则在不同时间创建V重采样，并且最终对RV重采样进行平均以估计性能。由于更多的数据被平均，最终平均值的方差的减少将减少\sqrt{R}(使用高斯近似)。同样，这个程序的噪音是相对的，并且正如人们所预料的那样，是由评估集中的数据量驱动的。对于OkCupid数据，ROC曲线下的面积是根据3,881个曲线计算得出的，并且可能产生足够精确的估计值(即使我们只期望其中约716个是STEM曲线)。
+
+评估集可用于模型验证和诊断。表3.1和图3.2使用这些保持预测来可视化模型性能。此外，第4.4节更广泛地描述了如何使用评估数据集来推动模型的改进。
+
+另一种变化，即留一交叉验证，其V等于训练集的大小。这是一种有点弃用的技术，仅在训练集规模极小时才有用(Shao 1993)。
+
+图3.6显示了具有20个训练集样本的假设数据集的10倍交叉验证图。对于每个重采样，为评估集保留两个不同的训练集数据点。请注意，每个评估集都是互斥的，包含不同的实例。
+
+
+### 3.4.2 蒙特卡罗交叉验证
+V折叠交叉验证产生了具有互斥评估集的V组分裂。蒙特卡罗重采样产生可能包含重叠的分裂。对于每个重采样，随机取样π进入分析集的训练集的比例和分配给评估集的剩余样本。与前面的过程一样，在分析集上创建模型，评估集用于评估模型。该分裂过程进行B次，并且B结果的平均值用于估计未来性能。选择B足够大，使得B值的平均值具有可接受的精度。
+![Markdown](\images_source\20180621\3-008.PNG)
+
+图3.6还显示了蒙特卡罗折叠交叉验证和10个重采样和π=0.90。请注意，与10倍交叉验证不同，某些相同的数据点用于不同的评估集。
+
+
+### 3.4.3 引导
+数据的自举重采样被定义为一个简单的随机样本，其大小与训练集的大小相同，其中数据通过替换进行采样(Davison和Hinkley 1997)这意味着当创建自举重采样时，存在63.2％ 任何训练集成员不止一次包含在bootstrap样本中的可能性。引导程序重新采样用作分析集，评估集(有时称为包外样本)由未包含在引导程序样本中的训练集的成员组成。如前所述，自举采样进行B次，并遵循相同的建模/评估程序以产生性能的自举估计，即B结果的平均值。
+![Markdown](\images_source\20180621\3-009.PNG)
+图3.7显示了从20个样本数据集创建的10个引导样本的图示。颜色显示分析集多次选择多个训练设定点。评估集将包含没有颜色的行。
+
+### 3.4.4 滚动来源预测
+此过程特定于时间序列数据或具有强时间成分的任何数据集(Hyndman和Athanasopoulos 2013)。如果数据中存在季节性或其他慢性趋势，则分析和评估集之间的数据随机分割可能会破坏模型估计这些模式的能力
+
+在该方案中，第一分析集由前M个训练集合点组成，假设训练集按时间或其他有序时间分量排序。评估集将包含下一个N个训练集样本。第二个重采样保持数据集大小相同，但在第二个训练集成员处开始分割过程。分割方案继续进行，直到没有更多数据产生相同的数据集大小。假设这导致数据的B分裂，则相同的过程用于建模和评估，并且最终，存在从每个评估集生成的B性能估计。估算性能的简单方法是再次使用这些数据的简单平均。然而，应该理解的是，由于滚动评估集中存在显着重叠，因此B样本本身构成时间序列并且还可能显示季节性或其他时间效应。
+![Markdown](\images_source\20180621\3-010.PNG)
+
+图3.8显示了这种类型的重采样，其中10个数据点用于分析，随后的两个训练集样本用于评估。
+
+该程序有许多变化：
++ 分析集的大小不必相同。随着移动窗口沿着训练集前进，它可以累积地增长。换句话说，第一个分析集将包含M个数据点，第二个分析集将包含M + 1，依此类推。这是芝加哥列车数据建模的方法，将在第4章中介绍。
++ 拆分过程可以跳过迭代以产生较少的重采样。例如，在芝加哥数据中，从2001年到2016年有每日测量值。增加一天会产生过多的B值。对于这些数据，跳过了13个样本，因此分割窗口在两周内移动，而不是由个体移动 天。
++ 如果训练数据被不均匀地采样，则可以使用相同的过程但是随时间增量而不是数据集行增量移动。例如，对于分析集，窗口可以移动12小时，对于评估集，窗口可以移动2小时。
+
+该重采样方法至少以两种方式与先前的方法不同。拆分不是随机的，并且一旦移除分析集，评估数据集不是训练集数据的剩余部分。
+
+### 3.4.5 验证集
+验证集是训练集和测试集之间的东西。历史上，在神经网络文献中，人们认识到使用相同的数据来估计参数和测量性能是有问题的。通常，分配一小组数据来确定每次训练迭代的神经网络的错误率(也称为该方案中的训练时期)。当模型被训练以确定何时开始过度拟合时，该验证集将用于估计性能。通常，验证集是训练集的随机子集，以便它针对数值优化器的每次迭代而改变。在重新采样这种类型的模型时，使用分析集的一个小的随机部分作为重新内采样验证集是合理的。
+
+这是否取代了测试集(或类似的评估集)？ 不可以。由于验证数据是指导培训过程，因此不能用于公平评估建模过程的运行情况。
+
+
+### 3.4.6 重采样中的方差与偏差
+在1.2.5节中，讨论了模型的方差和偏差性质。重采样方法具有相同的属性，但它们的效果以不同的方式表现出来。概念化的方差更直接。如果您要在同一数据集上多次进行10次交叉验证，则可以通过确定结果平均值的差异来衡量重采样方案的变化。可以将该变化与重复相同次数(等等)的不同方案进行比较，以获得每个方案中的噪声量的相对比较。
+
+偏差是特定重采样方案能够达到真正的基础性能参数(我们永远不会真正知道)的能力。一般而言，随着分析集中的数据量缩小，重采样估计的偏差增加。换句话说，10倍交叉验证中的偏差小于5倍交叉验证中的偏差。对于蒙特卡罗重新取样，这显然取决于价值π。然而，通过模拟，可以看出，10倍交叉验证比蒙特卡罗交叉验证具有更少的偏差π=0.10使用B = 10。留一法交叉验证将具有非常低的偏差，因为其分析集仅是训练集之外的一个样本。
+
+图3.9包含重采样方案中方差和偏差的图形表示，其中曲线表示重采样统计的分布，如果对同一数据集进行多次相同的过程。表示了四种可能的方差/偏差情况。我们假设当值很大时，这里测量的模型度量会更好(例如$R^2$或灵敏度)并且真实值由绿色垂直线表示。右上图显示悲观偏差，因为值往往小于真值，而右下方的面板显示重新采样方案，方差相对较低，其分布中心与真实值在目标上( 所以它几乎不偏不倚)。
+
+通常，对于固定的训练集大小和重新采样的数量，通常认为简单的V折叠交叉验证是这里讨论的最嘈杂的方法，并且引导程序是最不可变的。引导程序被认为是最有偏见的(因为大约36.8％的训练集被选择用于评估)并且其偏差通常是悲观的(即，可能显示比真实基础值更差的模型性能)。已经有一些尝试来纠正引导程序的偏见，例如Efron(1983)和Efron和Tibshirani(1997)。
+
+虽然V折叠交叉验证确实具有膨胀方差，但当V为10或更大时，其偏差相当低。当训练集不大时，我们建议使用五次左右的十次交叉验证，具体取决于所需的精度，训练集大小和其他因素。![Markdown](\images_source\20180621\3-011.PNG)
+
+
+### 3.4.7 重抽样过程中应该注意什么
+在前面对重采样方案的描述中，我们已经说过评估集用于“构建模型”。这有点简化。为了使任何重采样方案能够产生推广到新数据的性能估计，它必须包含建模过程中可能显着影响模型有效性的所有步骤。例如，在1.1节中，使用转换来修改预测变量，从而改善了性能。在重新采样期间，此步骤应包含在重采样循环中。其他预处理或过滤步骤(例如PCA信号提取，预测器相关滤波器，特征选择方法)必须是重采样过程的一部分，以便了解模型的运行情况并测量建模过程何时开始过度拟合。
+
+有些操作可以免除。例如，在第2章中，只有少数患者存在缺失值，并使用中位数进行估算。对于这么小的修改，我们没有在重新采样中包含这些步骤。一般而言，估算可能会对性能产生重大影响，其可变性应传播到重采样结果中。在所有其他条件相同的情况下，居中和缩放也可以免于重新取样。
+
+作为另一个例子，OkCupid训练数据被下采样，以便类比例相等。这是一个重要的数据处理步骤，重要的是通过重采样结果传播此过程的效果。因此，在每个重采样的分析集上执行下采样过程，然后在创建最终模型时在整个训练集上再次执行下采样过程。
+
+重采样的另一个方面涉及信息泄漏的概念，其是在训练过程期间(直接或间接)使用测试集数据的地方。这可能导致过于乐观的结果，这些结果不会在未来的数据点上复制，并且可能以微妙的方式发生。
+
+例如，假设120个样本的数据集具有单个预测器并且本质上是顺序的，例如时间序列。如果预测器是有噪声的，则预处理数据的一种方法是将移动平均值应用于预测器数据并用平滑值替换原始数据。假设使用3点平均值，并且第一个和最后一个数据点保留其原始值。我们的倾向是用移动平均值平滑120个数据点的整个序列，将数据分成训练和测试集(比如训练中的前100行)。这里的一个微妙问题是第100个数据点，即训练集中的最后一个，使用测试集中的第一个来计算其3点平均值。通常，最新数据与时间序列中的下一个值最相关。因此，包括最近的一点可能会偏向模型性能。
+
+为了提供可靠的方法，人们应该限制自己开发预处理技术列表，仅在存在训练数据点的情况下估计它们，然后将这些技术应用于未来数据(包括测试集)。可以说，上面提到的移动平均问题在后果方面很可能很小，但是说明了测试数据在建模过程中的容易程度。应用这种预处理技术的方法是分割数据，然后将移动平均平滑器独立应用于训练和测试集。
+
+另一个更明确的信息泄漏途径有时可以在机器学习竞赛中看到，其中训练和测试集数据同时给出。虽然测试集数据通常具有盲法的结果数据，但是可以通过仅使用与测试集数据最相似的训练集样本来“训练到测试”。这可能会很好地改善该特定测试集的模型性能分数，但可能会破坏模型以预测更广泛的数据集。
+
+最后，对于大量数据，替代数据使用方案可能是一个好主意。可以为特定目的创建多个拆分，而不是简单的训练/测试拆分。例如，数据的特定分割可用于在使用训练集建立模型之前确定模型的相关预测变量。这将减少在重新采样中包括昂贵的特征选择步骤的需要。相同的方法可以用于后处理活动，例如从接收器操作特性曲线确定适当的概率截止。
+
+
+
+## 3.5 调整参数和过拟合
+许多模型包括的参数虽然很重要，但不能直接从数据中估算出来。调整参数(有时称为超参数)很重要，因为它们通常控制模型的复杂性，因此也影响可以进行的任何基于方差的权衡。
+
+作为示例，K最近邻模型存储训练集数据，并且在预测新样本时，定位与新样本最接近的K训练集点。使用邻居的训练集结果，进行预测。邻居的数量控制着复杂性，并且以与1.2.5节中的移动平均讨论非常相似的方式控制模型的方差和偏差。当K非常小时，过度拟合的可能性最大，因为只有很少的值用于预测，并且最容易受到数据变化的影响。但是，如果K太大，则使用太多可能无关的数据点进行预测，从而得到欠配合模型。
+![Markdown](\images_source\20180621\3-012.PNG)
+
+为了说明这一点，请考虑图3.10，其中单个测试集样本显示为蓝色圆圈，其中来自训练集的五个最接近(地理)邻居显示为红色。测试集样本的售价为282.5万美元，邻居的价格从最近到最远，分别是：320.0万美元，248.5万美元，286.5万美元，274.0万美元，320.0万美元。使用K = 1，该模型将错过真正的房价37.5万美元。这说明了1.2.1节中介绍的过度拟合的概念; 该模型过于积极地使用训练集中的模式来对新数据点进行预测。对于此模型，增加邻居数量可能有助于缓解此问题。平均所有K = 5点进行预测可以将误差大幅减少到7.3K。
+
+对于此模型，这说明了调整参数可能对模型质量产生的影响。在某些模型中，可能有多个参数。同样对于最近邻居模型，可以使用不同的距离度量以及用于加权邻居的差异方案，使得更远的点对预测具有更少的影响。
+
+为了确保使用适当的调整参数值，需要某种搜索过程以及获得良好，可推广的性能度量的方法。对于后者，反复使用这些问题的测试集是有问题的，因为它会失去其公正性。相反，通常使用重采样。下一节将介绍确定这些类型参数的最佳值的几种方法。
+
+
+## 3.6 模型优化和调整
+搜索最佳调整参数值可以通过多种方式完成，但大多数分为两大类：预定义要评估的值和逐步确定值的值。在第一种情况下，最着名的程序是网格搜索。这里，指定一组候选调整参数值然后进行评估。在某些情况下，模型将具有多个调整参数，在这种情况下，候选参数组合是多维的。我们建议使用重新采样来评估每个不同的参数值组合，以获得每个候选者执行情况的良好估计。计算结果后，选择“最佳”调整参数组合，最终模型适合具有此值的整个训练集。最佳组合可以通过各种方式确定，但最常见的方法是选择具有统计学上最佳结果的候选人。
+
+举个例子，简单k最近邻模型需要邻居的数量。对于OkCupid数据，此模型将用于预测配置文件的职业。在这种情况下，预测变量包含许多不同类型的轮廓特征，因此“最近邻居”实际上是基于许多特征的类似轮廓。
+
+我们将预定义候选集k=1，3，...201。当与相同的10倍交叉验证过程结合使用时，将使用总共380个临时模型来确定良好的价值k 。一旦选择了K的最佳值，就使用最佳邻居数创建一个最终模型。重采样配置文件如图3.11所示。此图中显示的每个黑点是使用不同的90％训练集估计的十个不同模型的平均性能。ROC曲线下面积最大的配置使用193个邻居，相应的AUC为0.808。图3.11显示了十个重采样中每个重采样的各个重采样配置文件。这些数据的变化量减少主要是由于训练集的大小。
+但是，如果K太大，则使用太多可能无关的数据点进行预测，从而得到欠配合模型。
+![Markdown](\images_source\20180621\3-013.PNG)
+
+当有许多与模型相关的调整参数时，有几种方法可以继续。首先，可以进行多维网格搜索，其中评估候选参数组合和组合网格。在某些情况下，这可能是非常低效的。另一种方法是为每个参数定义一系列可能的值，并随机抽样多维空间足以覆盖合理的数量(Bergstra和Bengio 2012)。然后可以以与更传统的网格相同的方式对该随机搜索网格进行重新采样。当存在大量调整参数并且没有应该使用哪些值的先验概念时，该过程可以是非常有益的。大网格搜索效率可能不高，特别是如果配置文件具有相当稳定的模式，在某些参数范围内几乎没有变化。使用这种方法可以有效地调整神经网络，梯度增强机器和其他模型。
+
+为了说明此过程，再次使用OkCupid数据。使用单层前馈神经网络来模拟使用与前两个模型相同的预测器在STEM场中的概率。该模型是一种非常灵活的非线性分类系统，具有许多调整参数。请参阅I，Bengio和Courville(2016)，了解神经网络和深度学习模型的优秀入门读物。
+
+该模型的主要调整参数是：
++ 隐藏单位的数量。该参数控制神经网络的复杂性。较大的值可以提高性能，但也会增加过度拟合的风险。对于这些数据，隐藏层中的单元数被随机选择为2到20之间。
++ 激活功能。此参数设置的非线性函数链接网络的不同部分。使用了三种不同的功能：传统的S形曲线，tanh或整流线性单位函数(ReLU)。
++ 辍学率。这是在训练迭代期间系数随机设置为零的速率，并且可以减弱过度拟合(S等人，2014)。考虑了0到80％的比率。
+
+神经网络系数的拟合程序在数值上具有很大的挑战性。通常存在大量要估计的系数，并且存在发现局部最优的显着风险。在这里，我们使用一种名为RMSProp30的基于梯度的优化方法来拟合模型。这是一种用于查找系数值的现代算法，并且此过程有多个模型调整参数.
++ 批量大小控制在每次迭代时有多少训练集数据点随机暴露给优化过程。这通过为优化过程提供一些随机性而具有减少潜在过度拟合的效果。批量大小在10到40K之间。
++ 学习速率参数控制参数估计迭代期间的下降速率，并且这些值被对比在0和1之间。
++ 降低学习率随时间推移的衰减率(范围在0到1之间)。
++ 均方根梯度比例因子(ρ)控制平均梯度值的近期值对梯度进行归一化的程度。此参数的较小值更加强调最近的渐变。此参数的范围设置为[0.0,1.0]。
+
+对于该模型，使用均匀分布随机地创建10个不同的七维调整参数组合，以在上述范围内对样本进行采样。使用先前使用的相同10倍交叉验证分裂来评估这些设置中的每一个。
+
+重新采样的ROC值在候选参数值之间显着变化。最佳设置在表3.3中用斜体表示，其在ROC曲线下具有0.845的相应面积。
+![Markdown](\images_source\20180621\3-014.PNG)
+
+如前所述，网格搜索和随机搜索方法具有预先指定的调整参数，并且搜索不适于寻找新值。可以采取其他方法。例如，有许多非线性搜索方法，如Nelder-Mead单纯形搜索程序，模拟退火和可以使用的遗传算法(Chong和Żak2008)。这些方法对网格空间进行了非常彻底的搜索，但往往计算成本很高。其中一个原因是每个新参数的评估都需要对性能进行良好的估计以指导搜索。重新采样是执行此操作的最佳方法之一。另一种搜索空间的方法称为贝叶斯优化(Mockus 1994)。这里，使用网格或随机搜索来评估初始样本池。优化过程创建单独的模型以根据调整参数预测性能，然后可以建议要评估的下一个候选集。一旦评估了这个新点，就会更新模型并继续进行一定数量的迭代(Jones，Schonlau和Welch，1998)。
+
+关于重采样结果的解释的最后一点是，通过基于结果选择最佳设置并使用这些值表示模型的性能，存在优化偏差的风险。根据问题，这种偏见可能会高估模型的真实性能。有嵌套的重采样过程可用于缓解这些偏差。有关更多信息，请参见Boulesteix和Strobl(2009)。
+
+
+
+## 3.7 基于训练集比较模型
+当多个模型处于争用状态时，通常需要在它们之间进行正式评估，以了解性能上的任何差异是否高于和超出随机预期的差异。在我们提出的工作流程中，重新采样很大程度上依赖于估计模型性能。优良作法是在所评估的任何模型中使用相同的重采样。这使得模型之间可以进行苹果对苹果的比较。它还允许在参与测试集之前对模型进行正式比较。考虑为OkCupid数据创建的逻辑回归和神经网络模型。他们如何比较？ 由于这两个模型使用相同的重采样来拟合和评估模型，因此这导致一组10个配对比较。表3.4显示了每个重采样的特定ROC结果及其配对差异。这两组值之间的相关性为0.96，表明结果中可能存在重新采样到重新采样效果。
+![Markdown](\images_source\20180621\3-015.PNG)
+
+鉴于这组配对差异，可以进行正式的统计推断以比较模型。一种简单的方法是考虑两个模型之间的配对t检验或差异的普通单样本t检验。ROC值的估计差异为-0.002，置信区间为95％(-0.004,0)。似乎没有任何证据表明这些模型之间存在真正的性能差异。这种方法以前在第2.3节中使用，当预测卒中结果的潜在变量按其在ROC以上和超出零模型之外的区域中的改进进行排序时。该比较方法可用于比较相同模型的模型或不同方法(例如，预处理差异或特征集)。
+
+这种技术的价值是双重的：
++ 它可以防止在模型开发过程中使用测试集
++ 对外部数据集的许多评估用于评估差异。
+
+第二点是最重要的。通过使用多个差异，可以测量性能统计数据的可变性。虽然单个静态测试集有其优点，但它是模型的单一性能实现，我们不知道该值的精度。
+
+也可以比较两个以上的模型，尽管分析必须考虑使用贝叶斯分层模型(McElreath 2016)或重复测量模型(West和Galecki 2014)的重新内采样相关性。这种方法的想法起源于Hothorn等人。(2005年)。Benavoli等。(2016)还提供了贝叶斯方法来分析模型和数据集之间的重采样结果。
+
+
+
+## 3.8 计算
+可以在https://github.com/topepo/TBD 找到用于实现这些分析的R程序。
+
+
+## References
+Kim, A, and A Escobedo-Land. 2015. “OkCupid Data for Introductory Statistics and Data Science Courses.” Journal of Statistics Education 23 (2):1–25.
+Kuhn, M, and K Johnson. 2013. Applied Predictive Modeling. Vol. 26. Springer.
+Kvalseth, T. 1985. “Cautionary Note About $R^2$.” American Statistician 39 (4):279–85.
+Lawrence, I, and K Lin. 1989. “A Concordance Correlation Coefficient to Evaluate Reproducibility.” Biometrics, 255–68.
+Hampel, D, P Andrews, F Bickel, P Rogers, W Huber, and J Turkey. 1972. Robust Estimates of Location. Princeton, New Jersey: Princeton University Press.
+Rousseeuw, P, and C Croux. 1993. “Alternatives to the Median Absolute Deviation.” Journal of the American Statistical Association 88 (424):1273–83.
+Agresti, A. 2012. Categorical Data Analysis. Wiley-Interscience.
+Friendly, M, and D Meyer. 2015. Discrete Data Analysis with R: Visualization and Modeling Techniques for Categorical and Count Data. CRC Press.
+McElreath, R. 2016. Statistical Rethinking: A Bayesian Course with Examples in R and Stan. Racon Hall: Chapman; Hall.
+Altman, DG, and JM Bland. 1994b. “Statistics Notes: Diagnostic tests 2: predictive values.” British Medical Journal 309 (6947):102.
+Breiman, L., J. Friedman, R. Olshen, and C. Stone. 1984. Classification and Regression Trees. New York: Chapman; Hall.
+MacKay, D. 2003. Information Theory, Inference and Learning Algorithms. Cambridge University Press.
+Altman, DG, and JM Bland. 1994a. “Diagnostic tests 3: receiver operating characteristic plots.” BMJ: British Medical Journal 309 (6948):188.
+Christopher, D, R Prabhakar, and S Hinrich. 2008. Introduction to Information Retrieval. Cambridge University Press.
+Shao, J. 1993. “Linear Model Selection by Cross-Validation.” Journal of the American Statistical Association 88 (422):486–94.
+Davison, A, and D Hinkley. 1997. Bootstrap Methods and Their Application. Cambridge University Press.
+Hyndman, R, and G Athanasopoulos. 2013. Forecasting: Principles and Practice. OTexts.
+Efron, B. 1983. “Estimating the error rate of a prediction rule: improvement on cross-validation.” Journal of the American Statistical Association, 316–31.
+Efron, B, and R Tibshirani. 1997. “Improvements on cross-validation: The 632+ bootstrap method.” Journal of the American Statistical Association, 548–60.
+Bergstra, J, and Y Bengio. 2012. “Random Search for Hyper-Parameter Optimization.” Journal of Machine Learning Research 13:281–305.
+I, Goodfellow., Y Bengio, and A Courville. 2016. Deep Learning. MIT Press.
+S, Nitish, Geoffrey H, Alex K, Ilya S, and Ruslan S. 2014. “Dropout: A Simple Way to Prevent Neural Networks from Overfitting.” Journal of Machine Learning Research 15:1929–58.
+Chong, E, and S Żak. 2008. “Global Search Algorithms.” In An Introduction to Optimization, 267–95. John Wiley & Sons, Inc.
+Mockus, J. 1994. “Application of Bayesian Approach to Numerical Methods of Global and Stochastic Optimization.” Journal of Global Optimization 4 (4). Springer:347–65.
+Jones, D, M Schonlau, and W Welch. 1998. “Efficient Global Optimization of Expensive Black-Box Functions.” Journal of Global Optimization 13 (4). Springer:455–92.
+Boulesteix, AL, and C Strobl. 2009. “Optimal Classifier Selection and Negative Bias in Error Rate Estimation: An Empirical Study on High-Dimensional Prediction.” BMC Medical Research Methodology 9 (1):85.
+West, K, Band Welch, and A Galecki. 2014. Linear Mixed Models: A Practical Guide Using Statistical Software. CRC Press.
+Hothorn, T, F Leisch, A Zeileis, and K Hornik. 2005. “The Design and analysis of benchmark experiments.” Journal of Computational and Graphical Statistics 14 (3):675–99.
+Benavoli, A, G Corani, J Demsar, and M Zaffalon. 2016. “Time for a Change: A Tutorial for Comparing Multiple Classifiers Through Bayesian Analysis.” arXiv.org.
+While there have been instances where online dating information has been obtained without authorization, these data were made available with permission from OkCupid president and co-founder Christian Rudder. For more information, see the original publication. In these data, no user names or images were made available.
+github.com/rudeboybert/JSE_OkCupid
+Note that these values were not obtained by simply re-predicting the data set. The values in this table are the set of “assessment” sets generated during the cross-validation procedure defined in Section 3.4.1.
+Values close to -1 are rarely seen in predictive modeling since the models are seeking to find predicted values that are similar to the observed values. We have found that a predictive model that has difficulty finding a relationship between the predictors and the response has a kappa value slightly below or near 0
+The formulas that follow can be naturally extended to more than two classes, where C represents the total number of classes.
+In fact, the Gini statistic is equivalent to the binomial variance when there are two classes.
+While not helpful for comparing models, these two statistics are widely used in the process of creating decision trees. See L. Breiman et al. (1984) and Quinlan (1993) for examples. In that context, these metrics enable tree-based algorithms to create effective models.
+See Chapter 16 of Kuhn and Johnson (2013).
+As with the confusion matrix in Table 3.1, these data were created during 10-fold cross-validation.
+There are other types of subsets, such as a validation set, but these are not explored here.
+In fact, many people use the terms “training” and “testing” to describe the splits of the data produced during resampling. We avoid that here because 1) resampling is only ever conducted on the training set samples and 2) the terminology can confuse people since the same term is being used for different versions of the original data.
+This is based on the idea that the standard error of the mean has $sqrt(R)in the denominator.
+This is a general trend; there are many factors that affect these comparisons.
+Not to be confused with the hyperparameters of a prior distribution in Bayesian analysis.
+This is generally not the case in other data sets; visualizing the individual profiles can often show an excessive amount of noise from resample-to-resample that is averaged out in the end.
+However, a regular grid may be more efficient. For some models, there are optimizations that can be used to compute the results for a candidate parameter set that can be determined without refitting that models. The nature of random search cancels this benefit.
+RMSprop is an general optimization method that uses gradients. The details are beyond the scope of this book but more information can be found in Goodfellow, Bengio, and Courville (2016) and at https://en.wikipedia.org/wiki/Stochastic_gradient_descent#RMSProp.
+Many of these parameters are fairly arcane for those not well acquainted with modern derivative-based optimization. Chapter 8 of I, Bengio, and Courville (2016) has a substantial discussion of these methods.
+The GitHub repository http://bit.ly/2yjzB5V has example code for nonlinear search methods and Bayesian optimization of tuning parameters.
+
+
+
+
+
+# 4 探索性可视化
+我们在建模过程中所做的一切都是为了找到可重复的方法来解释我们在响应中看到的变化。正如前一章所讨论的，发现与响应相关的预测变量中的模式涉及选择重采样方案来防止过拟合，选择性能指标，调整和训练多个模型，以及比较模型性能以确定哪些模型具有最佳性能。当提供一个新的数据集时，很容易直接放入到预测建模过程中，以便快速开发出符合性能预期的模型。或者，在有多预测变量的情况下，最初的目标可能是使用建模结果来确定与响应相关的最重要的预测变量。但是如图1.4所示，我们应该首先花费足够的时间来研究数据。本章的重点将是展示可视化探索数据的方法，并演示如何使用这种方法来指导特征工程。
+
+探索性数据处理的第一步是创建预测因子可视化，以帮助理解目标变量的知识，然后揭示预测因子与目标之间的关系。因此，我们的可视化应该目标变量开始，理解其分布的特征，然后用预测变量中提供的附加信息从外部构建。关于目标变量的知识可以通过创建直方图或箱形图获得。这种简单的可视化将揭示目标变量中的变化，如果目标是由具有不寻常特征产生的，那么必须进一步调查。接下来，我们可以继续探索预测变量之间以及预测变量和目标之间的关系。可以通过检验确定重要特征。
++ 预测因子和目标变量的散点图
++ 预测因子之间的成对关联图
++ 高维投影到较低维空间
++ 基于时间维度的预测因子线图
++ 回归或分类树的前几个级别
++ 样本和预测变量之间的热图
++ 镶嵌图检查分类变量之间的关联
+
+这些可视化提供了可以用于理解初始模型的见解。需要注意的是，探索数据有用的可视化并不一定很复杂。事实上，一个简单的散点图可以引出模型可能无法发现的洞察力，并可能导致创建新的预测变量或改进模型性能。面临的挑战在于开发人员知道如何直观地探索数据以提取改进信息。如图1.4所示，探索性数据分析是一个持续的过程，并应在建立初始模型后继续进行。建模后，可视化工具可用于评估模型是否缺乏拟合程度，并评估新模型中不存在的新预测变量的有效性。
+
+在本章中，我们将深入研究各种有用的可视化工具，以在构建初始模型之前探索数据。这些工具中的一些可以在模型建立后用于识别可以提高模型性能的特征。遵循图1.4的轮廓，我们将在建模之前查看可视化，并在建模过程中持续进行。我们还将向读者介绍Tufte(1990)和Cleveland(1993)的介绍，它们是可视化数据的优秀资源。
+
+为了说明这些工具，我们将使用Chicago Train Ridership数据进行数字可视化，并将OkCupid数据用于分类可视化。
+
+
+## 4.1 芝加哥地铁数据简介
+为了说明探索性可视化如何成为理解数据集的关键部分，以及如何使用可视化来识别和揭示有助于提高模型预测能力的预测变量的表示，我们将使用在芝加哥乘客收集的数据过境管理局(CTA)“L”列车系统(图4.1)。在短期内，了解未来一到两周的乘客量将使CTA能够确保为芝加哥人口提供最佳数量的汽车。作为需求波动的一个简单例子，我们预计大都市区的乘客量在工作日会更强，周末会更弱。可能会出现误解需求的两个常见错误。在一个极端情况下，为满足工作日需求而在线路上停放的汽车太少会延迟乘客到达目的地并导致过度拥挤和紧张。另一方面，周末拥有太多汽车效率低下会导致更高的运营成本和更低的盈利能力。良好的需求预测将有助于CTA更接近最佳地满足需求。
+![Markdown](\images_source\20180621\4-001.PNG)
+
+从长远来看，预测可用于预测可能需要线路服务，改变停靠频率以最佳地服务乘客，或随着人口变化和需求增强或减弱而增加或消除停止。
+
+为了说明探索性可视化的重要性，我们将重点关注每日乘客量的短期预测。在2001年1月22日至2016年9月11日期间，获得了126个站点的每日乘客数据。乘客数量是根据所有十字转门车站的入站数量来衡量的，并且在此期间跨站的每日乘客数量差异很大，范围很广。每天0到36,323之间。为了便于演示，将以数千名乘客为单位显示和分析乘客数量。
+
+我们的插图将缩小到预测Clark / Lake站的每日乘客量。这个站是了解的重要一站;它位于市中心的环路中，拥有整个火车系统中最高的乘客之一，并为芝加哥北部，西部和南部提供四条不同的线路。
+
+对于这些数据，其他站的乘客数量可能对模型很重要。但是，由于我们对预测未来乘客数量感兴趣，因此在预测时只能获得历史数据。对于时间序列数据，预测变量通常是通过滞后数据形成的。对于此应用程序，在预测日期时D，使用来自每个站的滞后14数据(例如，D-14当天的乘客创建预测器)。如有必要，还可以将其他滞后添加到模型中。
+
+其他可能影响公共交通乘客的潜在区域因素是天气，汽油价格和就业率。例如，期望更多人使用公共交通是合理的，因为使用个人交通(即汽油价格)的成本会延长一段时间。同样，随着失业率的下降，公共交通的使用可能会增加。获得与乘客数据相同时间段的天气数据。每小时记录一次天气信息，包括许多条件，如阴天，冻雨，雪等。创建了一组预测器，反映了与雨，雪/冰，云，风暴和晴朗天空有关的条件。通过汇集更细粒度的记录条件来确定这些类别中的每一个。例如，雨预测器反映了记录的条件，包括“下雨”，“细雨”和“雾”。通过计算观察到条件的一天内观察的百分比，通过总结一天中的每小时数据来编码新预测器。举例来说，2012年12月20日，条件记录为下雪(一天12.8％)，多云(15.4％)，暴风雨(12.8％)和多雨(71.8％)。显然，构成这些类别的条件存在一些重叠，例如阴天和暴风雨。
+
+其他每小时天气数据也可用于温度，露点，湿度，气压，降水和风速。温度通过每日最小值，中位数和最大值以及每日变化进行汇总。类似地计算压力变化。在大多数其他情况下，使用每日中值来总结每小时记录。与乘客数据一样，未来的天气数据不可用，因此模型中使用了这些数据的滞后版本。总共有18个与天气有关的预测因子。
+
+除了每日天气数据，从2001年到2016年，芝加哥地区(美国能源信息管理局2017a)获得了平均每周汽油价格。在同一时期，美国人口普查局(2017年)的月失业率被提取。下面将讨论这些预测因子的潜在用途。
+
+
+## 4.2 数值数据可视化：基于芝加哥地铁数据
+### 4.2.1 箱型图，小提琴图和直方图
+单变量可视化用于理解单个变量的分布。一些常见的单变量可视化是盒须图(即箱形图)，小提琴图或直方图。虽然这些是简单的图形工具，但它们在理解感兴趣的数量特征方面具有很大的价值。
+
+因为建模的最重要目标是理解响应的变化，我们的第一步应该是理解响应的分布。对于连续响应，例如Clark / Lake站的乘客量，重要的是要了解响应是否具有对称分布，如果分布具有较大的观察频率(即分布是偏斜的)，如果分布出现由两个或多个单独分布组成(即分布具有多个峰值或模式)，或者如果出现异常低或高的观察值(即异常值)。
+
+了解响应的分布及其变化提供了我们对模型性能期望的下限。也就是说，如果模型包含有意义的预测变量，那么包含这些预测变量的模型的残差应该比我们在响应中看到的变化少。此外，响应的分布可以指示应该在分析之前转换响应。例如，具有响应频率随着较大值成比例地减小的分布的响应可以指示响应遵循对数正态分布。在这种情况下，对响应进行对数转换将导致正常(钟形，对称)分布，并且通常将使模型具有更好的预测性能。我们应该努力理解响应的第三个原因是，分发可能提供包含或创建有助于解释响应的功能的线索。
+
+作为理解响应分布的重要性的一个简单示例，请参见图4.2，其中显示了Clark / Lake站乘客响应的方框图。箱形图最初由John Tukey开发，作为评估变量分布的快速方法(Tukey 1977)，由最小，较低四分位数，中位数，上四分位数和最大数据组成。盒子图的替代版本将胡须延伸到一个值，超过该值，样本将被认为异常高(或低)(Frigge，Hoaglin和Iglewicz 1989)。具有对称分布的变量在四分位数上具有相等的间距，使得盒子和晶须也看起来是对称的。或者，在较宽范围的空间中具有较少值的变量将不会呈现对称。
+![Markdown](\images_source\20180621\4-002.PNG)
+
+箱形图的缺点是它在识别具有多个峰值或模式的分布方面无效。举个例子，我们现在来看看克拉克/湖站的乘客分布情况(图4.3)。该图的(a)部分是数据的直方图。要创建直方图，数据将被分类到变量值的相等区域。在每个区域中计数样本数量，并创建一个条形图，其中包含该区域中样本的频率(或百分比)的高度。与箱形图一样，直方图很容易创建，这些数字提供了查看其他分布特征的能力。在乘客分布中，有两个峰值，这可能代表影响乘客的两种不同机制。方框图(b)无法捕捉到这种重要的细微差别。为了实现保持直方图特征的分布的紧凑可视化，Hintze和Nelson(1998)开发了小提琴情节。通过生成数据及其镜像的密度或分布来创建该图。图4.3(c)是小提琴情节，我们现在可以看到乘客分布中的两个不同的峰值。可以将下四分位数，中位数和上四分位数添加到小提琴图中，以便在分布的整体评估中考虑该信息。
+![Markdown](\images_source\20180621\4-003.PNG)
+
+这些数据将在几个章节中进行分析。考虑到每日乘客数量的范围，关于结果是应该在自然单位还是在对数尺度上建模，存在一些问题。一方面，自然单位使结果的解释更容易，因为RMSE将是骑手。但是，如果在建模之前对结果进行了转换，则可以确保无法预测负面的乘客数量。这些数据的双峰性质，以及右侧较长尾部的每年乘客量的分布使得这一决定变得困难。最后，少数几种模型都适合做出决定。以自然单位计算的模型似乎具有稍好的性能，因此，在不改变响应的情况下分析所有模型。
+
+检查每个预测变量的分布有助于指导我们在分析之前通过变换来设计特征的需求的决策。当我们有一定数量的预测变量(<~100)并且当预测变量处于同一数量级时，我们可以使用并排框或小提琴图同时显示分布。再次考虑乘客数据与乘客的两周滞后作为预测因素。图4.4中提供了2016年工作日乘客的这些站点的分布情况。为了更清楚地看到模式，乘客从最大中位数(左)到最小中位数(右)排序。几个特征突出：乘客的可变性随着乘客的中位数而增加，每个站有一些异常低且异常高的值，并且一些站具有明显大的变化。一站特别突出，距离左侧大约四分之一。这恰好是Addison站，是离瑞格利球场最近的站点。更广泛的分布是由于与芝加哥小熊队的工作日主场比赛相关的乘客量，其出席人数达到最接近最常旅行的车站。如果我们试图预测艾迪生车站的乘客数量，那么小熊队的主场比赛时间表将成为任何车型的重要信息。接下来将讨论大多数台站的异常低的值。
+![Markdown](\images_source\20180621\4-004.PNG)
+
+随着预测变量的数量增加，我们对各个分布进行可视化的能力会降低，并且实际上可能是不可能的。在这种情况下，可以使用这些技术检查被认为重要的预测变量的子集。
+
+
+### 4.2.2 通过分面，颜色和形状增强可视化效果
+通过使用刻面，颜色和形状，可以将附加尺寸添加到几乎任何图形中。分面是指创建相同类型的绘图(例如散点图)并基于某个变量将绘图分割成不同的面板。图3.2是一个很好的例子。虽然这是一种简单的方法，但这些类型的扩充可以成为查看可用于指导新功能工程的重要模式的强大工具。克拉克/湖站的乘客分布是增加另一个维度的主要候选者。如上所述，图4.3有两个不同的峰。对此的合理解释是，工作日的乘客量与周末不同。图4.5通过颜色和刻面(为了便于观察)将乘客分布划分为一周的部分时间。本周的部分时间不是原始数据集的预测变量;通过使用直觉和仔细检查分布，我们发现了一个在解释建模乘客所需的响应时很重要的功能。
+![Markdown](\images_source\20180621\4-005.PNG)
+
+图4.5邀请我们进一步了解这些数据。仔细观察工作日的乘客分布应该让我们关注左边的长尾，这是由于周末乘客人数较少而导致的乘客人数较少。什么会导致平日乘客量低？ 如果我们能够揭示原因，那么我们就可以设计一个功能。能够解释这些较低值的模型将具有比不能解释这些较低值的模型更好的预测性能。
+
+用于阐明预测信息的颜色和形状的使用将在以下几个部分中说明。
+
+
+### 4.2.3 散点图
+通过使用刻面，颜色或形状来增强可视化是在图中添加附加尺寸的一种方式。另一种方法是直接向图形添加另一个维度。使用两个数字变量时，此类图形称为散点图。散点图在x轴上排列一个变量，在y轴上排列另一个变量。然后将每个样品绘制在该坐标空间中。我们可以使用这种类型的数字来评估预测变量和响应之间的关系，揭示预测变量对之间的关​​系，并了解新的预测变量是否可以包含在模型中。这些简单的关系是第一个提供线索以协助可能无法直接在数据中使用的工程特性的线索。
+
+如果我们试图预测克拉克/湖站的乘客量，那么我们可以预期最近的乘客信息应该与当前的乘客量有关。也就是说，另一个可能需要考虑的潜在预测因素是前一天或前一周的乘客信息。因为我们知道工作日和周末有不同的分布，所以一天的滞后对于预测周一或周六的乘客量没那么有用。由于信息发生在一周的同一天，因此以周为基础的滞后不会有这种困难(尽管它会在时间上进一步分开)。因为我们有兴趣提前两周预测乘客量，所以我们将为克拉克/湖站创造14天的乘客量。
+
+在这种情况下，我们可以通过创建散点图直接理解这些变量之间的关系(图4.6)。这个数字告诉我们需要知道的几个特征：14天滞后和当前乘客之间存在强烈的线性关系，有两组不同的点(由于本周的部分时间)，并且有很多14天滞后/当天的天数远离点的整体分散。这些结果表明，14天的滞后将成为解释当前乘客量的关键预测因素。此外，揭示远离这里可视化的整体模式的样本的解释将引导我们一个新的特征，将作为模型的输入。
+![Markdown](\images_source\20180621\4-006.PNG)
+
+
+### 4.2.4 热图
+图4.5所示的低工作日乘客量可能是由于年度事故造成的;为了研究这个假设，我们需要增加数据。第一步是为工作日创建一个指标变量，其乘客量小于10,000或大于或等于10,000。然后，我们需要一个可视化，让我们可以看到这些不寻常的值何时出现。在此背景下阐明年度模式的可视化是热图。热图是一种多功能图，可以使用几乎任何类型的预测器创建，并在x轴上显示一个预测器，在y轴上显示另一个预测器。在该图中，x轴和y轴预测变量必须能够被分类。然后，分类的预测变量形成网格，并且网格由另一个变量填充。填充变量可以是连续的也可以是分类的。如果是连续的，则网格中的框从连续预测器的最低值到最高值以连续的比例着色。如果填充变量是分类变量，则每个类别的框具有不同的颜色。
+
+对于乘客数据，我们将创建一个月和日预测器，一年预测器，以及工作日乘客量少于10,000次乘客的指标。
+
+这些新功能是热图的输入(图4.7)。在该图中，x轴表示年份，y轴表示月份和日期。红色方框表示Clark / Lake站的工作日人数少于10,000。这种形式的数据热图显示出一些明显的趋势。较低的乘客量发生在年初，1月中旬，2月中旬至2007年，5月下旬，7月初，9月初，11月下旬和12月下旬。美国的读者会认为这些模式是经常观察到的假期。由于假期是事先知道的，因此为常见的工作日假期添加功能将有助于解释乘客的模型。
+
+仔细观察热图指向两天不遵循年度模式：2011年2月2日和2014年1月6日。这些异常是由于极端天气造成的。2011年2月2日，芝加哥创下了-16F的创纪录低温。然后在2014年1月6日，有一场暴风雪在该地区倾倒了21.2英寸的积雪。极端天气实例并不常见，因此添加此预测器在模型中的用途有限。如果未来极端天气的频率增加，那么使用预测数据可能成为解释乘客量的有价值的预测指标。
+![Markdown](\images_source\20180621\4-007.PNG)
+
+现在我们了解了美国主要假期的影响，我们将从14天滞后与当前乘客量的散点图中排除这些值(图4.8)。从图4.6的对角线上掉下来的大多数点现在都消失了。然而，仍然有几点。与这些积分相关的一天是2010年6月11日，这是芝加哥黑鹰队赢得斯坦利杯的庆祝活动。虽然这些类型的庆祝活动很少，但设计一个预测这些不寻常事件的功能将有助于减少模型的预测误差。
+![Markdown](\images_source\20180621\4-008.PNG)
+
+
+### 4.2.5 相关矩阵图
+散点图的扩展是相关矩阵图。在该图中，每对变量之间的相关性以矩阵的形式绘制。每个变量都表示在矩阵的外部x轴和外部y轴上，并且相关的强度由矩阵中相应位置的颜色表示。我们首先在图2.3中看到了这种可视化。这里将为2016年芝加哥数据的非假日工作日制定一个类似的图像，用于14天的车站乘客延迟。
+![Markdown](\images_source\20180621\4-009.PNG)
+
+图4.9中的相关矩阵引导我们进一步理解。首先，几乎所有电台对，车站的乘客量都是正相关的(红色);这意味着一个车站的低乘客量对应于另一个车站的相对较低的乘客量，而一个车站的高乘客量对应于另一个车站的相对较高的乘客量。其次，大多数站对的相关性非常高。实际上，超过18.7％的预测变量对具有大于0.90的相关性，3.1％具有大于0.95的相关性。高度相关性是一个明确的指标，表明站点之间的信息是多余的，可以消除或减少。第3章中讨论的过滤技术可用于消除预测变量。此外，通过降维进行特征工程(第6章)可能是这些设置中数据的有效替代表示。我们将在4.2.7节中将降维作为探索性可视化技术。
+
+此版本的相关图包括基于层次聚类分析的行和列的组织结构(Dillon和Goldstein 1984)。聚类分析的首要目标是以一种方式排列样本，即在测量空间中“靠近”的那些也在它们在轴上的位置附近。对于这些数据，任何两个站之间的距离都基于站的相关值矢量。因此，具有相似相关矢量的站将在它们在每个轴上的布置附近，而具有不相关相关矢量的站将位于远处。x轴和y轴上的树状结构称为树状图，并基于它们的相关矢量接近度连接样本。这种组织结构有助于阐明一些视觉上不同的电台分组。反过来，这些分组可能指向可能很重要的特征，以包括在解释乘客的模型中。
+
+例如，考虑在x轴的左侧显示的站点，其中存在一些低和/或负相关。该组中的一个站点与其他站点的中值相关性为0.23。该站为奥黑尔机场提供服务，该机场是该地区的两个主要机场之一。可以想象，这个车站的乘客量与其他车站的驾驶员不同。这里的乘客可能受到进出飞机时刻表的影响，而其他车站则没有。例如，该站与同一线路上的UIC-Halsted站具有负相关(-0.46)。第二个最不同的电台是前面提到的Addison电台，因为它是由游戏出勤率驱动的。
+
+
+### 4.2.6 线图
+随着时间的推移收集的变量在建模过程中提出了独特的挑战。这种类型的变量可能具有随时间递增关联的趋势或模式。这意味着变量的当前值与最近的值更相关，而不是与时间上更远的值相关。因此，了解今天变量的价值将比上周，上个月或去年的价值更能预测明天的价值。我们可以通过创建线图来评估时间与变量值之间的关系，线图是散点图的扩展。在线图中，时间在x轴上，变量的值在y轴上。相邻时间点的变量值与一条线相连。识别时间趋势可以引导我们使用其他功能或设计与响应相关的其他功能。芝加哥数据提供了线图的良好说明。
+
+芝加哥数据是随着时间的推移而产生的，因此我们也应该根据时间寻找潜在的趋势。为了寻找这些趋势，我们计算了工作日每月乘客的平均值，并在周末分别计算(图4.10)。在这里，我们看到自2001年以来，在平日和周末，乘客量稳步增加。这是有道理的，因为芝加哥大都市区的人口在此期间有所增加(美国人口普查局2017)。线图还显示，在每年内，乘客量从1月到10月一般会增加，然后在12月份之前减少。这些发现意味着乘客信息的时间接近应该对模型有用。也就是说，了解最近一周或一个月内的乘客信息对于预测未来的乘客量将更有用。
+![Markdown](\images_source\20180621\4-010.PNG)
+
+周末乘客也会显示年度趋势，但在趋势中表现出更多变化。发现与此增加的变化相关的预测变量可以帮助减少预测误差。具体而言，周末线路地块在2008年的变化最大，夏季的乘客量更高。公共交通乘客量增加的潜在驱动因素是汽油价格。芝加哥地区的每周天然气价格是从美国能源信息管理局收集的，每年的月平均价格显示在图4.11的线图中。
+![Markdown](\images_source\20180621\4-011.PNG)
+
+接下来，让我们看看我们是否可以在视觉上建立汽油价格和乘客之间的关系。为此，我们将计算天然气价格的每月平均2周滞后以及克拉克/湖站的乘客几何平均值。图4.12说明了这种关系; 天然气价格的2周滞后与乘客的几何平均值之间存在正相关关系。从2001年到2014年，天然气价格越高，乘客量越高，2008年的数据出现在工作日和周末散点图的最右侧。这种趋势在2015年和2016年略有不同，当时油价因供应量显着增加而下降(美国能源情报署2017b)。在这里，我们通过深入研究原始线图的特征，我们能够找到另一个有助于解释乘客变化的特征。
+![Markdown](\images_source\20180621\4-012.PNG)
+
+
+### 4.2.7 主成分分析
+我们可以通过使用颜色，形状和刻面来显示二维图形中的五维或六维数据。但是，今天几乎所有数据集都包含许多不仅仅是少数几个变量。能够可视化我们实际可以看到的物理空间中的许多维度对于理解数据和理解是否存在指向需要特征工程的数据的特征是至关重要的。将许多维度压缩成两个或三个的一种方法是使用投影技术，例如主成分分析(PCA)，偏最小二乘(PLS)或多维缩放(MDS)。我们将在第6.3节中更全面地讨论用于特征工程的降维技术。在这里，我们将重点介绍PCA，以及如何使用此方法来设计有效压缩原始预测变量信息的功能。
+
+高度相关的预测因子，如图4.9所示的站点乘客，可以被认为存在于比原始数据更低维度的空间中。也就是说，这里表示的数据可以近似地由类似站的组合表示。主成分分析找到最能总结原始数据变异性的变量组合(Dillon和Goldstein 1984)。这些组合是数据的简单表示，通常用于识别数据中的基础特征，这些特征将有助于指导特征工程过程。
+![Markdown](\images_source\20180621\4-013.PNG)
+
+我们现在将PCA应用于14天的滞后站乘客数据。因为PCA的目标是最佳地总结数据的可变性，我们可以检查由顶部组件汇总的累积变异百分比。对于这些数据，第一个组件占总体变异的76.7％，而前两个组件占83.1％。这是一个很大比例的变化，因为有125个全站仪，表明车站乘客信息是多余的，并且可能以更浓缩的方式进行总结。
+
+图4.13提供了分析的摘要。(a)部分显示了前15个组件中累计的累积变化量。这种类型的图用于在视觉上确定总结数据中足够量的变化所需的组件数量。检查前两个组分(b)的散点图显示，PCA关注的是由于工作日样品具有较低的组分1分数和具有较高组分1分数的周末样品的一周的部分变化。第二个组成部分侧重于由于随着时间的推移而变化引在部分(c)和(d)中更清楚地揭示了这些模式，其中第一和第二组分相对于看起来对它们影响最大的基础变量作图。
+
+本章前面的其他可视化已经提醒我们，相对于响应，部分周和年的重要性。PCA现在有助于确认这些发现，并使我们能够创建新功能，简化我们的数据，同时保留关键的预测信息。我们将在6.3节后面深入研究这些技术和其他类似技术。
+
+
+## 4.3 分类数据可视化：基于OkCupid配置文件数据
+为了说明定性数据的不同可视化技术，使用OkCupid数据。这些数据首先在3.1节中介绍。回想一下，培训集包含38,809个配置文件，目标是预测配置文件的作者是否在STEM领域工作。事件发生率为18.5％，大多数预测因子都属于绝对性质。这些数据将在下一章中详细讨论。
+
+### 4.3.1 可视化结果与预测因子之间关系
+传统上，条形图用于表示分类值的计数。例如，图4.14(a)显示了所述宗教的频率，按结果类别划分和着色。这种情节的优点是很容易看到最频繁和最不频繁的类别。但是，由于以下几个原因，它还存在问题：
++ 为了理解任何宗教是否与结果相关，读者的任务是在视觉上判断所有宗教中每个深蓝色条与相应浅蓝色条的比例，然后确定任何比率是否与随机机会不同。该图从最大比率(左)到最小比率(右)排序，在这种形式下，读者可能难以看到。
++ 该图间接说明了我们感兴趣的数据的特征，特别是STEM和非STEM曲线之间的频率比。我们不关心有多少印度教徒在STEM领域; 相反，印度教内的领域比例是焦点。换句话说，该图模糊了我们感兴趣的统计假设：印度教STEM概况的比率是否与我们偶然的预期不同？
++ 如果宗教中的STEM概况的比率是焦点，则条形图不会给出该数量的不确定感。在这种情况下，不确定性来自两个来源。首先，每个宗教的概况数量显然会影响STEM概况比例的变化。这可以通过杆的高度来说明，但这并不是说明噪音的精确方法。其次，由于感兴趣的统计数据是一个比例，随着STEM概况的比率接近50％(所有其他条件相同)，统计数据的可变性变得更大。
+
+为解决前两个问题，我们可能会显示STEM配置文件的宗教内百分比。图4.14(b)显示了条形图的这个替代版本，这是一个改进，因为STEM配置文件的比例现在是焦点。更明显的是如何对宗教进行排序，我们可以看到每种宗教偏离18.4％的基线率。但是，我们仍然没有说明不确定性。因此，我们无法评估没有声明宗教的个人资料的比率是否与不可知论者真正不同。此外，虽然图4.14(b)直接比较了不同宗教的比例，但它并没有给出任何宗教信仰的频率。对于这些数据，伊斯兰概况很少; 在此显示中无法看到此重要信息。
+![Markdown](\images_source\20180621\4-014.PNG)
+
+图4.14(c)解决了上面列出的所有三个问题。对于每种宗教，计算STEM概况的比例，并显示95％置信区间以帮助理解该值周围的噪声。我们可以清楚地看到哪些宗教偏离了随机性，并且误差条的宽度有助于读者理解每个数字应该被信任多少。这个图像是三者中最好的，因为它直接显示了差异的大小以及不确定性。在x轴上的类别数量很大的情况下，可以使用火山图来显示结果(参见图2.6和5.4)。
+
+本讨论的重点不是具有置信区间的汇总统计数据始终是可视化问题的解决方案。带走的信息是每个图应该有一个明确定义的假设，并且这个假设以一种允许读者根据数据做出快速判断的方式简明扼要地显示。
+
+最后，宗教似乎与结果有关吗？由于各组之间STEM职业的比例渐变，因此看起来如此。如果没有关系，所有费率将大致相同。
+
+如何看待分类结果和数字预测器之间的关系？例如，所有配置文件的总长度将用于说明可能的解决方案。在训练集中有1197个配置文件，用户没有填写任何打开的文本字段。在此分析中，所有九个答案都连接成一个文本字符串。文本长度的分布非常左倾，中间值为26.255个字符。尽管10％的配置文件包含少于14个字符，但最大长度约为0K字符。为了研究这一点，论文字符总数的分布如图4.15(a)所示。x轴是字符计数的对数，没有论文文本的配置文件在这里显示为零。各个类之间的分布似乎非常相似，因此这个预测变量(单独使用)本身不太可能重要。但是，如上所述，尝试直接回答问题会更好。
+
+为此，使用另一个平滑器来建模数据。在这种情况下，回归样条平滑(Wood 2017)用于将STEM简档的概率建模为(log)文章长度的函数。这涉及使用基础扩展拟合逻辑回归模型。这意味着我们的原始因子，日志论文长度，用于创建一组人工特征，这些特征将进入逻辑回归模型。这些预测变量的性质将允许在论文长度值上灵活地局部表示类概率，并在6.2.1节中进行了更多讨论。
+![Markdown](\images_source\20180621\4-015.PNG)
+
+结果如图4.15(a)所示。黑线表示逻辑回归模型的类概率，并且条带表示拟合周围的95％置信区间。水平红线表示来自训练集的STEM轮廓的基线概率。在一段时间之前$10^{3.5}$，该概况的可能性略低于成为STEM的可能性。较大的轮廓显示概率增加。这可能看起来像一个有价值的预测器，但考虑y轴的比例。如果将其置于[0,1]的全概率范围内，则趋势看起来几乎是平坦的。至多，STEM概况的可能性增加几乎是5％。另外，请注意，置信区间会迅速扩大$10^8$主要是由于该范围内数据点数量的减少，因此概率的潜在增加具有高度的不确定性。这个预测器可能值得包含在模型中，但不太可能对其自身产生强烈影响。
+
+
+### 4.3.2 探索分类因子之间关系
+在决定如何使用包含非数字数据的预测变量之前，了解它们的特征以及与其他预测变量的关系至关重要。经常看到的不幸做法依赖于对双向表的大量基本统计分析，这些表将关系简化为数字摘要，例如$χ^2$结社考试。通常，最好的方法是可视化数据。在考虑分类数据之间的关系时，有几种选择。一旦创建了变量之间的交叉表，就可以再次使用马赛克图来理解变量之间的关系。对于OkCupid数据，可以想象药物和酒精使用的问卷可能是相关的，对于这些变量，图4.16显示了马赛克图。对于酒精，大多数数据表明社交饮酒，而绝大多数药物反应“从不”或缺失。这些变量之间有关系吗？任何回复是否与其他回应“聚集”？
+![Markdown](\images_source\20180621\4-016.PNG)
+
+这些问题可以通过对应分析(Greenacre 2017)来回答，其中分析了交叉制表。在列联表中，变量的频率分布可用于确定预期的细胞计数，其模拟如果两个变量没有关系将发生的情况。传统的卡方($χ^2$)测试使用与这些预期值的偏差来通过将这种类型的细胞残差的函数相加来评估变量之间的关联。如果表中的两个变量强烈关联，则总体而言$χ^2$统计数据很大。对应分析不是总结这些剩余函数，而是分析它们以确定占这些统计中最大部分的新变量39。这些新变量称为主坐标，可以为表中的两个变量计算并显示在同一个图中。这些图可以包含几个功能：
++ 每个轴上的数据将根据主要坐标所占的原始表中的信息量来评估。如果坐标仅占整体的一小部分$χ^2$统计数据，不应过度解释在该方向上显示的模式。
++ 落在原点附近的类别代表数据的“平均”值。从马赛克图中可以清楚地看出，每个变量的类别具有最大的细胞频率(例如“从不”药物和“社交”饮酒量)。更多不寻常的类别位于主坐标散点图的外围。
++ 主坐标彼此接近的单个变量的类别表示冗余，这意味着可能存在汇集这些组的可能性。
++ 在主坐标空间中彼此靠近的不同变量中的类别表示这些类别之间的关联。
+
+在酒精和药物使用之间的交叉列表中，$χ^2$统计量的自由度(18)非常大(4043.8)，并且与非常小的p值(0)相关联。这表明这两个变量之间存在很强的关联。
+
+图4.17显示了对应分析的主要坐标。x轴上的组件占了x轴的一半以上$χ^2$统计。该维度中零附近的值倾向于表明没有做出选择或使用零星物质。在右边，远离零，是不常发生的值。一小组表明，偶尔吸毒和频繁饮酒往往会在数据中产生特定的关联。另一个更极端的群集显示经常使用酒精和药物有关联。该图的y轴主要由缺失的数据驱动(可以理解，因为该表的26％至少有一个缺失的响应)并且占了该数据的另外三分之一。$χ^2$统计。这些结果表明这两个变量具有相似的结果，可能正在测量相同的潜在特征。
+![Markdown](\images_source\20180621\4-017.PNG)
+
+
+## 4.4 探索性可视化后初始建模
+如前面第3.2.2节所述，对重采样期间产生的评估数据的预测可用于了解模型的性能。它还可以指导建模人员了解可以使用可视化和分析进行的下一组改进。这里，使用火车乘客数据说明该过程。
+
+多元线性回归具有基于模型残差的丰富诊断集，有助于理解模型拟合以及识别可能有用于包含在模型中的关系。虽然多线性回归滞后于其他建模技术的预测性能，但可用的诊断是非常好的工具，在发现可以使更复杂的建模技术受益的预测变量和预测变量关系时不应低估。
+
+回归诊断中有助于识别有用预测因子的一种工具是偏回归图(Neter等，1996)。该图利用来自两个不同线性回归模型的残差来揭示模型中预测变量的潜在有用性。为了开始这个过程，我们首先拟合以下模型并计算残差($ε_i$)：
+$$y_i = β_1x_1 + β_2x_2 + ⋯ + β_px_p + ε_i$$
+
+接下来，我们选择一个不在模型中的预测变量，但可能包含有关响应的其他预测信息。对于潜在的预测因子，我们适合：
+$$x_{new_i} = β_1x_1 + β_2x_2 + ⋯ + β_px_p + η_i$$
+
+残差(ε_i和η_i)然后在简单的散点图中将模型相互绘制。这些残差组之间的线性或曲线线性模式表明新预测器作为线性或二次(或某些其他非线性变体)项将是模型中的有用加法。
+
+如前所述，当通过简单地预先预测训练集数据来确定那些值时，通过残差检查模型拟合是有问题的。更好的策略是使用重采样期间创建的各种评估集中的残差。
+
+对于芝加哥数据，使用滚动预测起源方案(第3.4.4节)。训练集中有5697个数据点，每个数据点代表一天。此处使用的重新采样包含2014年9月1日之前的一组基本样本，并且分析/评估拆分在此日期开始。在此过程中，训练集累积增长;一旦评估了评估集，就会在下次重采样迭代时将其放入分析集中。每个评估集包含分析集中最后一个值之后的14天。因此，有52个重新采样，每个评估集是最新日期的互斥集合。该方案旨在模拟如何重复分析数据;一旦捕获了一组新数据，前一组用于训练模型，新数据用作测试集。图4.18显示了前几个重采样的图示。左侧的箭头表示完整的分析集于2001年1月22日开始。
+
+对于使用这种方案适合这些数据的任何模型，可以使用一组14组残差来理解模型的优点和缺点，同时将过度拟合的风险降至最低。此外，由于评估集在一段时间内移动，因此它还允许分析人员了解模型是否存在任何特定时间。
+![Markdown](\images_source\20180621\4-018.PNG)
+
+回归模型的响应是Clark / Lake站的乘客量，我们的初始模型将包含周，月和年的预测值。图4.19(a)中提供了该模型中的保持残差的分布。正如我们在本章前面所看到的，分布有两个峰值，我们发现这是由于本周的部分时间(工作日与周末)。为了研究本周部分时间的重要性，我们在一周的部分时间内对基本预测值进行回归，并计算此模型的保留残差。在(b)中提供了保持残差集之间的关系，其表明非随机关系，表明该周的一部分包含克拉克/湖站乘客的额外预测信息。我们可以看到，在模型中包括星期的一部分进一步减少了残差分布，如标记为Base + Part of Week的直方图所示。
+
+接下来，让我们探讨克拉克/湖站14天的乘客滞后的重要性。该图的(c)部分显示了在克拉克/湖站中包含14天的乘客滞后的重要性。在图的这一部分中，我们看到数据主流中的模型残差之间存在强烈的线性关系，其中有几天在整体模式之外。这几天恰好是这个时期的假期。假期的潜在预测重要性反映在(d)部分。在这个图中，读者的眼睛可能被吸引到远离其余假日样本的一个假期。事实证明，这个样本是2015年7月4日，并且是训练数据中唯一一个假日和周末的日子。由于该模型已经占了本周的一部分，因此这一天假期的额外信息对该样本的预测值几乎没有影响。
+![Markdown](\images_source\20180621\4-019.PNG)
+
+
+## 4.5 计算
+可以在 https://github.com/topepo/TBD 找到用于复制这些分析的R程序。
+
+## References
+
+Tufte, E. 1990. Envisioning Information. Cheshire, Connecticut: Graphics press.
+Cleveland, W. 1993. Visualizing Data. Summit, New Jersey: Hobart Press.
+U.S. Energy Information Administration. 2017a. “Weekly Chicago All Grades All Formulations Retail Gasoline Prices.” https://tinyurl.com/ydctltn4.
+United States Census Bureau. 2017. “Chicago Illinois Population Estimates.” https://tinyurl.com/y8s2y4bh.
+Tukey, John W. 1977. Exploratory Data Analysis. Reading, Mass.
+Frigge, M, D Hoaglin, and B Iglewicz. 1989. “Some Implementations of the Boxplot.” The American Statistician 43 (1). Taylor & Francis:50–54.
+Hintze, J, and R Nelson. 1998. “Violin Plots: A Box Plot-Density Trace Synergism.” The American Statistician 52 (2). Taylor & Francis Group:181–84.
+Dillon, W, and M Goldstein. 1984. Multivariate Analysis Methods and Applications. Wiley.
+U.S. Energy Information Administration. 2017a. “Weekly Chicago All Grades All Formulations Retail Gasoline Prices.” https://tinyurl.com/ydctltn4.
+2017b. “What Drives Crude Oil Prices?” https://tinyurl.com/supply-opec.
+Wood, S. 2017. Generalized Additive Models: An Introduction with R. CRC press.
+Greenacre, M. 2017. Correspondence Analysis in Practice. CRC press.
+Neter, J, M Kutner, C Nachtsheim, and W Wasserman. 1996. Applied Linear Statistical Models. Vol. 4. Irwin Chicago.
+http://tinyurl.com/LTrainData
+The stations selected contained no missing values. See Section 8.5 for more details.
+Another alternative would be to simply compute the daily average values for these conditions from the entire training set.
+This visualization approach is also referred to as “trellising” or “conditioning” in different software.
+This does lead to an interesting dilemma for this analysis: should such an aberrant instance be allowed to potentially influence the model? We have left the value untouched but a strong case could be made for imputing what the value would be from previous data and using this value in the analysis.
+There are other types of smoothers that can be used to discover potential nonlinear patterns in the data. One, called loess, is very effective and uses a series of moving regression lines across the predictor values to make predictions at a particular point (Cleveland 1979).
+If this sounds very similar to principal component analysis (PCA), discussed in Chapter 6, the mechanics are very similar. For example, both use a singular value decomposition to compute the new variables.
+
+
+# 5 编码分类预测因子
+分类或名词性的预测因子是指具有定性数据的预测因子。在OkCupid数据中，教育(例如高中，两年大学，大学等)和饮食(如任何东西，纯素食，素食等)便是。在Ames数据中，房屋和邻域也是没有数字尺度的预测变量。邮政编码也可以作为定性预测因子，尽管是数值，但是数值没有连续的含义。比如，没有理由认为21212的邮政编码比06385的邮政编码多14827。
+
+分类预测因子也可以来自非结构化或开放文本。OkCupid数据包含描述个人兴趣和其他个人信息的可选散文集。依赖于数字输入的预测模型不能直接处理文本字段。所以，这些信息丰富的数据需要在输入给模型之前进行处理。文本信息可以用不同的方式处理。例如，从文本中提取关键字用作预测因子，那么这些关键字是否应该包含单个词或词串？是否应该使用根词进行分词(例如，“计算”是“计算机”,“计算”等的简称)或使用正则表达式模式匹配(例如^COMPUT)？
+
+简单的分类因子可以分为有序或无序。具有“不良”，“良好”和“更好”值的变量显示了值的明确进展。虽然这些类别之间的差异可能不是精确的数字可量化的，但有一个有意义的顺序。相比之下，考虑另一个取值为“法国”，“印度”或“秘鲁”的变量。这些类别没有有意义的顺序。有序和无序因素可能需要用不同的方法来处理。
+
+与其他预处理步骤一样，处理预测因子的方法取决于模型的类型。大多数模型要求所有预测因子都是数字。但是，有一些例外。基于树的模型算法可以处理分裂数字或分类因子。这些算法使用一系列if/then语句将数据按顺序分组。例如，在芝加哥的数据中，星期几是一个强预测因子，基于树的模型可能包含一个模型组件，例如
+
+    if day in {Sun, Sat} then ridership = 4.4K
+    else ridership = 17.3K
+又如，朴素贝叶斯模型可以在分类变量和分类结果之间创建交叉表，并将该频率分布考虑到模型的概率计算中。在这种情况下，类别也可以用自然格式进行处理。本章的最后一节将探讨分类预测因子如何与基于树的模型进行交互。
+基于树和朴素贝叶斯模型是例外;大多数模型都要求预测变量是数字形式。所以本章主要关注将分类数据编码为数值的方法。
+
+本章中的许多分析都使用3.1节介绍的OkCupid数据。其中一些问题在前面有过讨论，在本章中，将更详细地探讨具体变量。讨论过拟合问题。与本书中讨论的其他数据集相比，OkCupid数据集包含大量潜在的分类预测因子，其中很多都具有较低的流行率。难点在于基于整个训练集查看趋势和变量，然后将特征添加到分析模型中。尽管我们对这些数据的模型进行了交叉验证，但仍可能会造成过度拟合并发现不能推广到其他数据的预测关系。使用的数据集不小;训练集由38809个样本组成。为了发现模型的新预测因子，从训练集中选择了5000个STEM概况和5000个非STEM概况的子样本。
+
+
+
+## 5.1 为无序变量创建虚拟变量
+将分类值转换为数值最基本方法是创建虚拟变量(独热编码)。这是将分类编码的每个值生成一个新的变量。具体的实现方式有很多种，考虑一个简单的例子，将星期的分类变量转换为数值变量。可以获取7个可能的值并将它们转换为二进制的数值，进行处理的数学函数通常叫做对比或参数化函数。对比函数的一个例子称为“参考单元”或“处理”对比度，其预测因子中的某个值未被包含在结果虚拟变量中。
+下图中的六个数值变量将替换原有的分类变量。
+![Markdown](\images_source\20180621\5-001.PNG)
+
+为什么只有六个？有两方面的原因。首先，如果你已经知道了其中六个虚拟变量的值，那么第七个虚拟变量的值也是确定的。第二方面的原因更加技术化。拟合线性模型时，矩阵X将被创建。当模型有截距时，将包含某列的所有行，估计线性模型(或其它相似的模型)的参数时，需要转置矩阵(X'X)。如果模型包含截距并且包含所有七天的虚拟变量，则七列将(截取行)加到截距上，并且该线性组合将阻止计算矩阵逆(因为它是单数)。当如此时，表示矩阵小于满秩或超定。当分类预测因子有C种可能取值，C-1个虚拟变量被使用，可以计算矩阵逆，并且称对比度方法是满秩参数化(Haase [2010](https://us.sagepub.com/en-us/nam/multivariate-general-linear-models/book233385))。
+
+如何解释这些虚拟变量？这取决于正在使用何种类型的模型，但考虑芝加哥运输数据的线性模型，该模型仅使用上述参考单元参数化模型中的星期几。使用训练集来拟合模型，截距值估计参考单元的平均值，即训练集中周日骑手的平均数量，估计为3.84K人。第二个参数，如果是周一则预估为12.61k。在参考单元模型中，虚拟变量表示超出参考单元均值的平均值。在这种情况下，估计表明周一比周日多12.61K的骑手。星期一乘客的总体估计值增加了截距和虚拟变量(16.45K乘坐率)的估计值。
+
+当存在多个分类预测因子时，参考单元变为多维。假设有一个只有几个值的天气预报器：“晴天”，“阴天”，“下雨”和“下雪”。认为“晴天”是参考细胞。如果该变量包含在模型中，则截距将对应于具有晴朗天空的星期日的平均值。每组虚拟变量的解释不会改变。多云星期一的平均乘客量将多于星期日乘客量，平均增加等于阴天平均增量效应和星期一平均增量效应。
+
+虚拟变量还有其他对比度函数。“单元均值”参数化(Timm，Carlson 1975)将为一周中的每一天创建一个虚拟变量，并且不包括截距以避免设计矩阵的奇点问题。在这种情况下，每个虚拟变量的估计值将对应于该类别的平均值。对于芝加哥数据，周一虚拟变量的参数估计值仅为16.45K。
+
+还有其他几种用于构建虚拟变量的对比方法。
+
+基于多项式函数，下面讨论有序数据。
+
+
+
+## 5.2 编码多分类预测因子
+如果有C种类别，当C的值很大时会有什么影响？比如，ZIP编码在美国可能是一个提现地理位置的重要预测因子。可能会有超过40k种ZIP编码取值，这可能会产生过多的虚拟变量(相对于样本的数量)。如前一节所述，这可能导致数据矩阵超定并限制某些模型的使用。另外，人口密集地区的ZIP编码出现的概率高于人口稀疏地区，这还有可能导致“长尾”效应。
+
+一个潜在的问题是重新抽样可能会排除数据集中一些少见的类别。这可能导致包含全零的虚拟变量列，并且对于许多模型而言，这可能会引起错误。此外，模型将无法利用此变量中某种类别所包含的预测信息。当预测变量只包含单个值时，我们称之为零方差预测因子，因为预测因子没有显示任何变化(也就是说对于所有样本来说是一样的，无法形成区分，也就没有预测效果)。
+
+简单有效的处理方式是创建全集的虚拟变量并删除零方差预测因子。这是一种简单而有效的方法，但可能很难先验地知道模型中将包含哪些分类值。换句话说，在重新采样期间，重采样之间可能存在不同数量的模型参数。这可能会有很大副作用，因为它捕获了很少出现的值导致的变化(之前是忽略的)，并将此噪声传播到重采样性能估计中。
+
+在产生虚拟变量之前，可以考虑确定这些预测因子中的哪些(如果有的话)是接近于零的方差预测因子或者在重新采样过程中可能具有接近零的方差。这些预测因子具有很少的唯一值(例如二值虚拟变量的两个值)并且在数据中很少出现。对于训练集，我们会考虑最常出现值频率与次最常出现值频率的比率。对于虚拟变量来说，这只是1和0的数量的比率。假设一个虚拟变量有990个零值和10个一值。频率的比率为99，表示在重新采样期间可能很容易导致其转换为全零。我们建议粗切断(rough cutoff ？？)到19，以宣布这样一个变量“太罕见”，可能会针对不同的问题提高或降低这个标准。
+
+虽然接近零方差的预测因子可能包含很少有价值的预测信息，但我们仍不希望将其过滤掉。避免过滤这些预测因子的一种方法是在创建虚拟变量之前重新定义预测变量的类别。我们可以创建一个“其他”类别来集合那些很少发生的类别，假设这样的合并是明智的。以基于训练集频率指定截止值，指示哪些类别应该组合。同样，这应该在重新采样期间发生，以便最终估计反映可变性的预测值包含在“其他”组中。
+
+另一种组合类别的方法是使用哈希函数(hashing function或hashes)。哈希用于将一组值映射到另一组值，通常用于数据库和加密(Preneel [2010](https://link.springer.com/chapter/10.1007/978-3-642-17401-8_9))。
+
+原始值称为密钥，通常映射到较小的一组人工哈希值。在特征工程中，潜在的大量预测因子类别值是关键，我们希望使用较少的类别(即散列)来表示它们。对应的哈希值的数量由用户设置，基于数学的考量，一般是2的幂。哈希函数在计算上有趣的方面包括：
++ 仅需要被哈希的值以及对应结果的数量。这与前面介绍的使用参考单元的对比度函数不同。
++ 映射过程是确定的
++ 在传统应用中，哈希得到的散列键的数量是相对均匀的。如果应用在密码学中这是重要的，因为这会加大猜中结果的难度。但是，对于数据分析来说这可能不是一个好的特征
++ 哈希函数是单向的，只通过哈希值是无法知道原值的。当然，在创建的过程中可以生成原始值哈希值的映射表。
++ 同样，没有免费的午餐。一些不同的原始值可能会被映射到相同的哈希值上(称为“碰撞”)。碰撞的数量很大程度上取决于目标哈希值的数量。
+
+使用哈希映射来创建虚拟变量的过程称为“特征哈希”或者“哈希处理”(Weinberger et al.[2009](https://arxiv.org/pdf/0902.2206.pdf))。由于有多种哈希函数可选，同样也会有不同的方式来生成原始值与哈希值的映射表格。
+
+一个简单的示例，对来自OkCupid的20个位置数据进行[hash处理](https://github.com/aappleby/smhasher)，其中六个用来作详细说明:![Markdown](\images_source\20180621\5-002.PNG)
+
+基于城市的文本数据生成哈希整数，在生成新变量的过程中，会使用到模数运算(modular arithmetic)。假设生成16个新特征，哈希生成公式为 column = (interger mod 16) + 1. 例如，“mountain view”，则(-1267876914 mod 16) + 1 = 15. 所以，城市将被映射到15个虚拟变量中。上图中的最后一列表示将城市值映射到256个新特征中；对256求余相对于对16求余将会保留更多的特征。
+在16个新特征情况下，所有城市数据的映射关系如下图所示：![Markdown](\images_source\20180621\5-003.PNG)
+
+这张表有几点需要注意。第一，有四列哈希后的值未包含在其中，因为它们的值都是0。造成这样的原因是原预测因子的文本哈希整数值被16整除，这也有可能存在不同预测因子值被映射到同一哈希值的情况。在这种情况下，创建一个“other”类别来确保新类别能够在哈希结果值中有表示是明智的。第二，只有其中六列没有碰撞(列中只有一个1)，其它的列出现了碰撞，比如哈希值为14的列在“Menlo Park”和“San Leandro”之间发生了碰撞。在统计方面，这两类之间形成了混淆(aliased or confounded)，因为意味着从此处的哈希值无法区隔不同的类别。长期以来，统计实验设计领域中研究了别名结构，尽管通常在变量之间而不是变量内不同类别值之间(Box, Hunter, and Hunter [2005](https://www.amazon.com/Statistics-Experimenters-Introduction-Analysis-Building/dp/0471093157))。无论如何，从统计的角度来看，最小化别名结构的数量和程度是方案的一个重要方面。
+
+某些哈希函数可以考虑符号，意味着不仅仅是生成一个二进制的新特征，可能的值是-1，0，1.零表示被整除。±1则表示不同的原始值。假设两个类别会哈希到同一个值，对于二进制哈希来说会导致碰撞，但是对于符号哈希则能够避免这种情况，因为，一类会映射到+1而另一类则会映射到-1.与上图相同的数据通过符号哈希映射后得到相同的规模如下所示：![Markdown](\images_source\20180621\5-004.PNG)
+可以看到哈希值为14的列中“Menlo Park”、“San Leandro”之间得到了不同的表示。对于线性回归模型，第14列的值现在分别表示Menlo Park或San Leandro将对目标产生正向或负向影响。体现了预测信息。
+
+如何确定别名结构的级别？为了研究这个问题，模拟了一个具有10000个类别的预测因子，每个类别由20个不同的随机字符组成。产生了不同大小的二进制哈希和符号哈希结果，并计算了不同结果下的碰撞率。仿真点结果来自10次结果的均值，如Figure 5.1所示，y轴表示碰撞率，可以看到，符号哈希具有更小的碰撞率。绿线表示全部的虚拟变量(无哈希)。对这些数据来说，使用符号哈希能够获得最好的别名结构，但是具有非常高的碰撞率。![Markdown](\images_source\20180621\5-005.PNG)
+
+由于新特征的生成方式，特征哈希忽略了预测因子别名的概念。哈希函数的一致性是在传统应用中得到广泛应用的重要基础，但这在数据分析业务中可能成为一种限制。别名结构的降低在统计领域中是一个重要概念。但我们则希望能够对类别进行尽可能细的表示，主要原因有：
++ 减少别名结构使用可以更好的解释模型，如果预测变量对模型有重大影响，则可以思考原因。但是，如果当多个类别由于碰撞而混淆时，解开真实原因就可能变得困难，虽然这可以帮助我们缩小寻找影响目标类别的范围。
++ 类别如果形成了碰撞，将无法解读意义。例如，San Leandro 和 Menlo Park没有被重新定义因为它们可能比较相似或者地理靠近。哈希特征处理可能导致负面影响。因为每个类别可能对目标的影响是不一样的，而碰撞之后将无法刻画这种差别，导致模型效果下降。
++ 哈希函数没有每个类别发生概率的概念。因此，可以想象，频繁的类别可能与罕见的发生类别混淆。在这种情况下，将对该哈希特征的影响产生更大的影响。
+
+在场景中使用特征哈希，到目前为止，还未发现特别的统计意义。因为当训练集包含大量预测因子时，对比度函数也能使用到其中的某些对目标有意义的特征。比如，如果有能力让某些类别与其他类别无关，应为这些角色选择最常出现的值。这个建议的原因是它对类别产生的高度特异性最能表征对比度函数。这种策略的一个副作用是将较不频繁出现的值也混淆为之前选择的最频繁的值，而这显然是有些不合理的。但是，这也有可能是有益的，因为它减少了虚拟变量的数量和稀疏性。
+例如，如果将两个分别占训练集值的5％的类别组合在一起，则这两个类别组合后形成的虚拟变量中的值将是两个类别的和，而虚拟变量只有一个(控制了变量的数量和稀疏性)。这样可以减少重采样过程中被滤除的几率，并可能减少这种方差近似为零的预测因子可能对分析带来的潜在影响。
+
+
+## 5.3 特殊类别处理方法
+假设我们已经建立了一个模型来预测一个人在STEM专业工作的概率，并且这个模型取决于地理位置(例如城市)。如果新的个体居住在20个城市之一，则该模型将能够预测STEM专业的可能性。但是，当一个新人生活在一个未在原始数据中表现的城市时，模型预测会发生什么？ 如果模型完全基于虚拟变量，则模型将不会看到此信息，也无法生成预测。
+
+如果在未来有可能遇到新的类别，一种策略是使用前面提到的“其他”类别来捕捉新的价值。虽然这种方法在提取该特定类别与目标相关的预测信息方面可能不是最有效的，但可以使用原始模型而无需重新设置它。这种方法也可以用于特征哈希，因为新类别被转换为独特的“其他”类别，其与其他预测值的哈希方式相同; 但是，我们需要确保训练/测试数据中存在“其他”类别。或者，我们可以确保“其他”类别与另一个哈希类别相冲突，以便该模型可用于预测新样本。
+
+请注意，具有新颖类别的预测变量在模型的训练/测试阶段不是问题。在此阶段，现有数据中所有预测变量的类别在建模时是已知的。如果特定的预测变量类别仅在训练集中存在(反之亦然)，仍然可以为两个数据集创建虚拟变量，尽管它们中的一个将是一个零方差预测变量。
+
+[译者备注]：所以，到目前为止，对类别变量的处理方式主要还是独热编码。(虽然不一定是最有效的)
+
+
+## 5.4 监督编码方法
+有几种方法可以使用结果数据作为指导将分类预测变量编码为数字列(因此它们是监督方法)。这些技术非常适用于预测变量具有许多可能值或模型训练后出现新水平的情况。
+
+第一种方法是简单的翻译，有时称为效应或似然编码(Micci-Barreca [2001](https://dl.acm.org/citation.cfm?id=507538)，Zumel and Mount([2016](https://arxiv.org/pdf/1611.09477.pdf)))。实质上，测量因子水平对结果的影响，并将此效果用作数字编码。例如，对于Ames住房数据，我们可以根据培训数据计算每个社区的房屋的平均或中位销售价格，并使用此统计数据来表示模型中的因子水平。有多种方法来估计效果，这些将在下面讨论。
+
+对于分类问题，可以使用简单的逻辑回归模型来测量分类结果与分类预测因子之间的影响。如果结果出现的频率为$p$,那么事件发生的概率定义为$p(1-p)$.例如，使用OkC数据，Mountain View California中的STEM配置文件的速率为0.51，因此赔率为0.03。Logistic回归模拟结果的对数几率作为预测因子的函数。如果我们在模型中只包含一个分类预测变量，我们可以估计每个预测变量值的对数 - 并将其用作编码。使用表5.1中之前显示的相同位置，OkC数据的简单效果编码显示在表5.2“Raw”标题下。![Markdown](\images_source\20180621\5-007.PNG)
+
+如前所述，有不同的方法来估计效果。可以使用单个广义线性模型(例如线性或逻辑回归)。虽然非常快，但它有缺点。例如，当一个因子级别具有单个值时会发生什么？ 从理论上讲，对数概率在适当的方向上应该是无穷大的，但在数值上，它通常被限制在一个很大(并且不准确)的值上。
+
+解决此问题的一种方法是使用某种类型的收缩方法。例如，可以确定整体对数概率，并且如果因子水平内的数据质量差，我们可以将该水平的效应估计偏向于忽略预测变量水平的总体估计。“质量差”可能是由于样本量较小，或者对于数字结果而言，该级别的数据存在较大差异。收缩方法也可以将极端估计值移至分布中间。例如，良好复制的因子水平可能具有极端平均值或对数概率(如下面的山景数据所示)。
+
+缩小参数估计值的常用方法是贝叶斯分析(McElreath [2015](https://www.crcpress.com/Statistical-Rethinking-A-Bayesian-Course-with-Examples-in-R-and-Stan/McElreath/p/book/9781482253443))。在这种情况下，在查看数据之前，我们可以使用我们的专家判断来为我们的估计指定先验分布(例如平均值或对数赔率)。先验将是表示影响的总体分布的理论分布。几乎任何分布都可以使用。如果不能确定这种分布应该是什么，那么可能足以专注于形状。如果我们认为钟形分布是合理的但没有比这更多的想法，可以使用非常分散或广泛的先验，以便它不会过于自以为是。贝叶斯方法采用观察到的数据并将其与先前分布混合，得出后验分布，即两者的组合。对于数据较差的分类预测值，后验估计会更接近先前分布的中心。当他们的原始估计相对极端时也会发生这种情况。
+
+对于OkC数据，正常的先验分布用于具有大标准偏差的对数赔率($σ=10$)。表5.2显示了结果。对于大多数地区而言，原始和缩小的估计非常相似。对于Belvedere / Tiburon，样本量相对较小(STEM率相对较小)，估计值朝前一个中心收缩。请注意，“< new location >”有一行。当给贝叶斯模型一个新的位置时，这里使用的程序使用后验分布的平均值(这些数据的值为-1.82)估计其效果为最可能的值。原始和收缩效应估计的图也显示在图5.2(a)中。图(b)显示了估计值的大小(x轴)与两者之间的差异。当原始效应估计值低于-2时，收缩率将值拉向估计值的中心。例如，具有最大log-odds值(Mountain View)的位置从0.03减少到-0.065。![Markdown](\images_source\20180621\5-008.PNG)
+
+经验贝叶斯方法也可以以线性(和广义线性)混合模型的形式使用(West和Galecki [2014](https://www.amazon.com/Linear-Mixed-Models-Practical-Statistical/dp/1466560991))。这些是非贝叶斯估计方法，其在估算程序中也包含收缩。虽然它们比这里使用的贝叶斯模型类型更快，但它们提供的灵活性低于完全贝叶斯方法。
+
+与估计方法无关的效果编码的一个问题是它增加了过度拟合的可能性。我们从一个模型中获取估计的效果并将它们放在另一个模型中(作为变量)。如果这两个模型基于相同的数据，那么它有点是一个自我实现的预言。如果这些编码与未来数据不一致，则会导致模型无法检测到的过度拟合，因为它没有暴露于可能与结果相矛盾的任何其他数据。此外，使用汇总统计数据作为预测变量可能会大大低估数据的变化，并可能对新编码列的效用给出错误乐观的看法。因此，强烈建议使用不同的数据集来估计编码和预测模型，或者在重新采样内进行推导，以便评估集可以测量过度拟合(如果存在)。
+
+另一种监督方法来自关于文本数据分析的深度学习文献。在他们的情况下，可以将大量文本切割成单个单词。不是将这些单词中的每一个都变成自己的指示变量，而是开发了单词嵌入或实体嵌入方法。与下一章中描述的降维方法类似，我们的想法是估计一组较小的数字特征，这些特征可用于充分表示分类预测变量。Guo和Berkhahn([2016](https://arxiv.org/pdf/1604.06737.pdf))以及Chollet and Allaire([2018](https://www.manning.com/books/deep-learning-with-r))更详细地描述了这种技术。除了降维之外，这些方法还有可能估计单词之间的语义关系，使得具有相似主题的单词(例如“dog”，“pet”等)在新编码中具有相似的值。该技术不限于文本数据，可用于编码任何类型的定性变量。
+
+一旦指定了新功能的数量，该模型将采用传统的指标变量并随机将其分配给其中一个新功能。然后，模型尝试优化指标到特征的分配以及特征本身的参数系数。模型中的结果可以与预测模型相同(例如，销售价格或STEM简档的概率)。可以优化任何类型的损失函数，但通常使用数均结果的均方根误差和分类结果的交叉熵(分别是线性和逻辑回归的损失函数)。一旦模型拟合，就为每个观察到的定量因子值保存嵌入特征的值。这些值用作用于预测的查找表。另外，可以将额外级别分配给原始预测器，以用作模型训练之后遇到的预测器的任何新值的占位符。
+
+可以使用更典型的神经网络结构，其在预测器和结果(即隐藏层)之间放置一组或多组非线性变量。这允许模型对底层模式进行更复杂的表示。虽然神经网络模型的完整描述超出了本书的范围，但Chollet and Allaire([2018](https://www.manning.com/books/deep-learning-with-r))是一个非常容易获得的指南，可以用来拟合这些模型，并且存在专门的软件来创建编码。
+
+对于OkCupid数据，训练集中有52个位置。我们可以尝试使用集嵌入功能来表示这些位置，以及潜在新位置的插槽。该模型的示意图是：![Markdown](\images_source\20180621\5-009.PNG)
+
+这里，每个绿色节点表示专用于将位置数据的维度降低到较小集合的网络部分。在该图中，使用了三个嵌入特征。该模型还可以包括一组与嵌入组件无关的其他预测器。在此图中，将在第5.6节中导出的另一组指标变量以橙色显示。这允许在存在其他潜在重要预测因子的情况下估计嵌入，以便可以相应地调整它们。每条线代表模型的斜率系数。由绿色圆形节点表示的左侧指示器变量层与嵌入层之间的连接是将用于表示原始位置的值。将嵌入和其他预测变量连接到隐藏层的激活功能使用了ReLU连接(在6.2.1节中介绍)。这允许模型使用非线性关系的额外复杂性。这里，在模型估计期间使用了十个隐藏节点。总的来说，网络模型在导出嵌入特征的过程中估计了678个参数。使用交叉熵来拟合模型，并且训练它进行30次迭代，在那里发现它会聚。这些数据并不是特别复杂，因为很少有唯一值往往具有非常少的文本信息，因为每个数据点只属于一个位置(与将文本切割成单个单词的情况不同)。
+
+表5.2显示了几个位置的结果，图5.3显示了每个结果编码(即特征)与原始对数之间的关系。每个特征与结果有关系，等级相关为-0.46，-0.76和-0.18。一些新功能与其他功能相关; 绝对相关值的范围在0到0.76之间。这提出了这样的可能性：对于这些数据，可能需要更少的特征。最后，作为提醒，虽然这里使用了整个监督神经网络，但是嵌入特征可以在其他模型中用于预处理位置值。![Markdown](\images_source\20180621\5-010.PNG)
+
+
+## 5.5 编码有序分类因子
+前面讲到，一个无序的预测因子有C种类型值可以被表示为C-1种二进制虚拟变量或者哈希二进制变量中。这些方法可以有效地向模型提供分类信息。但是现在假设这C中类型值具有相关顺序。比如，“low”、“medium”、“high”，我们可以如以前一样将其转换为二进制虚拟变量，就像无序预测因子那样，但是这样将损失掉那部分包含类别间相关关系的信息，这种信息对预测目标来说可能是有用的。
+
+有序预测因子需要另外的处理方法来表征新形式使其能够包含顺序信息到模型中。有序类别与目标之间可能具有线性关系。例如，当我们从低到中移动时，我们可能会看到目标增加了大约5个单位，而当我们从中等移动到高时目标又增加了大约5个单位。为了让模型揭示这种关系，我们必须给模型提供一个表示线性排序的有序类别的数字编码。在统计领域，这种类型的编码被称为多项式对比(polynomial contrast)。处理的方法是对比度单个比较且求和为0。借用上面的例子，将[low,medium,high]通过构造线性趋势对应得到[-0.71，0，0.71]。多项式对比也可以扩展到非线性形状。如果预测变量和目标之间的关系最好用二次趋势描述，那么构造将得到[0.41,-0.82,0.41],如表5.1所示。方便地，可以为具有任意数量的有序因子的预测器生成这些类型的构造，但是对比度的复杂性被约束至少比原始预测器中的类别数少一个。例如，我们无法使用只有3个类别的预测因子来探索预测因子和目标之间的三次关系。
+
+通过使用多项式对比，可以通过在同一模型中包含这些关系来同时研究多个关系(线性，二次等)。当这样做时，数字的表示形式很重要。具体而言，我们希望新的预测变量包含独特的信息。为此，数字表示需要是正交的。这意味着对比矢量的点积为0。![Markdown](\images_source\20180621\5-006.PNG)
+
+必须要认识到由多项式对比描述的模式可能无法将预测因子与目标有效地联系起来。例如，在某些情况下，人们可能会预期“低”和“中”样本具有大致相等的目标反应，但“高”样本具有非常不同的目标反应趋势。在这种情况下，多项式对比无法有效地模拟这种趋势。当"high"类别对目标的反应比较中等或是温和时可能会带来多项式对比的另一个缺点。如果预测因子具有C个level，通过独热编码到虚拟变量时将映射到C-1度。这些更高级的多项式不太可能模拟重要趋势(例如，octic模式)，但对多项式程度设置约束可能是有意义的。在实践中，我们很少探索除二次多项式之外任何多项式的有效性。
+
+作为多项式对比的替代方法，可以：
++ 将预测因子视为无序因素。这将允许多项式特征集未涵盖的模式。当然，如果真正的基础模式是线性或二次的，那么无序的虚拟变量处理将使模型的工作更加不利。
++ 根据特定于上下文的信息将有序类别转换为一组数字分数。例如，在讨论计算机硬件的故障模式时，专家将能够在整数范围内对一类故障的严重性进行排序。小故障可能被评为“1”，而灾难性故障模式可能被评为“10”，依此类推。
+
+可以通过可视化来发现其中的关系是哪一种，或者判断更好的处理方式是什么。以及预测因子与目标变量之间是否具有线性或是二次的关系。
+
+[译者备注]：所以如果要进行有序分类因子处理，那么在此之前应当判断是否应该如此处理，判断的标准就是预测因子与目标变量之间是否存在线性或事二次关系。如何判断这种关系可以通过数据可视化来实现。
+
+
+
+## 5.6 基于文本数据创建特征
+通常，数据包含从问卷、文章、评论、推文和其他来源收集的文本字段。例如，OkCupid数据包含对九个开放文本问题的回答，例如“我的自我总结”和“我永远不会没有的六件事”。公开回复可能包含与结果相关的重要信息。STEM领域与人文学科中的个体可能具有不同的词汇。因此，这些开放文本字段中使用的单词或短语对于预测结果非常重要。这种数据是定性的，需要更多的处理以便模型可以使用。那么如何才能探索和表示这些数据呢？
+
+例如，某些个人资料文字答案包含指向外部网站的链接。一个合理的假设是超链接的存在可能与该人的职业有关。表5.4显示了配置文件随机子集的结果。STEM配置文件中的超链接率为21％，而非STEM配置文件中的11.6％包含至少一个链接。评估两个比例差异的一种方法称为比值比(Agresti [2012](http://www.statgraphics.com/categorical-data-analysis))。首先，与利率发生的事件的几率$p$，则比值比被定义为$p/(1-p)$。对于STEM配置文件，包含超链接的几率相对较小，值为$0.21/0.79=0.266$。对于非STEM配置文件，它甚至更小(0.132)。所以，这两个量的比率可用于理解超链接在两个职业之间的差异。在这种情况下，这表示当包含链接的配置文件时，STEM配置文件的概率几乎高2.0倍。基本统计数据可用于为此数量指定较低的95％置信区间。对于该数据，下限为1.8，这表明该可能性的增加不太可能是由于随机噪声引起的，因为它不包括1.0的值。鉴于这些结果，超链接的指标可能会使模型受益，应该包括在内。![Markdown](\images_source\20180621\5-011.PNG)
+
+是否有能成为预测结果的词或短语？要确定这一点，必须首先处理和清理文本数据。此时，10000个配置文件的子样本中有63630个不同的单词。在数据上计算了各种特征，例如逗号，主题标签，提及，感叹号等的数量。这导致了一组14个新的“文本相关”功能。在这些数据中，文本中有大量HTML标记标记，例如< br />和< a href= \"link\">。这些已从数据中删除，以及标点符号，换行符和其他符号。此外，还有一些词是无意义的重复字符，例如*** 或aaaaaaaaa，它们被删除了。下面将介绍其他类型的文本预处理，有关更多信息，Christopher，Prabhakar和Hinrich([2008](https://nlp.stanford.edu/IR-book/))是对文本数据分析的一个很好的介绍，而Silge和Robinson([2017](http://shop.oreilly.com/product/0636920067153.do))是对计算方面的一个很好的参考。
+
+这63630个单词及其相关的结果类别，可以计算比值比。首先，再次过滤单词，只分析10000个简档中出现至少50次的术语。确定该截止值以使得具有足够的建模频率。通过此约束，潜在的关键字数量减少到4940个术语。对于这些中的每一个，计算比值比和相关的p值。p值检验了在任一组中出现关键字的几率相等的假设(即1.0)。但是，由于两个原因，p值很容易提供误导性结果：
++ 一般，p值仅涉及“两组之间的赔率是否存在差异？”这个问题，更合适的问题是“组之间存在多大的差异？”，但，p值没有衡量差异的大小。
++ 当测试单个(预定义)假设时，使用假设检验的假阳性率$α=0.05$是5％。但是，我们正在对相同的数据集进行4940次测试，这会以假指数的方式提高误报率。虚假发现率(FDR)p值校正(Efron和Hastie 2016)就是针对这种情况而开发的。该过程使用p值的整个分布并减弱假阳性率。如果特定关键字的FDR值为0.30，则表示FDR值小于0.30的关键字集合具有30％的错误发现率。出于这个原因，这里的重点将是使用Benjamini-Hochberg校正产生的FDR值(Benjamini和Hochberg 1995)。
+
+为了表征这些结果，图5.4显示了火山图，其中估计的比值比显示在x轴上，而FDR值的负对数显示在y轴上(其中较大的值表示较高的统计显着性)。点的大小与采样数据集中找到的事件数相关联。落在左上角和右上角的关键词表示类之间存在很大差异，这不太可能是随机结果。该图显示了更多在STEM配置文件中找到的可能性比非STEM专业更多的关键字，因为更多的点落在x轴上的一个右上角。其中一些具有极高的统计显着性，其FDR值非常小。![Markdown](\images_source\20180621\5-012.PNG)
+
+作为“重要性”的粗略标准，比值比至少为2(在任一方向上)和FDR值小于的关键字$10^5$将被考虑进行建模。筛选到50个关键字：![Markdown](\images_source\20180621\5-013.PNG)
+
+在这些关键字中，只有7个在非STEM配置文件中得到了丰富：im, lol, law, teacher, student, therapist, marketing.在STEM丰富的关键词中，其中许多是有意义的(并且与刻板印象相关)。大多数与职业有关(e.g. engin, startup, scienc),而其他人则明显与流行的极客文化有关，例如 firefli, neal, stephenson, scifi.
+
+最后一组9个特征的计算与论文的情感和语言有关。有精选的词汇集合，具有指定的情绪值。例如，“恐怖”具有相当消极的含义，而“精彩”则与积极性相关。可以为单词分配定性评估(例如“正”，“中性”等)或数字分数，其中中性被赋予零值。在某些问题中，情绪可能是结果的良好预测因素。该特征集包括与情感相关的度量，以及观点(即，第一，第二或第三人称文本)和其他语言元素的度量。
+
+这些特征会对模型产生影响吗？使用不同的特征集计算一系列逻辑回归模型：
++ 与论文无关的一组基本简介特征(例如年龄，宗教等)，由168个预测变量(在生成虚拟变量之后)组成。可得到ROC曲线下面积为0.786。该模型的各个重采样如图5.5所示。
++ 简单文本特征的增加使预测变量的数量增加到182.使得AUC值为0.79，模型表现没有明显提高。这些特征在进一步使用时被丢弃。
++ 关键字添加到基本配置文件功能中。在这种情况下，AUC跃升至0.847。回想一下，这些数据来自较小部分，而且这个估计可能略微乐观。但是，整个训练集是交叉验证的，如果过度拟合严重，重新抽样的性能估计将不会很好。
++ 该模型中添加了情感和语言特征，产生的AUC为0.848。这表明这些特征没有提供任何额外的预测信息。
++ 总的来说，关键字和基本功能形成的模型将是此处找到的最佳特征组合。![Markdown](\images_source\20180621\5-014.PNG)
+
+此处显示的用于计算和评估文本特征的策略相当简单，并不是唯一可以采用的方法。其他预处理文本数据的方法包括：
++ 删除常用的停用词，例如“is”, “the”, “and”等。
++ 处理词语的单词，例如单数和复数形式，被表示为单个实体。
+
+使用SMART词典的停用词(Lewis et al.[2004](http://jmlr.csail.mit.edu/papers/volume5/lewis04a/lewis04a.pdf))过滤当前的单词集，留下了63118个独特的结果。然后使用Porter算法(Willett [2006](http://eprints.whiterose.ac.uk/1434/1/willettp9_PorterStemmingReview.pdf))将词语“阻止”以将相似的单词转换为公共根。例如，这7个单词非常相似："teach", "teacher", "teachers", "teaches", "teachable", "teaching", "teachings". Stemming would reduce these to 3 unique values: "teach", "teacher", "teachabl"一旦这些值被阻止，剩下45704个独特单词。虽然这确实减少了要分析的术语的潜在数量，但是存在文本的特异性降低的潜在缺点。Schofield和Mimno([2006](https://mimno.infosci.cornell.edu/papers/schofield_tacl_2016.pdf))以及Schofield，Magnusson和Mimno([2017](http://www.cs.cornell.edu/~xanda/winlp2017.pdf))也证明使用这些预处理可能会造成伤害。
+
+用于确定相关特征的另一种方法使用术语频率-逆文档频率(tf-idf)统计(Amati and Van R [2002](https://dl.acm.org/citation.cfm?id=582416))。目标是找到对手头文档集中的单个文档很重要的单词或术语。例如，如果处理了本书中的单词，则有一些单词具有高频率(e.g. predictor, encode, resample)，但在大多数其他文章中是不常见的。
+
+对于文档D中的单词W，术语频率tf是W包含在D中的次数(通常根据D的长度进行调整)。逆文档频率idf是权重，该权重将根据单词在当前文档集合中出现的频率进行标准化。例如，假设特定配置文件中的单词feynman的术语频率为2.在用于派生特征的配置文件样本中，该单词出现在10000次中的55次。逆文档频率通常表示为比率的对数，或$log_2(10000/55)$或7.5。此配置文件中feynman的tf-idf值为$2×log_2(10000/55)$或者，假设在同一个配置文件中，“internet”一词也会出现两次。但这个词在一般资料中更为普遍，至少包含1529次。这里的tf-idf值是5.4($2*log_2(10000/1529)$);以这种方式，相同的原始计数根据其在整个数据集中的丰度进行加权。在这个假设的例子中，feynman与internet的次数相同，但是feynman更加独特或重要(由tf-idf测量)，因为它总体上更为罕见，因此作为预测特征可能更有效。
+
+td-idf的一个潜在问题是“当前文档集合”的概念。这可以针对训练集计算，但是当预测单个新样本时应该做什么(即没有收集)？一种方法是使用来自训练集的总idf值来对新样本中发现的术语频率进行加权(思路基本等同于缺失值填充，以均值进行填充)。
+
+另外，所有先前的方法一次只考虑一个单词。还可以考虑连续单词的序列，并且可以提供附加信息。n-gram是n个连续单词的序列。可以想象，在预测个人资料是否与STEM职业相对应时，“我讨厌计算机”的序列将与简单的术语“计算机”不同。
+
+## 5.7 基于树模型的因子与虚拟变量
+如前所述，某些类型的模型能够以其自然形式使用分类数据(即，不转换为虚拟变量)。使用芝加哥数据的星期几预测器的简单回归树(L. Breiman et al. [1984](https://www.amazon.com/Classification-Regression-Wadsworth-Statistics-Probability/dp/0412048418))导致了这种简单的预测分割：
+
+    if day in {Sun, Sat} then ridership = 4.4K
+     else ridership = 17.3K
+假设一周中的某一天已转换为虚拟变量。会发生什么？在这种情况下，模型稍微复杂一些，因为它一次只能创建一个虚拟变量的函数：
+
+    if day = Sun then ridership = 3.84K
+      else if day = Sat then ridership = 4.96K
+        else ridership = 17.30K
+
+如果非虚拟变量模型发现星期六和星期日的结果足够不同，值得额外的一组拆分，那么非虚拟变量模型可能会产生相同的结构。这导致在与基于树的模型中使用分类预测变量相关的问题：预测因子的编码方式是否重要？
+
+为了回答这个问题，进行了一系列实验。使用若干分类数据集来进行不同编码之间的比较。这些总结在表5.5中。两个数据集包含有序和无序因子。如下所述，有序因子以不同方式处理。![Markdown](\images_source\20180621\5-015.PNG)
+
+对于模拟的每次迭代，75％的数据用于训练集，10倍交叉验证用于调整模型。当结果变量具有两个水平时，ROC曲线下面积最大。对于其他数据集，优化了多项式对数似然。评估了相同数量的调整参数值，尽管在某些情况下，由于虚拟变量生成之前和之后数据中的预测变量的数量，这些参数的值是不同的。对于具有和不具有虚拟变量的模型，使用相同的重采样和随机数。当数据包含显著的类不平衡时，数据被下采样以进行补偿。
+
+对于每个数据集，模型都适合原始形式的数据以及(无序的)虚拟变量。对于具有序数据的两个数据集，使用序数虚拟变量(即多项式对比)创建另外的模型。
+
+有几种模型拟合数据集。除非另有说明，否则每个模型都使用默认超参。
++ 单个CART树(L.Breiman et al. 1984)使用递归分区算法内部的“一个标准错误规则”来选择复杂性参数。
++ Bagg CART树(Breiman [1996](http://www.machine-learning.martinsewell.com/ensembles/bagging/Breiman1996.pdf))。每个模型包含50个组成树。
++ 单个C5.0树和单个C5.0规则集(Kuhn and Johnson [2013](http://appliedpredictivemodeling.com))
++ 单条件推理树(Hothorn，Hornik and Zeileis [2006](http://101.96.10.63/statmath.wu-wien.ac.at/~zeileis/papers/Hothorn+Hornik+Zeileis-2006.pdf))。评估了用于分裂的p值阈值的10个值的网格。
++ Boost CART树(a.k.a. stochastic gradient boosting, Friedman([2002](https://www.sciencedirect.com/science/article/pii/S0167947301000652)))。模型基于树的数量，学习速率，树深度以及进行额外分割所需的样本数量进行了优化。使用随机搜索评估二十五个参数组合。
++ Boost C5.0树。这些都针对迭代次数进行了调整。
++ Boost C5.0规则。这些也针对迭代次数进行了调整。
++ 使用CART树的随机森林(Breiman [2001](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf))。每个森林包含1500棵树，并且为分割选择的变量数量在10个值的网格上进行调整。
++ 使用条件(无偏)推理树的随机森林(Strobl et al. [2007](https://link.springer.com/article/10.1186%2F1471-2105-8-25))。每个森林包含100棵树，并且为分割选择的变量数量在10个值的网格上进行调整。
+
+对于每个模型，使用重新采样以及训练和调整模型的总时间来估计各种不同的性能指标。模拟中使用的程序包含在GitHub存储库topepo / dummies-vs-factors中。
+
+对于具有两个类的三个数据集，图5.6显示了ROC曲线下面积的结果摘要。在图中，使用表示性能的百分比差异$$\%Difference=\dfrac{Factor - Dummy}{Factor}\times\;100$$
+
+通过这种方式，正值表明因子编码具有更好的性能。除了分布的低5％和高5％之外，图像还显示了中位数。灰色虚线表示编码之间没有差异。![Markdown](\images_source\20180621\5-016.PNG)
+
+这些模拟的结果表明，对于这些数据集，编码方法之间的ROC曲线下的面积没有实际差异。当将简单因子编码与有序预测器的多项式对比产生的虚拟变量进行比较时，这似乎也是正确的。在十种模型中，40种情况中只有两种情况，其中主流分布不包括零。随机梯度增强和袋装CART树都是集合方法，当使用因子代替单个数据集的虚拟变量时，这些方法显示ROC曲线下降2％-4％。
+
+还可以评估另一个指标，即总体准确度。这些结果如图5.7所示，其中可以考虑所有模型。在这种情况下，结果是混合的。将因子与无序虚拟变量进行比较时，其中两个模型显示编码的差异。流失数据显示与ROC曲线指标类似的结果。汽车评估数据表明几乎统一的效果，其中因子编码比虚拟变量更好。回想一下，在具有四个类的汽车数据中，所有预测变量都是分类的。因此，它可能会显示所有数据集的最大效果。
+
+在使用多项式对比生成虚拟变量的情况下，两个数据集都不显示两种编码之间的差异。然而，汽车评估数据显示了与多项式对比相比，因子编码没有差异的模式，但是当与无序虚拟变量相比时，因子编码是优越的。这表明数据中的基本趋势遵循多项式模式。
+
+在性能方面，似乎两种编码之间的差异很少(但可能发生)。有人可能会推断，由于汽车数据包含所有分类变量，因此这种情况将是何时使用因子而非虚拟变量的良好指标。但是，其中两个数据集(Attrition和German Credit)具有很高比例的分类预测因子并且没有显示出差异。在一些数据集中，编码的效果取决于分类预测变量对结果是否重要以及以何种方式变化。![Markdown](\images_source\20180621\5-017.PNG)
+
+总之，尽管看到的差异很少，但很难预测何时会出现差异。
+
+但是，还有另一个统计量：模型训练时间。图5.8显示了使用虚拟变量之上和之外的因子的加速(即值为2.5表示虚拟变量模型比因子编码模型慢2.5倍)。在这里，有一个非常强烈的趋势，即基于因子的模型比它们的虚拟变量对应物更有效地训练。其原因可能是预测因子的扩展数量(由生成虚拟变量引起)需要比确定因子水平的最佳分割的方法更多的计算时间。这种趋势的例外是使用条件推理树的模型。[或许这段话可以作为分类因子处理方式的经验参考]![Markdown](\images_source\20180621\5-018.PNG)
+
+经验来看，我们建议使用预测变量而不转换为虚拟变量；当然如果模型看起来很有希望，也可以尝试使用虚拟变量进行一些尝试。
+
+## 5.8 计算
+用于再现这些分析的R程序可以在以下位置找到:[https://github.com/topepo/TBD](https://github.com/topepo/TBD)
+## References
+Haase, R. 2011. Multivariate General Linear Models. Sage.
+Timm, N, and J Carlson. 1975. “Analysis of Variance Through Full Rank Models.” Multivariate Behavioral Research Monographs. Society of Multivariate Experimental Psychology.
+Preneel, B. 2010. “Cryptographic Hash Functions: Theory and Practice.” In ICICS, 1–3.
+Weinberger, K, A Dasgupta, J Langford, A Smola, and J Attenberg. 2009. “Feature Hashing for Large Scale Multitask Learning.” In Proceedings of the 26th Annual International Conference on Machine Learning, 1113–20. ACM.
+Box, GEP, W Hunter, and J Hunter. 2005. Statistics for Experimenters: An Introduction to Design, Data Analysis, and Model Building. Wiley.
+Micci-Barreca, D. 2001. “A Preprocessing Scheme for High-Cardinality Categorical Attributes in Classification and Prediction Problems.” ACM SIGKDD Explorations Newsletter 3 (1):27–32.
+Zumel, N., and J. Mount. 2016. “vtreat: a data.frame processor for predictive modeling.” arXiv.org.
+McElreath, R. 2015. Statistical Rethinking: A Bayesian Course with Examples in R and Stan. Chapman; Hall/CRC.
+West, K, Band Welch, and A Galecki. 2014. Linear Mixed Models: A Practical Guide Using Statistical Software. CRC Press.
+Guo, C, and F Berkhahn. 2016. “Entity embeddings of categorical variables.” arXiv.org.
+Chollet, F, and JJ Allaire. 2018. Deep Learning with R. Manning.
+Agresti, A. 2012. Categorical Data Analysis. Wiley-Interscience.
+Christopher, D, R Prabhakar, and S Hinrich. 2008. Introduction to Information Retrieval. Cambridge University Press.
+Silge, J, and D Robinson. 2017. Text Mining with R: A Tidy Approach. O’Reilly.
+Efron, B, and T Hastie. 2016. Computer Age Statistical Inference. Cambridge University Press.
+Benjamini, Y, and Y Hochberg. 1995. “Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.” Journal of the Royal Statistical Society. Series B (Methodological). JSTOR, 289–300.
+Lewis, D, Y Yang, T Rose, and F Li. 2004. “Rcv1: A New Benchmark Collection for Text Categorization Research.” Journal of Machine Learning Research 5:361–97.
+Willett, P. 2006. “The Porter Stemming Algorithm: Then and Now.” Program 40 (3):219–23.
+Schofield, A, and D Mimno. 2016. “Comparing Apples to Apple: The Effects of Stemmers on Topic Models.” Transactions of the Association for Computational Linguistics 4:287–300.
+Schofield, A, M Magnusson, and D Mimno. 2017. “Understanding Text Pre-Processing for Latent Dirichlet Allocation.” In Proceedings of the 15th Conference of the European chapter of the Association for Computational Linguistics, 2:432–36.
+Amati, G, and Cornelis J Van R. 2002. “Probabilistic Models of Information Retrieval Based on Measuring the Divergence from Randomness.” ACM Transactions on Information Systems 20 (4):357–89.
+Breiman, L., J. Friedman, R. Olshen, and C. Stone. 1984. Classification and Regression Trees. New York: Chapman; Hall.
+Breiman, L. 1996. “Bagging Predictors.” Machine Learning 24 (2). Springer:123–40.
+Kuhn, M, and K Johnson. 2013. Applied Predictive Modeling. Vol. 26. Springer.
+Hothorn, T, K Hornik, and A Zeileis. 2006. “Unbiased Recursive Partitioning: A Conditional Inference Framework.” Journal of Computational and Graphical Statistics 15 (3). Taylor & Francis:651–74.
+Friedman, J. 2002. “Stochastic Gradient Boosting.” Computational Statistics & Data Analysis 38 (4). Elsevier:367–78.
+Breiman, L. 2001. “Random Forests.” Machine Learning 45 (1). Springer:5–32.
+Strobl, C, AL Boulesteix, A Zeileis, and T Hothorn. 2007. “Bias in Random Forest Variable Importance Measures: Illustrations, Sources and a Solution.” BMC Bioinformatics 8 (1):25.
+These computations use the “MurmurHash3” hash found at https://github.com/aappleby/smhasher and implemented in the FeatureHashing R package.
+Traditional analysis of alias structures could be applied to this problem. However, more research would be needed since those methods are usually applied to balanced designs where the values of the predictors have the same prevalence. Also, as previously mentioned, they tend to focus on aliasing between multiple variables. In any case, there is much room for improvement on this front.
+In this situation, the shrinkage of the values towards the mean is called partial pooling of the estimates.
+This is discussed more, with an example, in Section 6.2.2.
+https://en.wikipedia.org/wiki/Firefly_(TV_series)
+https://en.wikipedia.org/wiki/Neal_Stephenson
+This was the feature set that was used in Chapter 3 when resampling and model comparisons were discussed.
+Note that many of the non-ensemble methods, such as C5.0 trees/rules, CART, and conditional inference trees, show a significant amount of variation. This is due to the fact that they are unstable models with high variance.
+
+
+
+
+
+
+# 6 数值预测因子处理技术
+在前一章，介绍了如何巧妙处理定性类型预测变量的方法。此外，其他预测因子通常具有连续的实数值。本章将介绍如何将这些预测因子转换为模型可以更好利用的形式。
+
+连续的预测因子会带来一系列的困扰，本章将介绍如何缓解。某些情况下，连续预测因子存在的问题可以通过模型选择来减轻。例如，构建基于预测变量值等级而非实际值的预测变量和目标之间关系的模型(如基于树的建模技术)，使模型不受预测变量分布的偏斜或个别样本异常值的影响。某些模型(如K近邻和支持向量机)对具有偏态分布或异常值的预测变量比较敏感。连续因子彼此间高度相关是另一种经常存在的情况，这对某些模型来说可能会导致问题，但其它模型却未必。例如，偏最小二乘法可以直接处理高度相关的预测变量。但是，像多重线性回归或神经网络这样的模型却会受到不利影响。
+
+如果希望利用和探索更多类型模型的预测能力，就需要思考预测因子存在的问题，并以有效的方式处理。
+
+在本章，将探讨这样的方法来说明如何处理连续预测因子及其导致的常见问题。假设数据是：
++ 在很大程度上不同
++ 遵循偏态分布，其中一小部分样本比大部分数据(即偏度)大几个数量级
++ 包含少量极值
++ 在下限和/或上限范围进行探索。这间接表明在极端情况下的样品比测量范围内的样本具有更低的精确值
++ 真正具有预测性的因子与目标之间具有复杂的关系，不能用普通函数充分表示或需要通过复杂模型提取
++ 包含相关和过度冗余的信息。所收集的信息可以更有效的使用，减少或合并预测变量来表示新预测因子，同时保留或增强新的预测变量与目标的关系
+
+本章的技巧分为三大类。第一类工程技术是解决个别预测因子/特征有问题的技术(第6.1节)。为了更好地表示更复杂的预测因子-目标的关系，提取预测信息，第6.2节举例说明了将预测变量扩展为多个预测变量的方法。最后，第6.3节提介绍整合多个预测变量的方法。所有这些方法的目标都是将现有的连续预测因子转换为所有模型都可以使用的形式，并向模型提供最有用的信息。[总而言之，言而总之，再表示，以使模型可以更好的理解数据]
+
+与本文讨论的众多技术一样，对这些技术的需求可能非常依赖数据和模型。[译者注：也就是说，特定的数据和特定的模型可能需要考虑特定的处理方式，不是一概而论的，采取下一步的动作最好能够有上一步结果的反馈支持，而不是想当然]。例如，某些模型不需要用于解决分布偏斜或异常值转换，但这样的处理对于其他模型表现则至关重要。在本章，示例模型将从特定的预处理方法中受益。
+
+
+## 6.1 1:1转换
+可以对单个预测因子进行各种修改，这些修改可以改善其在模型中的实用性。这里讨论单个预测因子的第一种转换是那些改变数据规模的转换。一个很好的例子是第一章图1.3中描述的转换。预测变量具有非常偏斜的分布，使用值的倒数改善了模型性能。图6.1(a)显示了图1.3中一个预测变量的测试集分布。
+![Markdown](\images_source\20180621\6-001.PNG)
+
+Box-Cox变换(Box和Cox 1964)用于估计这种变换。Box-Cox程序最初旨在作为模型结果的变换，使用最大似然估计来估计变换参数λ在转换方程中：
+![Markdown](\images_source\20180621\6-001-1.PNG)
+
+其中$\tilde {x}$ 是预测变量数据的几何平均值。在此过程中，$\lambda$是根据数据估算的。因为感兴趣的参数在指数中，所以这种类型的变换称为幂变换。$\lambda$的某些值映射到常见变换，例如$\lambda = 1$(无变换)，$\lambda = 0$(log)，$\lambda = 0.5$(平方根)和$\lambda = -1$(反向)。正如您所看到的，Box-Cox转换在处理许多不同数据分布的能力方面非常灵活。对于图6.1中的数据，从训练集数据估计参数为$\widehat {\lambda} = -1.09$。这实际上是逆变换。图6.1(b)显示了将变换应用于测试集时的结果，并生成了近似对称的变换分布。值得注意的是，Box-Cox程序只能应用于严格正数的数据。不幸的是，Box-Cox程序不能应用于包含零或负的有问题的分布。为了解决这个问题，Yeo和Johnson(2000)设计了一个可用于任何数字数据的等效程序。
+
+另外，需要注意，两个转换都是无监督的，因为在此应用程序中，结果不用于计算。虽然转换可能会改善预测因子的分布，但无法保证会改进模型。但是一些利用数据的多项式计算的模型可能会有所改进，例如大多数线性模型，神经网络和支持向量机。在这些情况下，偏态分布可能会对这些模型产生有害影响，因为分布的尾部可能主导基础计算。
+
+对单个变量的另一个重要转换是对于具有0到1之间的值的变量，例如比例。对此类结果进行建模的问题是模型预测可能无法保证在同一边界内。对于0和1之间的数据，可以使用logit变换。如果$\pi$是变量，则logit转换为
+$$logit(\pi) = log\left(\frac{\pi}{1-\pi}\right)$$
+
+此变换将比例从零和一变为负和正无穷大之间的值。在极端情况下，当数据是绝对零或一时，可以加上或减去一个小常数，以避免被零除。一旦创建了模型预测，就可以使用逆logit变换将值放回原始比例。logit变换的替代方案是反正弦变换。这主要用于比例的平方根(例如$y^* = arcsine(\sqrt{\pi})$)。
+
+修改预测因子值规模的另一种常用技术是标准化其值以具有特定属性。将预测变量居中是一种常见技术。从预测变量的各个值中减去预测变量的训练集平均值。当将其单独应用于每个变量时，变量集合将具有共同的平均值(即零)。类似地，缩放是将变量除以相应训练集的标准偏差的过程。这可确保变量的标准偏差为1。或者，范围缩放使用训练集最小值和最大值将数据转换为在任意范围(通常为0和1)之间。再次强调，从训练集估计变换所需的统计数据(例如均值)并应用于所有数据集(例如，测试集或新样本)。
+
+这些变换大多是无害的，并且当模型要求预测变量处于公共单位时通常需要这些变换。例如，当使用预测变量之间的距离或点积(例如K-最近邻或支持向量机)时，或者当要求变量为常用比例以便应用惩罚(例如套索或岭回归)时，标准化程序至关重要。
+
+可用于包含时间或序列效果的数据的另一种有用的预处理方法是简单的数据平滑。例如，运行平均值可用于在建模之前减少预测因子或结果数据中的过量噪声。例如，运行的5点平均值将用其自身的平均值和位置48之前和之后的两个数据点替换每个数据点。正如人们所预料的那样，移动窗口的大小很重要;太大可能会消除重要趋势，例如非线性模式。
+
+短期中位数也可能有所帮助，特别是如果存在重要的异常值。当异常值落入移动窗口时，平均值被拉向异常值。中位数对异常值非常不敏感，是更好的选择。它还具有更改较少原始数据点的效果。
+
+例如，图6.2显示了61天的数据序列。原始数据位于顶部面板中，第10天和第45天有两个异常数据值。下面的面板显示了3点运行中值平滑器的结果。它似乎并没有削弱过去15天数据中看到的非线性趋势，但似乎确实减轻了异常值。此外，大约40％的平滑数据具有与原始序列相同的值。
+![Markdown](\images_source\20180621\6-002.PNG)
+
+可以使用其他平滑器，例如平滑样条(也在本章中描述)。然而，短期运行中值的简单性和鲁棒性对于这种类型的数据来说是一种有吸引力的方法。此平滑操作可应用于结果数据(如图6.2所示)和/或任何顺序预测变量。后一种情况在第3.4.7节中提到了信息泄漏。确保分别平滑测试集预测变量数据以避免在测试集(或新的未知样本)中具有训练集影响值，这一点很重要。
+
+
+## 6.2 1:N转换
+前一章说明了从单个定性预测因子创建多个数字列的过程。可以使用类似的一对多数据转换来改善模型。
+
+### 6.2.1 基础展开和线条的非线性特征
+预测变量$x$的基础扩展$f_i(x)$可以通过导出一组函数来实现，可以使用非线性组合。例如，在最后一章中，多项式对比度函数用于编码有序类别。对于连续预测器$x$，立方基础扩张是：
+$$f(x) = \sum_{i=1}^3 \beta_i f_i(x) = \beta_1 x + \beta_2 x^2 + \beta_3 x^3$$
+
+要在模型中使用此基础扩展，原始列将通过原始的平方和立方版本的两个新特征进行扩充。β可以使用基本线性回归估计值。如果真实趋势是线性的，则后两个回归参数可能接近于零(至少相对于它们的标准误差)。此外，可以在存在其他回归量的情况下用于估计确定基础扩展系数的线性回归。
+![Markdown](\images_source\20180621\6-003.PNG)
+
+这种类型的基础扩展(其中模式全局应用于预测因子)通常是不够的。例如，在Ames住房数据中获取批量大小变量。当根据销售价格绘制时，数据主流中存在线性增长趋势(两者之间)$10^{3.75}$和$10^{4.25}$但是在大部分数据的任何一侧，模式都可以忽略不计。
+
+创建可用于回归模型的全局基函数的另一种方法是多项式样条(Wood 2006，Eilers and Marx(2010))。这里，基础扩展创建预测空间的不同区域，其边界称为结。多项式样条在每个区域内使用多项式函数(通常为立方)来表示数据。我们希望立方函数在结点处连接，因此可以创建专门的函数以确保整体连续函数。这里，结的数量控制区域数量以及特征的潜在复杂性。如果结的数量很少(可能是三个或更少)，则基函数可以表示相对简单的趋势。具有更多节点的函数更具适应性，但也更可能过拟合。
+
+通常使用数据的百分位来选择结，使得每个区域内包含相对相等数量的数据。例如，具有三个区域的样条通常将结点设置为33.3％和66.7％百分位数。一旦结确定，就可以创建基函数并在回归模型中使用。有许多类型的多项式样条，这里描述的方法通常称为自然三次样条。
+
+对于Ames批次区域数据，让我们考虑一个包含6个区域的样条曲线。该程序将结点置于以下百分位数：16.7％，33.3％，50％，66.7％，83.3％。在创建自然样条基函数时，第一个函数通常被视为截距。其他功能X该程序生成的程序如图6.4(a)所示。这里蓝线表示结。请注意，前三个要素包含基函数值为零的区域。这意味着这些特征不会影响预测变量空间的那一部分。其他三个特征似乎最重视数据主流之外的区域。该图的图(b)显示了最终的回归形式。在主流之外的点云和弱关系中间存在强烈的线性趋势。左侧似乎不太适合数据。这可能意味着需要更多的结。
+![Markdown](\images_source\20180621\6-004.PNG)
+
+
+应该使用多少节？这是一个需要调整的参数，可以使用网格搜索或通过目视检查更平滑的结果来确定(例如图6.4(b))。在单个维度中，如果模型过度拟合，则会有视觉证据。此外，一些样条函数使用称为广义交叉验证(GCV)的方法，使用线性回归的计算捷径来估计适当的样条复杂度(Golub，Heath和Wahba 1979)。
+
+请注意，基础函数是在暴露于结果数据之前创建的。不一定是这种情况。确定曲线的最佳复杂度的一种方法是首先将每个训练集点指定为潜在结并使用正则化回归模型(类似于权重衰减或岭回归)来确定哪些实例应被视为结。平滑样条方法使用这种方法(Yandell 1993)。此外，还有一类称为广义加性模型(GAM)的丰富类别。这些扩展了一般线性模型，包括线性和逻辑回归，以获得单个预测变量的非线性项(并且不能模拟交互)。GAM模型可以自适应地为不同变量建立单独的基函数，并估计每个变量的复杂性。换句话说，可以使用不同的复杂程度对不同的预测变量进行建模。此外，还有许多其他类型的监督非线性平滑器可以使用。例如，模型拟合预测器上的加权移动回归线以估计数据中的非线性模式。有关GAM模型的更多技术信息，请参见Wood(2006)。
+
+与样条相关的另一个特征构造方法和多元自适应回归样条(MARS)模型(Friedman 1991)是单个固定节点样条。该方法使用的铰链函数变换是
+$$h(x) = x I(x > 0)$$
+
+$I$是一个指标函数，当$x$大于零时为零，否则为零。例如，如果批次区域的日志由表示$x, h(x - 3.75)$当日志区域小于3.75并且等于时，生成一个零的新特征$x - 3.75$除此以外。相反的功能，$h(3.75 - x)$，高于3.75的值。转换的效果可以在图6.5(a)中看到，它说明了一对铰链函数如何隔离预测器空间的某些区域。
+
+可以将这些特征添加到模型中以创建具有不同趋势的不同部分的分段回归模型。如前所述，图6.4中显示的批次区域数据显示，在数据的中心区域可以看到线性趋势，并且每个极端情况下，趋势更平坦。假设两组铰链函数被添加到线性模型中，结点为3.75和4.25。这将在低于值的区域中生成单独的线性趋势$10^{3.75}$之间$10^{3.75}$和$10^{4.25}$， 以上$10^{4.25}$。当添加到线性回归时，最左边区域的斜率将由两个节点的“左手”铰链函数驱动。中间区域将涉及与结相关的两个术语的斜率$10^{3.75}$以及结的左手铰链功能$10^{4.25}$等等。与该策略相关的模型拟合如图6.5(b)所示。
+![Markdown](\images_source\20180621\6-005.PNG)
+
+该特征生成函数在神经网络和深度学习领域中被称为整流线性单元(ReLU)激活函数。Nair和Hinton(2010)总结了它们在这些领域的应用。
+
+基函数可以通过表示特征的非线性模式来帮助构建更好的模型，对于探索性数据分析非常有效。可视化(例如图6.4(b)和6.5)可用于通知建模者预测的潜在功能形式应该是什么(例如对数线性，二次，分段等)。
+
+
+### 6.2.2 预测因子分解作为最后的手段
+Binning，也称为分类或离散化，是将定量变量转换为一组两个或更多个定性桶(即类别)的过程。例如，变量可能会被转换为分位数; 存储桶将用于数字是否落入数据的前25％，在第25和中位数之间等。在这种情况下，数据的分箱版本将有四个不同的值。
+
+将数据置于这样的转换中有几个明显的原因：
++ 有些人认为它简化了结果的分析和/或解释。假设一个人的年龄是一个预测因子，这是因为某人是否超过40岁而被分类。人们可能会发表一个声明，即年轻人和老年人之间发生事件的可能性增加了25％。没有讨论响应中每单位增加的情况。
++ 分箱可以避免必须指定预测器和结果之间的关系的问题。可以将一组箱子视为能够模拟更多模式而无需可视化或考虑底层模式。
++ 使用定性预测因子可能会让人觉得它可以减少数据的变化。这将在下面详细讨论。
+
+存在许多用于分箱数据的方法。一些是无人监督的并且基于用户驱动的截止值或估计的百分位数(例如中值)。在其他情况下，优化切割点的位置(和数量)以提高性能。例如，如果需要单次拆分，可以使用ROC曲线(第3.2.2节)找到灵敏度和特异性的适当交换。
+
+转换连续数据分类存在许多问题。首先，潜在趋势与新模型的一致性极不可能。其次，当存在真实趋势时，对数据进行离散化很可能使模型更难以完成有效的工作，因为数据中的所有细微差别都已被删除。第三，对于特定的切点，可能没有客观的理由。第四，当结果与预测因子之间没有关系时，“发现”错误趋势的可能性会大幅增加。这已被广泛研究和验证。见Altman(1991)，Altman等。(1994)，以及其中的参考文献。
+
+Kenny和Montanari(2013)做了一个非常出色的工作，说明了如何发生这种情况，我们的例子跟随他们的研究。假设正在筛选一组变量以查找哪些变量与数字结果之间存在关系。图6.6(a)显示了一个模拟数据集的示例，该数据集具有系数为1.0的线性趋势和正态分布的误差，标准差为4.0。这些数据的线性回归(显示)会发现增加的趋势，并且会有估计$R^2$ 30.3％。将数据切成10个等间隔的箱，并且每箱估计平均结果。这些数据与回归线一起显示在图(b)中。由于平均值正在使用，估计$R^2$因为模型认为数据更精确(实际上它们不是)，因此更大(64.2％)。
+![Markdown](\images_source\20180621\6-006.PNG)
+
+不幸的是，当预测因子与结果无关时，这种人为的变异减少可能导致高的假阳性率。为了说明这一点，使用相同的数据但是斜率为零(即，预测器是无信息的)。在有和没有分组数据的情况下，该模拟运行了很多次，图6.6(c)显示了估计的分布$R^2$模拟中的价值观。对于原始数据，最大的$R^2$虽然大多数数据低于20％，但在1000个数据集中看到的值为18.3％。当数据被离散化时，$R^2$价值往往要大得多(最高为76.9％)。事实上，19％的模拟都有$R^2 \ge 20\%$。
+
+离散化程序有可能改进模型; 无免费午餐定理折扣了一种方法永远不会起作用的想法。如果要使用分类策略，特别是如果它受到监督，我们建议：
++ 该策略不应成为正常操作程序的一部分。对预测变量进行分类应该是最后的手段。
++ 箱的确定必须包括在重采样内处理。这将有助于诊断何时由程序引起不存在的关系，并且当使用信息预测器时将减轻对性能的过高估计。此外，由于某种程序必须被定义为包含在重新采样中，因此它将阻止“眼球”数据选择切割点的典型方法。我们发现，仅基于数据目视检查的分级策略具有更高的过度拟合倾向。
+
+
+## 6.3 N:N转换
+从多个预测变量创建新要素时，可以纠正各种问题，如异常值或共线性。它还可以帮助降低预测变量空间的维数，从而提高性能并缩短模型的计算时间。
+
+### 6.3.1 线性投影方法
+如今的观测或可用数据集包含许多预测变量，可能超过可用样本的数量。预测因子组合“汤”成分通常是我们认为可能与目标相关的任何内容。传统的思维过程是，我们所包含的成分越多，“汤”就越好。但情况并非总是如此;含有不相关的预测因子可能会对最终模型产生不利影响(见第11章)。负面影响包括：增加训练模型所需的计算时间，降低预测性能，以及使预测变量重要性计算复杂化。最终可能得到了一个最后被扔到猪身上的“淡化汤”。
+
+我们在处理现代数据时所面临的问题是，我们通常不完全了解哪些预测因子与目标相关。一些可用的预测变量(或组合)与目标具有有意义的关联，这种情况下，我们的任务是尝试确定与目标相关的简单或复杂组合。
+
+在本节中，我们将介绍已经显示的投影方法，以有效地识别原始预测变量中有意义的信息。我们将关注的具体技术是主成分分析(PCA)，核PCA，独立成分分析(ICA)，非负矩阵分解(NNMF)和偏最小二乘(PLS)。此列表中的前四种技术是无监督的技术，它们不知道目标。PLS使用目标来指导降维过程，以使减少的预测变量空间与目标最佳地关联。
+
+这些方法是线性的，因为它们采用数字预测值的矩阵$(X)$并创建作为原始数据的线性组合的新组件。这些组件通常称为分数。如果有$n$训练设定点和$p$预测者，分数可以表示为$n \times p$矩阵$X^\*$并使用
+$$X^* = X A$$
+
+$p \times p$矩阵通常称为投影矩阵。因此，数据点i的第一个得分值将是：
+$x^2_{i1} = a_{11} x_{i1} + a_{12}x_{i2} + \ldots +  a_{1p}x_{ip}$
+
+
+一种可能性是仅使用一部分$A$把分数减少到$k < p$。例如，它可能是最后几列$A$对描述预测集没有任何好处。这种降维的概念不应与特征选择相混淆。如果我们可以描述预测器空间$k$得分变量，给予模型的数据中的列数较少。但是，这些列中的每一列都是所有原始预测变量的函数。
+
+上述投影方法之间的差异在于如何确定投影值。
+
+正如我们将在下面看到的，每种无监督技术都有其自己的目标，用于将原始预测变量概括或投影到尺寸较小的子空间中。$k$仅使用第一个$k$的列$A$。通过压缩预测信息，我们可以减少预测器冗余并梳理子空间内的潜在信号(与噪声相对)。将信息压缩到预测变量的子空间的直接好处是训练模型所需的计算时间的减少。但我们必须意识到采用无监督技术并不能保证预测性能的提高。我们在使用无监督投影方法时所做的主要基本假设是，所识别的子空间可以预测响应。这可能是也可能不是，因为无监督技术的目标与响应完全断开。在模型训练结束时，我们可能会发现无监督技术是压缩原始预测因子的便捷工具，但无助于有效提高预测性能。
+
+我们将通过专注于找到与目标直接相关的原始预测变量的子空间的目标来说明我们将要说明的监督技术PLS改进了无监督技术。通常，该方法找到原始预测变量的更小且更有效的子空间。使用监督方法的缺点是我们需要更大的数据集来保留样本以进行测试和验证，以避免过度拟合。
+
+
+#### 6.3.1.1 主成分 
+我们首先在第4.2.7节中将主成分分析作为探索性可视化技术。我们现在将更详细地探索PCA，并研究如何以及何时可以有效地使用它来创建新功能。主成分分析最初是由Karl Pearson在一个多世纪以前开发的，尽管它的年代，仍然是最广泛使用的降维工具之一。这种方法的一个很好的参考是Abdi和Williams(2010)。它与现代数据的相关性源于该技术的基本目标。具体而言，PCA的目标是找到原始预测变量的线性组合，使得组合总结原始预测变量空间中的最大变化量。从统计角度来看，变异是信息的同义词。因此，通过找到捕获变异的原始预测变量的组合，我们找到包含与预测变量相关数据子空间。同时，要求新分数彼此正交(即不相关)。正交性质使得预测因子空间可变性能够以不重叠的方式整齐地划分。事实证明，所有主成分之间的可变性与原始预测变量的可变性完全相同。在实践中，我们计算足够的新分数变量以尽可能的包含原始预测变量中的信息量(例如，95％)。
+
+该技术的一个重要的附带好处是得到的PCA得分是不相关的。该属性对于需要预测变量相对不相关的建模技术(例如，多元线性回归，神经网络，支持向量机等)非常有用。这将在下面的ICA中再次讨论。
+
+当可用数据由包含冗余信息的一个或多个预测因子集群(例如，彼此高度相关的预测器)组成时，PCA是特别有用的工具。可以认为高度相关的预测因子存在于比原始数据更低维空间中。作为一个简单的例子，考虑图6.7(a)中的散点图，其中两个预测变量是线性相关的。虽然这个数据是在两个维度上测量的，但我们实际上只需要一个维度(一条线)来充分地总结样本的位置。也就是说，这些数据可以通过这两个变量的组合几乎等效地表示，如图的部分(b)所示。该图中的红点是原始数据在第一主成分分数上的正交投影(假设对角线旋转到水平)。新要素通过一个数值表示原始数据，该数值是从原点到投影值的距离。在创建第一个PCA得分之后，“剩余”信息由面板(b)中蓝线的长度表示。这些距离将是最终分数(即第二分量)。
+![Markdown](\images_source\20180621\6-007.PNG)
+
+对于这个简单的例子，使用两个相关的预测变量建立了线性回归模型。还在第一主成分得分和响应之间建立了线性回归模型。图6.8提供了每个模型的观测值和预测值之间的关系。对于此示例，这些模型之间的性能几乎没有差异。
+![Markdown](\images_source\20180621\6-008.PNG)
+
+主成分回归描述了首先减少维度然后将新成分得分回归到响应上的过程是一个逐步过程(Massy，1965)。该过程的两个步骤是不相交的，这意味着降维步骤不与响应直接相关。因此，与数据中的可变性相关联的主成分分数可能或可能不与响应相关。
+
+为了提供PCA的实际例子，让我们回到我们在第4章中首次探讨的芝加哥乘客数据。回想一下，许多站点的乘客数量高度相关(图4.9)。在125个站中，94个具有至少一个成对相关性，而另一个站大于0.9。这意味着如果我们知道一个车站的乘客量，我们就可以高精度地估算许多其他车站的乘客量。换句话说，我们需要的关于乘客的信息更简单地包含在这个数据的低得多的维度中。
+
+芝加哥数据可用于演示投影方法的工作原理。回想一下，数据中的主要推动力是周末和平日乘客之间的差异。这两组数据之间的鸿沟完全推动了主成分分析，因为它占据了数据中大部分内容。而不是显示这种分析，这里分析周末数据。在训练数据中，周六或周日有1628天。仅使用14天滞后预测因子，在柱子居中和缩放后，在周末数据上进行PCA。
+![Markdown](\images_source\20180621\6-009.PNG)
+
+图6.9的最左列显示了前四个组件及其与结果的关系。第一个组成部分占滞后预测变量的60.4％，表明与乘客的线性关系很强。对于该分量，投影矩阵的所有系数$A$对应于这个线性组合是积极的，五个最有影响力的站是第35 /阿彻，阿什兰，奥斯汀，奥克帕克，西55。第一个组成部分的五个最不重要的站点是华盛顿/威尔斯，林登，加菲尔德，奥黑尔，中部。
+
+第二部分仅占变异性的5％，与结果的相关性较小。实际上，其余组件在滞后预测变量中捕获的信息量越来越少。为了覆盖95％的原始信息，总共需要36个主要组成部分。
+
+PCA可能有助于回答的一个重要问题是“周末会有线路效应吗？”为了帮助解决这个问题，前面五个组件在图6.10中使用热图可视化。在热图中，点的颜色代表了元素的符号和杂质$A$。已根据使用五个组件的聚类例程对行进行了重新排序。行标签显示相应站的行(或行)。将鼠标悬停在热图中的单元格上会显示工作站名称，线条和投影系数。
+![Markdown](\images_source\20180621\6-010.PNG)
+
+第一列显示每个站到第一个组件的相对权重是可靠的正和小(与其他组件相比);主要的基础信息来源没有线路效应。其他组件似乎隔离特定行(或行内的子集)。例如，第二个组成部分是由沿着粉红线(深红色部分)的站点，蓝线向西北方向的一部分以及沿着城市北行的绿线的一部分强烈驱动的。相反，第四个组件对于相同的绿线站具有强阴性簇。通常，沿y轴的标签显示线条相当好地聚集在一起，这表明在第一个组件的效果被移除后存在线条效果。
+
+尽管第二个组件捕获的变化很小，但我们将使用这些系数$A$强调周末数据的地理趋势。第二个PCA组件的旋转值具有正值和负值。它们的符号和大小可以帮助我们了解哪个站点正在驱动这个组件。如图6.11所示，沿着海岸向北前进的红色和紫色线上的台站对第二个组件产生了实质性的积极影响。沿着粉红线的西南站有很大的负面影响(如较大的红色标记所示)，奥黑尔站(位于极端西北部)也是如此。此外，聚集在克拉克和湖周围的许多台站对第二站产生了小的或中度的负面影响。有趣的是，两个靠近的站点(伊利诺伊医疗区和波尔克)可能对组件产生实质性影响，但有相反的迹象。这两个站位于不同的线路上(分别为蓝色和粉红色)，这可能是一旦数据中的主要信息(即第一个组件)被移除就会在数据中产生线路效应的另一个迹象。
+![Markdown](\images_source\20180621\6-011.PNG)
+
+有多种方法可视化PCA结果。通常将前几个分数相互绘制，以寻找类，异常值或其他有趣模式之间的分离。另一个可视化是双色图(Greenacre 2010)，这是一个信息图形，它将分数与系数相叠加$A$。在我们的数据中，PCA分析中涉及126个高度相关的站点，在这种情况下，双标图不是非常有效。
+
+关于绘制PCA结果的另一个注意事项。由于每个PCA组件捕获越来越少的可变性，因此分数的比例变得越来越小是常见的。出于这个原因，重要的是在共同的轴刻度上绘制分量分数，该分数表示分数中的所有数据(即最大可能范围)。通过这种方式，捕获数据中一小部分信息的组件中的小模式不会被过度解释。
+
+
+#### 6.3.1.2 核主成分分析
+当预测变量线性相关且结果得分与目标相关时，主成分分析是一种有效的降维技术。然而，预测因子空间的正交划分可能不会提供与目标的良好预测关系，尤其是如果预测因子和目标之间的真实基础关系是非线性的。例如，考虑一个目标($y$)和两个预测因子之间的假设关系($x_1 和 x_2$) 如下：
+$$y = x_1 + x^{2}_{1} + x_2 + x^{2}_{2} + \epsilon$$
+
+在这个等式中$ \epsilon$代表随机噪音。假设$x_1 $和$x_2$之间的相关性很强，如图6.7所示。将传统PCA应用于此示例将$x_1 $和$x_2$其间的关系总结成为一个主要组成部分，这种方法会忽略对预测响应至关重要的重要二次关系。在这个双预测因子示例中，对预测变量的简单视觉探索以及预测变量与目标之间的关系将使我们理解预测变量的二次关系。但随着数据维度的增加，在视觉上探索重要的高阶项的能力会降低。因此，当数据应该增加额外的特征时，传统的PCA将是一种效率低得多的降维技术。
+
+如果我们知道解释响应需要一个或多个二次项，那么我们可以将这些项添加到要在建模过程中评估的预测变量中。另一种方法是使用本章前面所述的非线性基础扩展。第三种可能的方法是内核PCA(Schölkopf，Smola和Müller1998，Shawe-Taylor和Cristianini(2004))。核PCA方法将PCA的特定数学视图与内核函数和内核“技巧”相结合，以使PCA能够扩展执行降维预测因子空间的维度。为了更好地理解PCA正在做什么，我们首先需要认识到PCA提出的方差总结问题可以通过找到预测变量的特征值和特征向量协方差矩阵来解决。事实证明，协方差矩阵的特征分解的形式可以等效地用样本的外积来编写。这被称为问题的“双重”表示。外部产品称为线性内核;线性内核之间$x_1 $和$x_2$表示为：
+$$k(X_1,X_2) = <X_1,X_2> = X^T_1X_2$$
+
+对于一组$i = 1 \ldots n$样本和两个预测因子，这对应于
+$$k(X_1,X_2) = x_{11}x_{12} + ... + x_{n1}x_{n2}$$
+
+然后，内核PCA使用内核替换技巧将线性内核与任何其他有效内核交换。有关构造有效内核的内核属性的简明列表，请参阅Bishop(2011)。除了线性内核，基本多项式内核有一个参数，$d$并定义为：
+$$k(X_1,X_2) = <X_1,X_2>^d$$
+
+再次，有两个预测因子和$d = 2$：
+$$k(X_1,X_2) = (x_{11}x_{12} + ... + x_{n1}x_{n2})^2$$
+
+使用多项式核，我们可以直接将线性组合扩展为度数的多项式$d$(类似于第6.2.1节中对基函数所做的)。
+
+径向基函数(RBF)内核有一个参数，$\sigma$并定义为：
+$$k(X_1,X_2) = exp(- \frac{||X_1-X_2||^2}{2\sigma^2})$$
+
+由于RBF内核的数学形式及其与正态分布的关系，RBF内核也称为高斯内核。径向基和多项式核是内核PCA的流行起点。
+
+利用该视图，内核方法可以将数据的原始维度扩展为包含原始预测变量的潜在有益表示的高维度。更好的是，内核技巧可以解决在创建这些术语时遇到麻烦的需要$X$矩阵。简单地使用核函数并解决优化问题直接探索更高维空间。
+
+优点是我们不需要创建这些预测变量;相反，我们通过使用内核函数免费获得这些。该方法在计算上也是有效的，并且当预测变量的数量超过观测数量时尤其有效。
+![Markdown](\images_source\20180621\6-012.PNG)
+
+为了说明内核PCA的实用性，我们将在本节前面的模型中模拟数据。对于此模拟，我们生成了200个样本，其中150个用于训练集。我们将分别使用PCA和内核PCA作为降维技术，然后进行线性回归，以比较这些方法的表现。图6.12(a)显示了它们之间的关系$x_1$和$x_2$用于培训数据。散点图显示了这两个预测变量之间的线性关系。图(b)揭示了二者之间的二次关系$x_1$如果存在少量预测变量，则可以很容易地找到并将其合并到模型中。PCA找到了一个概括的方面$x_1$和$x_2$主成分与响应之间的关系如图6.12(c)所示。通常在实践中，我们使用总结阈值量变异性的组件数作为预测变量。如果我们盲目地进行主成分回归，我们之间的拟合就会很差$PC_1$和$y$因为这个数据可以通过二次拟合更好地描述。使用2阶多项式核的响应与第一分量之间的关系在面板(d)中给出。使用此内核扩展空间允许PCA更好地在预测变量中找到底层结构。显然，这种结构与响应的关系比线性方法更具预测性。测试中的模型性能在图(e)中给出，其中来自核PCA模型的残差的分布明显小于来自PCA模型的残差。
+
+对于芝加哥数据，径向基函数内核用于获取新的PCA组件。内核的唯一参数($\sigma$)使用Caputo等人的方法进行分析估计。(2002年); 0.002和0.02之间的值似乎是合理的，并且使用接近范围中间值(0.006)的值来计算组分。进行敏感性分析以评估在此范围内的其他选择是否导致明显不同的结果，而他们没有。图6.9中左起第二列显示了结果。与普通PCA类似，第一个kPCA组件与乘客有很强的联系。但是，基于内核的组件在x轴上具有更大的动态范围。图中所示的其他组件与常规PCA有些不同。虽然这些得分与结果的关联性较小(孤立地)，但当将得分同时输入回归模型时，它们很可能具有预测效用。
+
+
+#### 6.3.1.3 独立主成分分析
+PCA试图考虑数据的变化并产生在数学上彼此正交的分量。结果，组件是不相关的。然而，由于相关性是两个变量之间的线性独立性的度量，因此它们在统计上可能彼此不相关(即，具有零的协方差)。有各种不相关变量的散点图的玩具示例，其中包含变量之间的明确关系。当基础值遵循高斯分布时会发生一个例外。在这种情况下，不相关的数据也将在统计上独立。
+
+独立成分分析(ICA)在很多方面类似于PCA(Lee 1998)。它创建的新组件是原始变量的线性组合，但这样做的方式是组件尽可能在统计上彼此独立。这使得ICA能够建立比PCA更广泛的趋势模型，PCA侧重于正交性和线性关系。ICA有许多方法可以满足统计独立性的限制，通常目标是最大化所得组件的“非高斯性”。有不同的方法来测量非高斯性，而fastICA方法使用称为负熵的信息理论(Hyvarinen和Oja 2000)。在实践中，ICA应该创建与PCA不同的组件，除非预测因子显示出显著的多元正态性或严格的线性趋势。此外，与PCA不同，组件没有唯一的排序。
+
+在运行ICA计算之前，通常会对数据进行规范化和白化。在这种情况下，白化意味着将原始值转换为完整的PCA组件集。这可能看起来反直觉，但这种预处理不会对ICA的目标产生负面影响，并大大降低计算复杂性(Roberts和Everson 2001)。此外，ICA计算通常使用随机参数值进行初始化，最终结果可能对这些值敏感，因此，为了获得可重现的结果，手动初始化值有助于在以后的某个时间重新创建相同的结果。
+
+ICA应用于数据。在估计组件之前，缩放预测因子，使得前ICA步骤使用中心数据来计算初始PCA数据。当未应用缩放时，ICA组件由不同的单个站强烈驱动。ICA组件显示在图6.9的第三列中，并且与其他方法看起来非常不同。第一个组件与结果的关系非常小。在这个组成部分中，大多数电台对得分几乎没有贡献。许多有影响的车站都在克拉克和湖附近。虽然有3个站对该组件产生了负面影响(加利福尼亚州，达门，哈里森)，但大多数站点都有正系数(Western，Logan Square)。其他ICA组件与结果的关系也很弱。对于这些数据，PCA寻找适当数据轮换的方法更好地发现了预测关系。
+
+
+#### 6.3.1.4 非负矩阵分解
+非负矩阵分解(Gillis 2017，Fogel等人(2013))是另一种线性投影方法，其特定于正或零的特征。在这种情况下，算法找到系数$A$这样它们的值也是非负的(从而确保新特征具有相同的属性)。这种方法在文本数据中很流行，其中预测因子是字数，成像和生物测量(例如，针对特定基因表达的RNA的量)。在一般情况下，可以使用乘客计数记录值作为预测值(其中没有一个具有负值)。
+
+用于确定系数的方法在概念上是简单的：找到最佳系数集合，其使得得分尽可能“接近”具有非负性约束的原始数据。可以使用均方误差(在预测变量中汇总)或其他测量来测量接近度，例如Kullback-Leibler散度(Cover和Thomas 2012)。后者是一种测量两个概率分布之间距离的信息理论方法。与ICA一样，数值解算器使用随机数进行初始化，最终解决方案可能对这些值敏感，组件的顺序是任意的。
+
+图6.9中显示的前四个非负矩阵分解组件与克拉克和湖站58的乘客关系不大。第三个组件看起来最具预测性，似乎是由绿色和粉红色线路上的站点以及靠近市中心环路的红线沿线的几个站点驱动，如图6.13所示。
+![Markdown](\images_source\20180621\6-013.PNG)
+
+#### 6.3.1.5 偏最小二乘
+到目前为止讨论的技术是无监督的，这意味着降维的目标仅基于预测因子。相反，有监督的降维技术使用目标来指导预测因子的维降维，使得新预测因子与目标最好地相关。偏最小二乘法(PLS)是PCA的监督版本，它以与响应最佳相关的方式减小维度(Stone和Brooks 1990)。具体而言，PLS的目标是找到与目标具有最佳协方差的预测变量的线性函数(称为潜在变量)。这意味着目标引导降维过程，使得得分与训练数据中的目标具有最高可能的相关性。优化问题的典型实现要求每个新维度中的数据是不相关的，这是在PCA优化问题中施加的类似约束。由于PLS是一种监督技术，我们发现需要更多的PCA组件来满足PLS模型产生的相同性能水平(Kuhn和Johnson 2013)。因此，PLS可以更有效地减小尺寸，从而在模型构建过程中节省内存和计算时间。但是，由于PLS使用目标来确定潜在变量的最佳数量，因此我们必须采用严格的验证方法来确保该方法不会过度拟合数据。[译者注：确实，使用监督降维技术最需要考虑是否过拟合的问题，这是一个需要关注的问题，就算是使用遗传算法等技术也可视作是监督降维技术，同样需要考核这个问题，比如在HCDR竞赛中就出现过这个问题，最后也被这个问题困惑许久]
+
+芝加哥周末数据的PLS组件如图6.9所示。第一个组件实际上与第一个PCA组件相同。回想PLS试图平衡预测变量中的维数减少与最大化组件和结果之间的相关性。在这种特殊情况下，如图所示，PCA组件与乘客有很强的线性关系。实际上，PLS的两个目标是由无监督的组件完成的。对于图6.9所示的其他组件，第二个组件也非常类似于相应的PCA版本(直到符号)，但其他两个组件不同，并且显示与乘客的关系略微更好。
+
+为了量化每种方法估计结果与滞后预测因子之间关系的程度，使用各种方法拟合线性模型。在每种情况下，计算20个组分并输入简单的线性回归模型。为了重新采样，使用了类似的基于时间的方案，其中800个周末是初始分析集，并且两组周末被用作评估集(其被添加到用于下一次迭代的分析集中)。这导致了25次重采样。在每个重采样中，每次重新计算投影方法，并且此复制应捕获这些计算可能产生的不确定性。如果我们预先计算了整个周末训练集的组件，然后重新采样，那么结果很可能是错误乐观的。图6.14显示了每种方法的RMSE值与重新采样的置信区间。虽然置信区间重叠，但有一些迹象表明PLS，NNMF和核PCA有可能超越原始值。该分析的潜在优势还在于相关组件基本上不会丢失重要信息。对于对预测因子间相关性(例如神经网络)非常敏感的其他模型，这些变换方法可以提供实质上更好的性能。
+![Markdown](\images_source\20180621\6-014.PNG)
+
+### 6.3.2 自动编码
+自动编码器是计算复杂的多变量方法，用于查找预测数据的表示，并且通常用于深度学习模型(Goodfellow，Bengio和Courville 2016)。我们的想法是在原始预测数据和一组人工特征(通常是相同大小)之间创建非线性映射。然后将这些可能没有任何合理解释的新特征用作模型预测器。虽然这听起来与之前的投影方法非常相似，但自动编码器在新特征的衍生方式和潜在优势方面有很大差异。
+
+使用自动编码器的一种情况是存在大量未标记数据(即结果尚不清楚)。例如，制药公司将获得数百万种化合物，但这些数据中很小一部分具有新药发现项目所需的相关结果数据。化学中的一个常见任务是创建使用化合物的化学结构来预测药物有多好的模型。可以为绝大多数化学数据库计算预测因子，尽管缺乏实验室结果，但这些数据可用于改进模型。
+
+例如，假设建模者希望拟合简单的线性回归模型。众所周知的最小二乘模型将在矩阵中具有预测器数据，表示为$X$结果导致矢量$y$。为了估计回归系数，公式是
+$$\hat{\beta} = (X'X)^{-1} \quad X'y$$
+
+
+请注意，结果数据仅用于该等式的右侧部分(例如，$X'y$)。未标记的数据可用于产生左侧反向项的非常好的估计并保存。当结果数据可用时，$X'y$可以用相对少量的标记数据来计算。上述方程式仍可用于生成更好的参数估计值$(X'X)^{-1}$是在大量数据上创建的。
+
+自动编码器可以使用相同的原理。所有可用的预测数据都可用于创建估计(并可能平滑)预测变量之间关系的方程。基于这些模式，可以通过使用其“预测”特征值来更有效地表示较小的预测变量数据集。
+
+可以通过多种方式创建自动编码器。最(相对)直接的方法是使用神经网络结构：
+![Markdown](\images_source\20180621\6-015.PNG)
+
+在这种架构中，从输入到隐藏单元以及隐藏单元之间的函数是非线性函数。常用的函数是简单的sigmoids以及ReLu函数。与输出功能的连接通常是线性的。一种策略是在隐藏单元中使用相对少量的节点来强制自动编码器以学习预测器中的关键模式。也可能是具有许多节点的多个层最佳地表示预测值。
+
+网络图中的每一行代表要估计的参数，并且该数字可能变得过大。然而，有成功的方法，例如正则化和丢失方法，来控制过度拟合以及许多相当有效的深度学习库，这些库可以弥补计算负担。因此，当存在大量数据时，会出现此方法的好处。
+
+拟合神经网络和深度学习模型的细节超出了本书的范围。Bishop(2011)和Goodfellow等人对技术细节有很好的参考。(2016)而Chollet和Allaire(2018)是拟合这些类型模型的优秀指南。创建有效的自动编码器需要进行模型调整以及一般用于预测模型的许多其他任务。为了测量性能，通常使用观察值和预测值(预测值)之间的均方根误差，并在变量之间进行汇总。
+
+如何将自动编码器整合到建模过程中？将自动编码器模型估计的关系视为“已知”值并且在重新采样期间不重新估计是常见的。实际上，在图像和文本数据的深度学习中，在新项目中使用预先训练的网络是相当普遍的。这些预先训练的部分或网络块可以用作网络的前端。如果存在大量数据进入该模型，并且模型拟合过程收敛，则该方法可能存在一些统计有效性。
+
+例如，我们使用来自Karthikeyan，Glen和Bender(2005)的数据，他们使用化学描述符来模拟化合物的熔点(即从固态到液态的转变)。他们组装了4401个化合物和202个数字预测器。为了模拟刚开始的药物发现项目，随机组的50个数据点被用作训练集，另一个随机组25个被分配给测试集。剩余的4327个数据点被视为没有熔点数据的未标记数据。
+
+通过首先消除126个预测变量来处理未标记的预测变量，从而不存在高于0.75的成对相关性。此外，Yeo-John变换用于改变剩余的76个预测变量的规模(以减少它们的偏斜)。最后，所有预测因子都集中在一起并进行了缩放。相同的预处理应用于训练和测试集。
+
+具有两个隐藏层的自动编码器(每个具有512个单元)用于对预测器进行建模。整流线性单元(ReLU)激活用于在原始单元和第一组隐藏单元之间，在两个隐藏层之间使用双曲正切，并且线性函数连接第二组隐藏单元和76输出特征。模型参数的总数为341,068。该模型经过500次迭代训练，使用随机20％的未标记数据优化聚合均方误差，以便在训练模型时测量性能。图6.15(a)显示MSE在前50次迭代中急剧减少，然后在剩余的450次中缓慢下降。自动编码器模型应用于训练和测试集。
+
+K-最近邻模型适合于训练集的原始和编码版本。测试了一到二十个之间的邻居，并使用使用五次重复10次交叉验证测量的RMSE结果来选择最佳模型。重采样配置文件如图6.15(b)所示。编码数据(11个邻居，估计RMSE为50.6)和原始数据(7个邻居，RMSE = 54.8)的最佳设置具有4.2度的差异，95％置信区间为(1.3,7.2)度。虽然这是一个适度的改进，但对于药物发现项目而言，如果该模型能够更好地预测新化合物的有效性，这种改进可能会产生重大影响。
+
+用两种KNN模型预测测试集。与原始训练集预测器相关的模型非常差，产生64.1度的RMSE。这可能是因为选择了训练和测试集合或其他原因。具有编码值的KNN模型产生的结果与重采样结果一致，RMSE值为47.使用不同的随机数种子重复整个过程，以验证结果不是偶然产生的。
+![Markdown](\images_source\20180621\6-016.PNG)
+
+### 6.3.3 空间标志
+空间符号变换采用一组预测变量，并以新值与分布中心具有相同距离的方式对其进行变换(Serneels，Nolf和Espen 2006)。实质上，使用以下公式将数据投影到多维球体上：
+$$x^*_{ij} = \frac{x_i}{\sum^p_{j=1}x^2_{ij}}$$
+
+该方法也称为全局对比度归一化，并且通常与图像分析一起使用。
+
+转换需要计算数据的范数，因此，预测变量应该在空间符号之前居中和缩放。此外，如果任何预测变量具有高度偏斜的分布，它们可能会受益于诱导对称性的变换，例如Yeo-Johnson技术。
+
+例如，图6.16(a)显示来自Reid(2015)的数据，其中动物粪便(即粪便)的特征用于预测捐赠样品的动物的真实物种。在该图中，两个预测变量用真实物种着色的点着色。锥度指数在y轴上显示出明显的异常值。当转换应用于这两个预测变量时，6.16(b)中的新值表明数据距离中心(零)都是等距的。虽然转换的数据在新模型中可能看起来很难用，但这种转换在减轻极端异常值的损害方面非常有效。
+![Markdown](\images_source\20180621\6-017.PNG)
+
+### 6.3.4 距离和深度特征
+在分类中，从数据中制作半监督特征可能是有益的。在这种情况下，这意味着结果类用于创建新的预测变量，但不是在特征被优化以用于预测准确性的意义上。例如，从训练集中，可以为每个类(通常称为类质心)计算预测变量的均值。对于新数据，可以为每个类计算到类质心的距离，并且这些可以用作特征。这基本上将准最近邻技术嵌入到使用这些特征的模型中。例如，图6.17(a)显示了使用对数碳氮比的散射数据的类质心$\delta 13C $特征。基于这些多维平均值，可以直接计算新样本到每个类中心的距离。如果新样本更接近特定类，则其距离应该很小。图6.17(a)显示了该方法的示例和示例，其中新样本(用*表示)相对靠近山猫和土狼中心。在适当的地方可以使用不同的距离测量。要在模型中使用此方法，将为每个测量每个样本到相应质心的距离的类创建新要素。
+![Markdown](\images_source\20180621\6-018.PNG)
+
+或者，可以使用数据深度的想法(Ghosh和Chaudhuri 2005，Mozharovskyi，Mosler和Lange(2015))。数据深度衡量数据点与其分布中心的接近程度。存在许多计算深度的方法，并且在类距离和数据深度之间通常存在反比关系(例如，大的深度值更多地表示接近类质心)。如果我们假设先前显示的数据具有双变量正态性，则可以在每个类中计算概率分布。估计的高斯概率在图6.17(b)中显示为阴影。
+
+在这种情况下，使用概率分布测量深度提供了比面板(a)中所示的简单欧几里德距离略微增加的灵敏度。在这种情况下，预测的新样本比其他物种更多地存在于土狼的概率区域内。
+
+可以使用各种深度测量，并且许多测量不需要关于预测变量分布的特定假设，并且对于异常值也可能是稳健的。与距离特征类似，可以计算特定于类的深度并将其添加到模型中。
+
+这些类型的特征可以强调某些模型预测结果的能力。例如，如果真正的类边界是对角线，则大多数分类树将难以模拟该模式。补充具有距离或深度特征的预测因子集可以在这些情况下启用这样的模型。
+
+
+## References
+Box, GEP, and D Cox. 1964. “An Analysis of Transformations.” Journal of the Royal Statistical Society. Series B (Methodological), 211–52.
+Yeo, I-K, and R Johnson. 2000. “A New Family of Power Transformations to Improve Normality or Symmetry.” Biometrika 87 (4):954–59.
+Wood, S. 2006. Generalized Additive Models: An Introduction with R. Chapman & Hall/CRC.
+Eilers, P, and B Marx. 2010. “Splines, Knots, and Penalties.” Wiley Interdisciplinary Reviews: Computational Statistics 2 (6):637–53.
+Golub, G, M Heath, and G Wahba. 1979. “Generalized Cross-Validation as a Method for Choosing a Good Ridge Parameter.” Technometrics 21 (2):215–23.
+Yandell, B. 1993. “Smoothing Splines - a Tutorial.” The Statistician, 317–19.
+Friedman, J. 1991. “Multivariate Adaptive Regression Splines.” The Annals of Statistics 19 (1):1–141.
+Nair, V, and G. Hinton. 2010. “Rectified Linear Units Improve Restricted Boltzmann Machines.” In Proceedings of the 27th International Conference on Machine Learning, edited by J Fürnkranz and T Joachims, 807–14. Omnipress.
+Altman, D. 1991. “Categorising Continuous Variables.” British Journal of Cancer, no. 5:975.
+Altman, D, B Lausen, W Sauerbrei, and M Schumacher. 1994. “Dangers of Using "Optimal" Cutpoints in the Evaluation of Prognostic Factors.” Journal of the National Cancer Institute 86 (11):829–35.
+Kenny, P, and C Montanari. 2013. “Inflation of Correlation in the Pursuit of Drug-Likeness.” Journal of Computer-Aided Molecular Design 27 (1):1–13.
+Abdi, H, and L Williams. 2010. “Principal Component Analysis.” Wiley Interdisciplinary Reviews: Computational Statistics 2 (4):433–59.
+Massy, W. 1965. “Principal Components Regression in Exploratory Statistical Research.” Journal of the American Statistical Association 60 (309). Taylor & Francis:234–56.
+Greenacre, M. 2010. Biplots in Practice. Fundacion BBVA.
+Schölkopf, B, A Smola, and KR Müller. 1998. “Nonlinear Component Analysis as a Kernel Eigenvalue Problem.” Neural Computation 10 (5). MIT Press:1299–1319.
+Shawe-Taylor, J, and N Cristianini. 2004. Kernel Methods for Pattern Analysis. Cambridge University Press.
+Bishop, C. 2011. Pattern Recognition and Machine Learning. Springer.
+Caputo, B, K Sim, F Furesjo, and A Smola. 2002. “Appearance-Based Object Recognition Using Svms: Which Kernel Should I Use?” In Proceedings of Nips Workshop on Statistical Methods for Computational Experiments in Visual Processing and Computer Vision. Vol. 2002.
+Lee, T-W. 1998. Independent Component Analysis. Springer.
+Hyvarinen, A, and E Oja. 2000. “Independent Component Analysis: Algorithms and Applications.” Neural Networks 13 (4-5). Elsevier:411–30.
+Roberts, S, and R Everson. 2001. Independent Component Analysis: Principles and Practice. Cambridge University Press.
+Gillis, N. 2017. “Introduction to Nonnegative Matrix Factorization.” arXiv Preprint arXiv:1703.00663.
+Fogel, P, D Hawkins, C Beecher, G Luta, and S Young. 2013. “A Tale of Two Matrix Factorizations.” The American Statistician 67 (4):207–18.
+Cover, T, and J Thomas. 2012. Elements of Information Theory. John Wiley; Sons.
+Stone, M, and R Brooks. 1990. “Continuum Regression: Cross-Validated Sequentially Constructed Prediction Embracing Ordinary Least Squares, Partial Least Squares and Principal Components Regression.” Journal of the Royal Statistical Society. Series B (Methodological). JSTOR, 237–69.
+Kuhn, M, and K Johnson. 2013. Applied Predictive Modeling. Vol. 26. Springer.
+Goodfellow, I, Y Bengio, and A Courville. 2016. Deep Learning. MIT Press.
+Goodfellow, I, Y Bengio, A Courville, and Y Bengio. 2016. Deep Learning. MIT press Cambridge.
+Chollet, F, and JJ Allaire. 2018. Deep Learning with R. Manning.
+Karthikeyan, M, R Glen, and A Bender. 2005. “General Melting Point Prediction Based on a Diverse Compound Data Set and Artificial Neural Networks.” Journal of Chemical Information and Modeling 45 (3):581–90.
+Serneels, S, E De Nolf, and P Van Espen. 2006. “Spatial Sign Preprocessing: A Simple Way to Impart Moderate Robustness to Multivariate Estimators.” Journal of Chemical Information and Modeling 46 (3):1402–9.
+Reid, R. 2015. “A Morphometric Modeling Approach to Distinguishing Among Bobcat, Coyote and Gray Fox Scats.” Wildlife Biology 21 (5). BioOne:254–62.
+Ghosh, A K, and P Chaudhuri. 2005. “On Data Depth and Distribution-Free Discriminant Analysis Using Separating Surfaces.” Bernoulli 11 (1):1–27.
+Mozharovskyi, P, K Mosler, and T Lange. 2015. “Classifying Real-World Data with the Dd α -Procedure.” Advances in Data Analysis and Classification 9 (3). Springer:287–314
+There are various approaches for the beginning and end of the data, such as leaving the data as is.
+Both variables are highly right skewed so a log transformation was applied to both axes.
+These methods also ensure that the derivatives of the function, to a certain order, are also continuous. This is one reason that cubic functions are typically used.
+Note that the MARS model sequentially generates a set of knots adaptively and determines which should be retained in the model.
+Except kernel PCA.
+This is a situation similar to the one described above for the Box-Cox transformation.
+We don’t suggest this as a realistic analysis strategy for these data, only to make the illustration more effective.
+In these case, “influential” means the largest coefficients.
+Recall Figure 4.1 for the station lines.
+This does not imply that PCA produces components that follow Gaussian distributions.
+The second, third, and fourth components are scaled in this figure since their ranges were very small in comparison to the first component. The rescaled values were not used anywhere else in these analyses.
+This helps prevent the model from learning a simple identity function from the data (that would provide no real value).
+Code for the example below can be found in the books GitHub repository.
+
+
+
+
+# 7 检测交互影响
+## 7.1 什么是交互？
+在预测是主要目的的问题中，响应的大部分变化可以通过重要的个体预测因子的累积效应来解释。在本书的这一点上，我们专注于开发工程分类或数字预测器的方法，使得预测器的工程版本具有更好的表示来揭示和/或改善与响应的预测关系。对于许多问题，响应的额外变化可以通过两个或更多个预测器彼此协同工作的效果来解释。作为预测因子一起工作的简单概念性例子，考虑水和肥料对田间玉米作物产量的影响。由于水是植物生长的必要条件，因此田间玉米不会产生任何水，而是一些肥料。相反，如果有足够的水但没有肥料，田间玉米作物会产生一定的产量。然而，最好用足量的水和足够量的肥料来优化产量。因此，当以适当的量组合时，水和肥料产生的产量大于单独产生的产量。更正式地说，如果两个或更多个预测因子的组合效果不同(更少或更大)，那么如果我们在单独考虑时增加每个效果的影响，则可以说它们相互作用。请注意，根据定义，交互总是在预测变量与结果相关的背景下。例如，预测因子之间的相关性与是否存在交互作用并不直接相关。此外，从标记的角度来看，个体变量(例如肥料和水)在交互之外被称为主要影响项。
+
+第2章首先讨论了相互作用的预测重要性，其中问题的焦点是试图通过使用基于颈动脉图像的预测因子来预测个体的缺血性卒中风险。在这个例子中，通过包括动脉壁重塑程度和动脉壁最大厚度之间的相互作用来改善模型的预测能力。图2.7(a)显示了这些预测变量之间关系的可视化，其中轮廓表示预测变量之间的等效乘法效应。该图的(b)部分说明了这些预测因子的组合如何在患有和未患中风的患者之间产生增强的分离。
+
+在前面的例子中，重要的相互作用是在两个连续的预测变量之间。但是，在两个分类预测变量之间或者在Ames Housing数据中可以找到的连续预测变量和分类预测变量之间也可能发生重要的相互作用。图7.1(a)说明了房屋的年龄(x轴)和房屋的销售价格(y轴)之间的关系，根据房屋是否有空调进行分类。在这个例子中，房屋的年龄和销售价格之间的关系对于带空调的房屋而言正在增加;另一方面，没有空调的房屋的这些预测器之间没有关系。相比之下，该图的(b)部分显示了两个不相互作用的预测因子：家庭年龄和整体状况。在这里，房屋的状况不会影响房屋和销售价格之间的关系。每种条件类型的近平行线显示缺乏相互作用。
+![Markdown](\images_source\20180621\7-001.PNG)
+
+为了更好地理解交互，让我们考虑一个只有两个预测变量的简单示例。两个预测变量之间的相互作用可以在数学上表示为：
+$$y = \beta_0 + \beta_{1}x_1 + \beta_{2}x_2 + \beta_{3}x_{1}x_{2} + error$$
+
+在这个等式中，$\beta_0$代表整体平均响应，$\beta_1$和$\beta_2$代表由于的平均变化率$x_1$和$x_2$分别和$\beta_3$表示由于综合影响而产生的增量变化率$x_1$和$x_2$超越了什么$x_1$和$x_2$可以单独解释。误差项表示实际数据中的随机变化，无法在等式的确定性部分中解释。使用数据，$\beta$参数可以使用线性回归等方法进行估计，用于连续响应，也可以使用逻辑回归进行分类响应。一旦估计了参数，就可以确定用于解释响应变化的交互的有用性。有四种可能的情况：
++ 如果$\beta_3$没有明显不同于零，那么之间的相互作用$x_1$和$x_2$对于解释响应的变化没有用。在这种情况下，之间的关系$x_1$和$x_2$被称为添加剂。
++ 如果系数是有意义的负数而$x_1$和$x_2$单独也影响反应，然后互动被称为对抗。
++ 在另一个极端，如果系数是正的，而$x_1$和$x_2$单独也会影响响应，然后互动被称为synergystic。
++ 最终情形发生在交互系数与零显着不同时，但是其中一个或两个都不同$x_1$要么$x_2$不影响回应。在这种情况下，平均响应$x_1$跨越的价值观$x_2$反之亦然)的变化率基本为零。但是，平均值$x_1$在每个值$x_2$(或以条件为条件$x_2$)与零不同。这种情况很少发生在真实数据中，我们需要了解识别这种特殊情况的视觉线索。这种类型的交互将被称为非典型的。
+
+
+为了说明前三种类型的相互作用，将使用上面的公式生成模拟数据，其系数如下：
+$ \beta_0 = 0, \beta_1 = \beta_2 = 1, $和$ \beta_3 = -10$，0或10分别说明拮抗作用，无相互作用或协同作用。生成一组随机，均匀的200个样本$x_1$和$x_2$在0和1的值之间，并且从正态分布中提取每个样本的误差。使用线性回归模型来估计系数，并生成每个模型的预测值的等高线图(图7.2)。在该图中，附加情况具有平行的轮廓线，从左下到右上的响应增加。协同情况也具有从左下到右上的增加的响应，但是轮廓是弯曲的，这表明每个预测器的较低值需要引起相同的响应值。对抗案例也显示曲线轮廓;这里响应从左下角向右上角减少。该图揭示的是，当预测变量之间的相互作用是真实存在时，响应曲线会发生变化。
+![Markdown](\images_source\20180621\7-002.PNG)
+
+
+非典型案例更清楚地说明了$x_1$和$x_2$是分类预测因子。为了模拟非典型情况，两个预测变量将采用“低”和“高”的值，并且响应将由$y = 2x_1x_2 + error$，其中的低值和高值$x_1$和$x_2$将分别用 -/+1数字表示。图7.3显示了因子的低水平和高水平之间的关系。请注意，平均响应为$x_1$和$x_1$在低水平并且在高水平处分别接近零。但是，当我们调整平均值时$x_2$，由两种不同的颜色代表，反应在两个层面相反$x_1$。这里每个预测因子的个体效应并不显着，但条件效应非常显着。
+![Markdown](\images_source\20180621\7-003.PNG)
+
+当我们知道哪些预测变量相互作用时，我们可以将它们包含在模型中。但是，可能无法获得哪些预测变量相互作用的知识。最近的一些实证研究表明，更复杂的建模技术可以揭示相互作用。正如Elith，Leathwick和Hastie(2008)指出的那样，基于树的模型通过树中的后续递归分裂固有地模拟预测变量之间的相互作用。García-Magariños等。(2009)表明随机森林有效识别单核苷酸多态性之间的未知相互作用; Lampa等人。(2014)发现，增强树模型可以揭示流行病学问题中的重要相互作用;和陈等人。(2008)发现搜索技术与支持向量机相结合可有效识别与人类疾病相关的基因 - 基因相互作用。这些发现提出了一个问题，即如果复杂的预测建模技术确实能够从交互中发现预测信息，那么我们为什么要花费任何时间或精力来确定哪些交互很重要？重要性回归到特征工程的基本目标，即通过包含预测相关信息来创建可提高模型有效性的特征。通过识别和创建相关的交互项，可以提高具有更好解释性的模型的预测能力。因此，一旦我们努力改进个体预测因子的形式，就应该转向寻找预测因子之间的相互作用，这有助于解释响应中的其他变化并提高模型的预测能力。
+
+本章的重点是探索如何搜索和识别提高模型预测性能的预测变量之间的相互作用。
+
+
+## 7.2 寻求交互的指导原则
+首先，所研究系统的专业知识对于指导选择交互术语的过程至关重要。Neter等人。(1996)认识到专家知识的重要性并建议：
+
+“因此，我们希望尽可能提前确定那些最有可能以重要方式影响响应变量的相互作用。”
+
+因此，专家选择的互动应该是第一个被探索的。然而，在许多情况下，专家指导可能无法获取，或者研究领域可能如此新，以至于没有先验知识可以用于牧羊人互动术语的选择。当处于这种情况时，我们需要合理的指导原则，这将导致合理的交互选择。
+
+解决这个问题的一个领域是统计实验设计。实验设计采用控制，随机化和复制的原则来构建用于收集证据的框架，以建立独立因素(即预测因子)和依赖性响应之间的因果关系。该过程首先确定感兴趣的人口(或单位)，将系统地改变的因素，以及要研究的因素的具体范围。特定类型的实验设计(称为筛选设计)以结构化方式生成信息，以便收集足够的数据以识别两个或多个因素之间的重要因素和相互作用。图7.4概念性地说明了具有三个因素的实验。
+
+虽然来自实验的数据能够估计因子之间的所有可能的相互作用，但是每个相互作用不太可能解释测量响应中的显着量的变化。也就是说，许多这些术语都不能预测响应。然而，更有可能的是，只有少数相互作用(如果有的话)似乎是合理的或捕获了大量的响应变化。这种情况下的挑战是弄清楚许多可能的相互作用中哪一个真正重要。Wu和Hamada(2011)提供了一个框架，用于解决识别重要交互的挑战。该框架建立在交互层次，效果稀疏性和效果遗传的概念之上。已经证明这些概念可以有效地识别实验设计产生的数据的最相关效果。此外，该框架可以扩展到预测建模框架。
+
+交互层次原则表明，交互程度越高，交互越不可能解释响应的变化。因此，成对交互应该是第一组交互，以搜索与响应的关系，然后是三向交互，然后是四向交互，等等。对于具有三个因子的数据，可以在图7.4中看到效果层次结构的图示，其中节点的大小表示术语可预测响应的可能性。Neter等人。(1996)建议谨慎包括三向交互以及更多，因为这些高阶项很少(如果有的话)捕获大量的响应变化，几乎不可能解释。
+
+第二个原则，影响稀疏性，认为只有一小部分可能的影响真正解释了大量的反应变异(图7.4)。因此，在搜索优化模型预测能力的术语时，该方法可以大大削减可能的主效应和交互项。
+![Markdown](\images_source\20180621\7-004.PNG)
+
+
+效应遗传原理基于遗传遗传原理，并断言只有在交互之前的有序术语有效解释响应变异时，才可以考虑交互术语。该原则至少有两种可能的实施方式：强遗传和弱遗传。强遗传实现要求在模型中考虑交互，所有较低级别的先前术语必须解释大量的响应变化。也就是说，只有$x_1 \times x_2$如果主要影响，将考虑互动$x_1$和主要的影响$x_2$每个都解释了大量的反应变异61。但如果只有一个因素是重要的，那么就不会考虑这种相互作用。弱遗传放松了这一要求，并考虑与重要因素的任何可能的相互作用。图7.5显示了三因子实验的强遗传和弱遗传之间的差异。
+![Markdown](\images_source\20180621\7-005.PNG)
+
+尽管已经证明这些原则在搜索包含在模型中的相关和预测术语方面是有效的，但它们并不总是适用的。例如，已经证明复杂的高阶相互作用在自然界中发生。Bairey，Kelsic和Kishony(2016)表明，物种间的高阶相互作用会影响生态系统的多样性。人体也是复杂化学和生物相互作用的避风港，多个系统同时协同作用以对抗病原体并维持生命。这些例子强化了我们的观点，即识别重要交互术语的最佳方法将来自我们正在建模的系统的专业知识以及基于合理统计原理的仔细思考的搜索例程。
+
+
+## 7.3 实际考虑因素
+在寻找预测性相互作用的过程中，需要解决几个实际问题，特别是如果很少或根本没有专家知识来建议应首先筛选哪些术语。在讨论搜索方法之前要思考的一些问题是：我们必须使用数据来枚举和评估所有可能的预测交互吗？如果是这样，那么我们呢？是否应该在预处理原始预测变量之前或之后创建交互项？
+
+让我们从是否应该完全枚举所有交互术语的问题开始。为了回答这个问题，将使用交互层次和效果稀疏性的原则来影响该方法。虽然如前所述，对于某些问题，高阶交互(三向及以上)是可能的，但它们很可能不经常发生(效应稀疏性)，并且可能仅对模型的预测能力(交互层次)提供小的改进。因此，只有在专家知识建议调查特定的交互术语时，才应筛选更高阶的交互。更可能发生的是，可能的成对交互项的一小部分包含预测相关的信息。虽然这里的建议是专注于搜索成对的交互，但实际上不可能评估这些术语的完整枚举。更具体地说，如果我们有$p$预测者，然后有$(p)(p-1)/2$成对交互术语。随着预测变量的数量增加，交互项的数量呈指数增长。只需100个原始预测变量，完整枚举需要搜索4950个术语。适度增加到500个预测变量需要我们评估近125,000个成对项！对于包含中等数量预测变量的数据，肯定需要更多的战略性搜索方法，并将在后续章节中讨论。
+
+另一个实际考虑因素是应该相对于预处理步骤创建交互项。回忆第6章，单个数字预测器的预处理步骤可以包括居中，缩放，尺寸扩展或降维。如前几章所示，这些步骤有助于模型更好地揭示预测变量与响应之间的预测关系。现在必须理解的是，预处理和创建交互项的操作顺序是否会影响找到预测性重要交互的能力。为了说明这些步骤的顺序如何影响相互作用与反应的关系，考虑最大重塑率与中风数据的最大狭窄面积之间的相互作用(第2章)。对于此数据，预处理步骤是居中，缩放和单独转换。图7.6比较了在预处理步骤(a)之前和预处理步骤(b)之后创建交互项时笔划组的分布。笔划组之间的框图清楚地表明，在首次创建交互项后跟随预处理步骤时，将保留由组分布之间的移位捕获的交互信号。然而，当在创建交互项之前预处理原始预测变量时，交互式预测信号几乎完全丢失。这个案例表明我们应该非常周到地知道应该在什么步骤创建交互术语。一般而言，在原始测量尺度上，相互作用最合理且可实际解释。因此，应该在任何预处理步骤之前创建交互项。此外，当我们考虑更复杂的尺寸扩展或尺寸减小的预处理步骤时，这个步骤顺序最有意义。
+![Markdown](\images_source\20180621\7-006.PNG)
+
+
+## 7.4 识别预测性相互作用的蛮力方法：完成计数
+对于具有小到中等数量的预测变量的数据集，可以评估与响应的关联的所有可能的成对交互。但是，可以评估的交互项越多，发现由于随机机会而与响应相关联的交互的概率就越高。更具体地说，随着更多与响应无关的术语被评估，至少其中一个与响应相关联的可能性增加。仅由于随机机会而不是由于真实关系而具有统计上显着信号的术语称为假阳性结果。整个统计子领域致力于开发控制假阳性结果发生率的方法(Dickhaus 2014)。假阳性结果可以大大降低模型的预测性能，我们需要防止选择这些类型的发现。
+### 7.4.1 简单的筛选
+筛选重要交互术语的传统方法是使用嵌套统计模型。对于具有两个预测变量的线性回归模型，$x_1$和$x_2$，主要效果模型是：
+$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + error$$
+
+具有主要效果和互动的第二个模型是：
+$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_1x_2 + error$$
+
+这两个模型被称为“嵌套”，因为第一个模型是第二个模型的子集。当模型嵌套时，可以对交互项捕获的附加信息量进行统计比较。对于线性回归，在这两个模型之间比较残余误差，假设检验评估在自由度调整后的误差改善是否足以被认为是真实的。统计检验得到的p值反映了捕获的附加信息的概率。该术语是由随机机会引起的。小的p值，比如小于0.05，表明所捕获的附加信息的可能性小于5％是因为随机性。因此，值越小，越有可能所捕获的信息是由于预测因子之间相互作用的真实效应所致。应该注意的是，5％是假阳性结果的发生率，并且是一个历史性的研究结果。E-的拇指。但是，如果一个人愿意为特定问题承担更多的假阳性结果风险，那么可以将截止值设置为更高的值。
+
+对于线性回归，用于比较模型的目标函数是统计似然性(在这种情况下为残差)。对于其他模型，例如逻辑回归，比较嵌套模型的目标函数将是二项式似然。
+
+第2.3节介绍了防止假阳性结果的另一种方法。该方法采用与上述相同的嵌套模型方法，但有两个重要区别：
++ 重新采样用于为不同版本的训练集创建多个嵌套模型对。对于每个重采样，使用评估集来评估目标函数。在传统方法中，用于创建模型的相同数据被重新预测并用于评估模型(对于某些模型，这是可以理解的问题)。如果模型过度拟合，则从单独的数据集计算目标函数允许潜在的反对意见，这将反映过度拟合。
++ 重采样方法和传统方法之间的另一个区别是，任何性能度量都可用于比较嵌套模型; 它不一定是一个统计上易处理的指标。在2.3节中，ROC曲线下面积是进行比较的目标函数。我们本可以选择识别优化敏感性，特异性，准确性或任何其他适当指标的相互作用。这提供了极大的多功能性，使我们能够将筛选与适当的建模技术和性能指标相匹配。
+
+由于这两个原因，尤其是第二个原因，用于评估嵌套模型的两种方法无法保证产生一致的结果。这本身并不成问题;不同的目标函数可以回答不同的问题，如果没有某些背景，就不能说客观上比另一个更客观。
+
+弗里德曼(Friedman，2001)阐述了指标之间的这种潜在脱节在他的情况下，使用不同的度量，二项式似然和错误率来为增强树选择最佳迭代次数。使用似然性作为目标函数，与使用错误分类率相比，选择的迭代次数明显减少。在他看来：
+
+“......在逻辑可能性达到最佳状态后，错误分类错误率继续下降。这通过过度拟合降低可能性实际上改善了错误分类错误率。虽然可能违反直觉，但这并不矛盾;可能性和错误率衡量适合质量的不同方面。“
+
+第2.3节中的传统方法和重采样方法都生成p值62。我们进行的比较越多，我们发现假阳性互动的机会就越高。有一系列方法可用于控制假阳性结果。一个极端是根本不控制这些问题。我们可能会在探索潜在的互动时尽早做到这一点，请记住，我们可能会发现误报的条款。另一个极端是Bonferroni校正(Shaffer 1995)，它使用非常严格的指数惩罚来最小化任何假阳性结果。由于这种惩罚的严重性，当我们需要进行许多统计测试时，这是不好的。先前在5.6节中提到的错误发现率(FDR)程序属于该校正谱，并且被开发用于在有许多测试时最小化假阳性结果(Benjamini和Hochberg 1995)。因为完整的枚举可以导致探索许多可能的成对相互作用，所以FDR可以是无调整和Bonferroni校正之间的实用折衷。
+
+让我们回到笔画数据示例来说明评估交互项。这里将使用传统方法将嵌套模型与通过重采样得到的p值进行比较。在这些类型的p值计算中的每一种中，将原始p值与FDR和Bonferroni调整的p值进行比较。图7.7说明了每种计算方法和调整类型下p值的分布。对于此数据，无论调整类型如何，传统方法都会识别更重要的对。此外，所选择的相互作用的数量从无调整到Bonferroni调整减少。交叉验证方法识别较少术语的主要原因是重采样过程。该过程结合了数据中的自然变化，以识别具有关于响应的真实信号的预测变量对。
+![Markdown](\images_source\20180621\7-007.PNG)
+
+
+### 7.4.2 最小绝对收缩和选择算子(套索)
+第7.4节提供了一种在完全枚举实际可行时搜索潜在交互术语的方法。这涉及评估模型与个体预测变量之间的模型性能变化以及具有单个预测变量的模型和这些预测变量之间的相互作用。该方法易于实施，并且可以有效地识别用于进一步评估的交互项。然而，以一次一种方式评估交互项使得简单模型无法在存在完整模型的情况下评估交互项的重要性，即单个预测变量和成对交互项。
+
+如果完全枚举实际上是可能的，那么识别重要交互的另一种方法是创建所有交互项并将其添加到数据中。通过这样做，数据可能包含比样本更多的预测变量(原始预测变量加交互项)。当数据包含比样本更多的预测变量时，某些模型(如树(或树的集合)，神经网络，支持向量机和K-最近邻居)不受影响。但是，在这些条件下不能直接使用线性和逻辑回归等其他技术。但是这些模型可以解释得更多，并且如果可以利用它们可以提供良好的预测性能。特征工程的目标是识别可提高模型性能同时提高可解释性的功能。因此，在我们有比样本更多的预测因子的情况下，使用能够利用线性和逻辑回归的方法将是有用的。
+
+已经开发了一系列建模技术，称为惩罚模型，以处理我们有比样本更多预测因子但我们仍然希望使用可解释模型的情况。要理解这些工具的基本前提，我们需要简要回顾一下线性回归的目标。假设我们的数据包括$p$预测因子，标记为$x_1, x_2$通过$x_p$。线性回归试图找到系数$\beta_1, \beta_2$通过$\beta_p$最小化从样本的估计预测到样本的观察值的平方距离(或误差)的总和。平方误差的总和可写为：
+$$SSE = \sum^n_{i=1} (y_i-\widehat{y}_i)^2$$
+
+和
+$$\widehat{y}_i = \widehat{\beta}_1x_1 + \widehat{\beta}_2x_2 + \ldots + \widehat{\beta}_px_p$$
+
+是根据最小化SSE的可用数据估计的回归系数。我们可以使用微积分来解决最小化问题。但事实证明，该解决方案需要反转预测变量的协方差矩阵。如果有比样本更多的预测变量，或者如果一个预测变量可以写成一个或多个其他预测变量的组合，那么就不可能进行反演。随着预测变得彼此更加相关，估计的回归系数变得更大(膨胀)并变得不稳定。在这些条件下，我们需要另一种解决方案 Hoerl(1970)认识到了这一挑战，并提议将优化问题改为：
+$$SSE_{L_2} = \sum^n_{i=1} (y_i-\widehat{y}_i)^2 + \lambda \sum^P_{j=1}\beta_j^2$$
+
+因为等式的目标是最小化整个数量，所以$\lambda$术语称为惩罚，该技术称为岭回归。随着回归系数变大，惩罚也必须增加以实施最小化。本质上，惩罚导致所得的回归系数变小并且朝零收缩。此外，通过添加此简单惩罚，我们可以获得合理的参数估计。然而，许多参数估计可能不为零，因此使得得到的模型解释更加困难。Tibshirani(1996)对脊优化标准进行了简单而显着的修改，并提出了最小化以下等式：
+$$SSE_{L_1} = \sum^n_{i=1} (y_i-\widehat{y}_i)^2 + \lambda \sum^P_{j=1}|\beta_j|$$
+
+该方法被称为最小绝对收缩和选择算子(套索)。通过修改惩罚项，套索方法迫使回归系数为零。在这样做时，套索实际上选择模型项至预测器的最佳子集，因此，该方法可以用于预测器和交互的整个数据集，以选择产生最佳模型性能的那些。Friedman，Hastie和Tibshirani(2010)扩展了这种技术，使其可以应用于分类设置。
+![Markdown](\images_source\20180621\7-008.PNG)
+
+我们将再次使用笔划数据来说明套索方法。为了衡量方法的灵敏度，我们添加了一个随机预测器，它是MaxRemodelingRatio预测器的随机permuataion。该预测因子将作为阴性对照，并有助于定义评估成对相互作用相关性的阈值。在对高度相关和接近零的方差预测值进行滤波之后，创建笔划数据的所有成对交互项。使用先前使用的五次十次交叉验证重复来选择最佳$\lambda$套索的价值。对于这些数据，最大化ROC的正则化参数的值是$\lambda = 0.018$图7.8(a))。使用此值，模型选择16个术语。按行程结果显示顶部交互项MaxRemodelingRatio x MaxStenosisByArea的分布如图7.8(b)所示，前面的16项及其相应的回归系数如表7.1所示。显然，套索优先考虑的卒中结果类别之间的反应发生了变化。绝对系数小于随机系数的交互项应谨慎解释。
+![Markdown](\images_source\20180621\7-009.PNG)
+
+对于这些数据，套索似乎主要偏好模型中的交互项，并提供了许多与前一节中的简单筛选方法不同的术语。尽管允许模型使用单个预测变量，但并不强制使用。这意味着该技术不会强制执行层次结构原则，尽管Bien，Taylor和Tibshirani(2013)开发了一种方法，可以用于此模型。
+
+
+## 7.5 完全枚举实际上不可能的方法
+随着预测变量的数量增加，要探索的交互项的数量呈指数增长。只有适度数量的数百个预测因子，对于今天的数据来说可能被认为是小的预测因子，它们产生了比从实际或统计角度考虑的更多的相互作用。在实践方面，计算负担同样呈指数增长。有了足够的计算资源，仍然可以评估大量的交互。即使这些计算是可能的，但由于有可能发现假阳性结果，因此这不是一种统计学上明智的方法。由于重要交互的数量通常很少，因此筛选的交互越不重要，评估这些交互的负担就越大。因此，如果计算所有可能的交互并进行适当的调整，则可能错过真正重要的交互。
+
+当需要评估大量交互项时，需要采用其他方法来使搜索更有效，但仍然有效，以发现重要的交互。本节的其余部分将介绍为揭示预测变量之间的相互作用而开发的几种方法。
+
+
+### 7.5.1 指导原则和两阶段建模
+在两阶段建模方法中，使用不直接考虑交互效应的模型来评估预测器解释响应变化的能力。此类模型的示例是线性或逻辑回归。一旦确定了重要的预测因子，就会计算出该模型的残差。这些残差包含个体预测因子本身无法解释的信息。无法解释的变化是由于随机测量误差造成的，也可能是由于无法获得或测量的预测变量，或者模型中不存在的观测预测变量之间的相互作用。更具体地说，假设观察到的数据是从等式中生成的
+$$y = x_1 + x_2 + 10x_1x_2 + error$$
+
+还假设当收集来自该系统的数据时，只收集响应和$x_1$观察到了。我们可以估计的最佳模型将限于
+$$y = \beta_1x_1 + error^*$$
+
+因为真正的回应取决于$x_2$以及之间的相互作用$x_1$和$x_2$，来自不完美模型的错误($error^\*$)包含有关这些重要术语的信息(模型中没有这些术语)。如果可以访问$x_2$并创造$x_1 \times x_2$交互项，那么就可以通过第二个模型来分离它们的贡献
+$$error^* = \beta_2x_2 + \beta_3x_1x_2 + error$$
+
+
+我们无法解释随机测量误差 - 它在数据中总是固有的。并且需要专家知识来确定其他预测因子是否与解释响应相关并且应该包括在模型中。但是，仍然可以搜索有助于解释响应变化的交互术语。但本节的重点是搜索所有可能的交互术语几乎不可能的设置。
+
+当有许多预测变量时，第7.2节中概述的原则可用于缩小搜索范围。层次结构原则建议首先考虑成对相互作用以帮助解释残差变化。接下来，稀疏性原则将指示如果存在活动的交互，则只有相对较少的交互是重要的。最后，遗传原理将在第一阶段确定的预测变量之间寻找这些相互作用。此时选择的遗传类型，弱或强，将决定将评估的交互项的数量。
+![Markdown](\images_source\20180621\7-010.PNG)
+
+要遵循此过程的逻辑，请考虑使用vascuCAP预测变量对笔画数据建模。在第一阶段，套索选择6个主要效果。图7.9显示了这些术语的估计系数，这些术语标识了与先前结果一致的术语。然后使用该模型计算残差。如果响应是数字的，那么样本的残差将被简单地计算为观察值减去预测值。在与冲程数据一样的分类结果的情况下，必须以不同方式计算残差。Pearson残差将在这里使用，并被定义为
+$$\frac{y_{i} - p_{i}}{\sqrt{p_{i}\left(1 - p_{i}\right)}}$$
+
+对于这个数据$y_i$是一个指标，其中1表示$i^{th}$患者有中风，0表示相反。该模型预测了该概率$i^{th}$患者中风的代表是$p_i$。由于选择了6个个体预测因子，因此将使用强遗传原理生成15个相互作用项。在第二阶段，选择了1个交互项，并且是MaxRemodelingRatio x MaxStenosisByArea。虽然只选择了1个学期，但这与此时的发现是一致的。
+
+
+### 7.5.2 基于树的方法
+到目前为止所讨论的方法可以有效地揭示具有中等数量的预测变量的数据的交互。然而，随着预测变量数量的增加，这些方法失去了实际效果。基于树的方法(如递归分区或递归分区模型的集合)可以使用大量预测变量来有效地建模数据。此外，已经证明基于树的方法揭示了变量之间的潜在相互作用(L Breiman等，1984)。实际上，正如我们将要看到的，使用基于树的方法来识别预测变量之间的重要相互作用已成为理论和实证研究的热门领域。
+
+让我们回顾一下递归分区的基本概念，以了解为什么这种技术能够揭示预测变量之间的相互作用。递归分区的目的是找到预测器的最佳分裂点，该预测器将样本分离成与响应相关的更均匀的组。一旦进行拆分，对每个后续节点处的样本子集应用相同的过程。然后，该过程递归地继续，直到达到节点中的最小数量的样本或者直到该过程满足优化标准。当递归地分割数据时，每个后续节点可以表示前一节点和当前节点之间的本地化交互。此外，同一对预测变量的后续节点的出现越频繁，预测变量之间的相互作用越可能是跨预测变量的观察范围的全局相互作用。
+![Markdown](\images_source\20180621\7-011.PNG)
+
+
+第7.1节中介绍的协同关系的简单双预测器示例将用于演示如何通过递归分区检测交互。该数据的最佳树如图7.10所示。基于树的模型通常被认为是纯粹的相互作用，因为它们的预测方程可以写成一组乘法语句。例如，终端节点4的路径经过三次拆分，可以写为单个规则：
+
+    node_4 < - I(x1 <0.655)* I(x2 <0.5)* I(x2 <0.316)* 0.939
+
+其中0.939是落入该节点的训练集数据的平均值(I是基于函数内部逻辑的零或一个函数)。最终的预测方程式将通过添加来自其他八个终端节点的类似术语来计算(除了预测时的单个规则，它们都将为零)。请注意，在图7.10中，终端节点具有均匀的小数据组，范围从第一次拆分每侧的较小响应值(左)到较大响应值(右)。实现同类终端节点需要来自整个树中的两个预测器的信息。
+
+但是为什么一棵树需要成为这种复杂模型之间的一种简单的协同关系$x_1$和$x_2$？回想一下图7.2，协同关系引起响应的曲线轮廓。由于递归分区模型将空间分解为矩形区域，因此模型需要更多区域来充分解释响应。实质上，树的分区方面阻碍了它们表示平滑的全局交互的能力。
+
+为了看到这一点，让我们看一下图7.11。在该图中，来自每个终端节点的预测由矩形区域表示，其中颜色表示该区域的预测响应值。在该图上叠加了从线性模型生成的等高线，其中已经估计了相互作用项。基于树的模型在近似协同响应方面表现良好。但是，由于模型将空间分解为矩形区域，因此需要许多区域来解释这种关系。
+![Markdown](\images_source\20180621\7-012.PNG)
+
+
+图7.11说明了树像素化了预测变量和响应之间的关系。众所周知，来自树的预测的粗略性质通常使得该模型不如其他模型准确。此外，树木还有一些潜在的众所周知的负债。作为一个示例，单个树可以是高度可变的(即，模型可以基本上随着数据的小变化而改变)。诸如装袋(Breiman 2001)和助推(Friedman 2001)等树木的集合已被证明可以缓解这些问题并提高响应的预测性。
+
+这里提供这些技术的简要说明以帮助理解这些技术。可以在Kuhn和Johnson(2013)中找到对这些技术的深入解释。为了构建袋装树模型，原始数据的许多样本是在替换时独立生成的。对于每个样本，构建一棵树。为了预测新样本，模型平均所有树的预测响应。Boosting还利用了一系列树木，但却以一种根本不同的方式创造了这些树木。增强模型不是将树木构建到最大深度，而是限制树木深度。此外，增强树模型利用样本上先前树的预测性能来重新评估预测不良的样本。第三，使用与个体模型拟合相关的统计量对增强模型中的每棵树的贡献进行加权。对新样本的预测是整个树集的加权组合。
+
+最近的研究表明，这些集合方法能够识别预测变量之间的重要相互作用。García-Magariños等。(2009)和Qi(2012)说明了随机森林，它是套袋的进一步修改，可用于发现生物数据中的相互作用。而巴苏等人。(2018)使用随机森林算法的变体来识别高阶交互。对于提升，Lampa等人。(2014年)和Elith，Leathwick和Hastie(2008)发现这种方法也可用于揭示重要的相互作用。使用理论观点，Friedman和Popescu(2008)提出了一种新的统计数据，用于评估交互的重要性。基于树的模型。
+
+树集合在识别预测器 - 响应关系方面有效的原因是因为它们从原始数据的略微不同版本聚合了许多树。聚合允许更多可能的响应值并更好地逼近预测器 - 响应关系。为了看到这一点，我们将在双预测器协同实例上构建随机森林模型和梯度增强机器模型。
+![Markdown](\images_source\20180621\7-013.PNG)
+
+图7.12显示树的集合比单个树更能够逼近协同关系。实际上，用于增强的交叉验证的均方根误差(RMSE)是0.27，对于袋装树是0.61。最优单树模型更差，交叉验证的RMSE为0.91。在这个例子中，更顺畅的模型获胜;线性回归交互模型的RMSE为0.05。
+
+请注意，单个树或树的集合效率较低，并且是用于揭示预测性交互的更复杂的模型，这些交互在所有样本中都是全局真实的。这个简单的例子突出了特征工程的主要前提。如果可以以更有效的形式识别有意义的预测变量关系并使其处于安置状态，则可以使用更简单且可能更合适的模型来估计预测变量和响应之间的关系。但是，有一种情况是基于树的方法可能具有更好的预测能力。当重要的相互作用发生在样本的一个或多个子集内时(即，局部地)，则基于树的方法具有对交互进行建模的正确架构。为简化模型中包含的本地化交互创建功能要繁琐得多。该过程将需要创建一个术语，该术语是本地空间的标识符(即虚拟预测器)和在该空间内交互的预测器的乘积，其实质上是三个术语之间的交互。
+
+由于树木和树木的集合可以近似预测变量之间的相互作用，我们是否可以利用结果模型中的信息指出应该包含在更简单的线性模型中的术语？ Basu等人提出的方法。(2018)使用随机森林模型(称为特征加权随机森林)的形式，其基于由特征的重要性确定的权重随机选择特征。在创建集合之后，计算每个共同出现的特征集的度量，然后可以使用该度量来识别顶部交互特征。
+
+Friedman和Popescu(2008)提出了一种基于部分依赖理论概念的方法(Friedman 2001)，用于识别使用集合的相互作用。简而言之，这种方法将两个(或更多)预测变量的联合效应与模型中每个预测变量的单独效应进行比较。如果个体预测因子不与任何其他预测因子相互作用，则联合效应与个体效应之间的差异将接近于零。但是，如果单个预测变量与至少一个预测变量之间存在相互作用，则差异将大于零。这种比较在数字上总结为他们所说的$H$统计。对于中风数据中的20个预测因子(包括随机预测因子)，$H$统计数据是在整个训练集上计算的。一个问题是$H$跨预测变量的统计量可以具有相当双峰分布，因为许多值为零(当预测变量不参与任何交互时)。该数据集相当小，并且由于这些原因，使用中值计算并总结了100个自举估计$H$统计。两项估算均见图7.13。原始统计数据及其重新抽样的对应物同意一个例外。变量MaxLRNCArea具有可忽略的重采样值，而整个数据集的估计非常强。截止的$H >= 0.005$在两个估算中，都使用了选择变量。这将使我们相信至少有一个互动涉及8个预测因子。在之前的两阶段方法之后，这些预测变量的所有28个双向相互作用都被添加到LASSO模型中的主效应中(模仿先前的分析)。使用重新采样，最佳调整参数值为$\lambda = 0.04$被找到。从该模型中，双向交互的数量从28减少到5：MaxMaxWallThickness x MaxStenosisByArea，MaxMaxWallThickness x MaxCALCAreaProp，MaxRemodelingRatio x MaxStenosisByArea，MaxLRNCArea x MaxCALCAreaProp和MaxStenosisByArea x MaxCALCAreaProp。同样，这里可以使用随机预测器来衡量重要交互的阈值。在这种情况下，随机预测器位于显着截止值之下$H >= 0.005$。
+![Markdown](\images_source\20180621\7-014.PNG)
+
+
+识别交互的第三种实用方法是使用预测变量重要性信息以及层次结构，稀疏性和遗传性原则。简而言之，如果预测变量之间的交互很重要，那么基于树的方法将在多个树中多次使用这些预测变量来揭示与响应的关系。然后，这些预测变量将具有非零且可能高的重要性值。然后可以创建最重要的预测变量之间的成对相互作用，并评估它们在预测响应中的相关性。这与两阶段建模方法非常相似，只是基础学习器是基于树的模型。
+![Markdown](\images_source\20180621\7-015.PNG)
+
+
+让我们重新审视笔划数据，估计随机森林模型的最佳调整参数，并计算预测变量重要性值。图7.14按重要性显示了前10个预测变量，其中大部分已被确定为来自其他方法的多个成对相互作用的一部分。特别重要的是MaxMaxWallThickness和MaxStenosisByArea，它们是最重要的预测因子，并且是具有科学意义的相互作用。该方法在精神上类似于上面讨论的两阶段方法。主要区别在于随机森林模型仅用于识别可能成为重要交互的一部分的预测变量。这里确定的顶级预测变量之间的相互作用将被包含在更简单的模型中，如逻辑回归，以评估它们的重要性。
+
+
+### 7.5.3 可行的解算法
+如上所述，识别重要交互的问题可以被认为是识别包括主要效果和交互的最佳模型。由于模型的数量是多少，因此对于所有可能的模型的完全枚举和评估对于即使是中等数量的预测器也是不可能的。$p$！
+ 。当使用线性模型(如线性或逻辑回归)时，通常使用前向，后向和逐步选择等方法来定位一组最佳预测变量(Neter等，1996)。这些技术就像他们的名字所暗示的那样易于理解。前向选择技术从没有预测变量开始，并识别与响应最佳相关的预测变量。在下一步骤中，选择下一个预测器，使得它与第一预测器组合最佳地与响应相关。此过程一直持续到其余预测变量都没有根据优化标准改进模型。后向选择技术从所有预测变量开始，并顺序删除对优化标准贡献最小的预测变量。此过程将继续，直到删除预测器会显着降低模型性能。逐步过程基于优化标准在每个步骤一次添加或移除一个预测器，直到添加或移除任何预测变量不会显着改善模型。
+
+Miller(1984)为线性模型问题的逐步方法提供了另一种搜索技术。他没有删除预测变量，而是建议采用替代方法，系统地选择每个选定的预测变量进行替换。例如，假设我们有10个预测变量，$x_1–x_{10}$，我们希望找到包含三个预测变量的最佳模型。比如，米勒的过程首先是随机选择十个预测因子中的三个$x_2, x_5, x_9$。计算这三个预测变量的模型性能。然后，前两个预测变量是固定的，这两个预测变量的模型性能是用其余七个预测变量计算的。如果其他七个预测因子都没有比那些更好的表现$x_9$，然后保留这个预测器。如果$x_9$不是最优的，然后用最好的预测器进行交换。然后，该过程修复第一个和第三个预测变量，并使用相同的步骤选择最佳的第二个预测变量。然后，固定第二和第三预测器，并为最佳第一预测器启动搜索。该过程继续迭代，直到它收敛于最优解。由于不能保证算法找到全局最优解，因此应选择不同的随机起始预测集。对于每个不同的起始集，确定融合解和每个解的频率。Hawkins(1994)将该算法扩展为鲁棒建模方法，并将该过程称为可行解算法(FSA)。
+
+该技术的主要优点是算法的搜索空间，其大小为$q \times m \times p$哪里$q$是随机开始的数量，$m$是子集中的术语数，和$p$是预测变量的数量，远小于整个搜索空间($p^m$)。已经证明FSA算法收敛到最优解，尽管不能保证它是全局最优解。
+
+FSA算法专注于寻找主效应的最佳子集。但是，FSA的原始实现不考虑搜索预测变量之间的交互。这可能是使用该算法的相当大的缺点，因为在许多问题的预测器之间确实发生了重要的相互作用。兰伯特等人。(2018)认识到这种缺陷并且提供了对算法的概括以搜索交互。Lambert的方法从基础模型开始，基础模型通常包括被认为对预测响应很重要的预测变量。选择所需交互的顺序。识别潜在相关交互的过程遵循与原始FSA算法相同类型的逻辑。为了说明这个过程，让我们回到上面的例子。假设基础模型包括三个预测变量($x_1, x_5, x_9$)目标是确定重要的成对相互作用。Lambert的算法随机选择两个预测变量$x_3, x_9$
+ ，并计算包含基本术语和此交互术语的模型的性能。该算法然后修复第一个预测变量并系统地用剩余的8个预测变量替换第二个预测变量(或者如果我们想要研究二次效应则预测变量为9个)，并计算相应的模型性能。如果没有其他预测因子能够提供更好的预测性能，那么$x_9$保持。但如果$x_9$不是最优的，然后用最好的预测器进行交换。然后，该过程修复第二个预测变量，并将第一个预测变量与八个(或九个)其他预测变量进行交换。此过程继续迭代直到收敛。然后选择不同的随机预测变量对并应用该过程。在随机开始时计算收敛的相互作用以识别潜在的可行解决方案。该算法可以很容易地推广到任何交互顺序。
+
+兰伯特已经开发出实施该算法的方法，现在将使用缺血性卒中数据进行演示。从第2章开始，逻辑回归模型的递归特征消除选择MaxMaxWallThickness，MATXVol，MaxRemodelingRatio和MaxStenosisByArea作为单个预测变量或作为成对交互的一部分。这些术语将包含在基本模型中，成对交互将在100个随机启动中进行评估，这有助于改进模型。此外，FSA算法在重新采样中执行(使用先前使用的10倍交叉验证的相同重复)
+
+结果如表7.2所示。FSA算法在100次随机启动中最频繁地识别出MaxRemodelingRatio x MaxStenosisByArea。此外，其他最常识别的交互是CALCVolProp x MaxLRNCArea，LRNCVolProp x Random_Predictor和MaxCALCAreaProp x MaxMaxWallThickness，这将是包含在模型中的主要术语。
+![Markdown](\images_source\20180621\7-016.PNG)
+
+
+## 7.6 斯托克交动效应综述
+![Markdown](\images_source\20180621\7-017.PNG)
+应用于中风数据的方法已经确定了一些相似和不同的后续术语。图7.15提供了每种方法所选交互的摘要。在每种方法中，术语的重要性已经缩放到0到1之间的范围，以在视觉上比较术语的强度。例如，FSA选择根据选择的频率进行缩放，最常用的术语接收值为1.另一方面，随机森林选择中的所有项具有相同的值，因为这只是一个指标随后追求的条款。一些术语，如MaxRemodlingRatio × MaxStenosisByArea由多种方法选择，可能包含模型的有用信息。许多其他术语仅通过一种方法选择。总的来说，在不相关的vascuCAP预测因子中有120种可能的成对相互作用。这里讨论的方法的联合集中在这些相互作用中的43个，其中两阶段方法选择最少和随机森林，FSA选择最多。
+
+
+## 7.7 其他潜在有用的工具
+还有一些其他模型能够发现值得在此提及的预测性交互。多变量自适应回归样条(MARS)是一种连续响应的非线性建模技术，可搜索每个预测变量的各个预测变量和各个值，以找到预测变量和样本值，以创建描述预测变量和响应之间关系的铰链函数(Friedman 1991)。铰链功能先前在6.2.1节中描述，并使模型能够搜索非线性关系。除了能够搜索单个预测变量之外，MARS还可用于搜索预测变量的乘积，以便进行隔离预测变量空间部分的非线性交互。MARS技术还具有内置功能选择。这种方法的主要缺点是它在计算上很费力。MARS也已扩展到分类结果，这种方法称为灵活判别分析(FDA)。
+
+Cubist(Kuhn and Johnson 2013)是一个基于规则的回归模型，它构建一个初始树并将其分解为一组被修剪并可能被淘汰的规则。对于每个规则，定义单独的线性模型。Ames住房数据规则的一个例子可能是：
+
+如果
++ 建成年份不到1952年
++ 一般生活区不到1692年$ft^2$和
++ 总体情况是：非常差，差，公平，低于平均水平或平均水平
+
+然后
+$$log_{10} (\text{Sale Price}) = 4.052 + 0.00045 \text{ (general living area)} + 0.00015 \text{ (year built)}$$
+
+
+这种结构创造了一组不相交的相互作用; 规则集可能不会涵盖规则中使用的预测变量的每个值组合。正在预测的新数据点可能属于多个规则，在这种情况下，相关的线性模型预测是平均的。该模型结构非常灵活，并且很有可能在整个预测器空间内找到本地交互。例如，当房产总面积较小但卧室数量较多时，与卧室数量相关的回归模型通常存在负斜率。这在一般情况下肯定不正确，但仅适用于所有“全卧室”的房产。
+
+
+## References
+Elith, J, J Leathwick, and T Hastie. 2008. “A Working Guide to Boosted Regression Trees.” Journal of Animal Ecology 77 (4). Wiley Online Library:802–13.
+García-Magariños, M, I López-de-Ullibarri, R Cao, and A Salas. 2009. “Evaluating the Ability of Tree-Based Methods and Logistic Regression for the Detection of Snp-Snp Interaction.” Annals of Human Genetics 73 (3). Wiley Online Library:360–69.
+Lampa, E, L Lind, P Lind, and A Bornefalk-Hermansson. 2014. “The Identification of Complex Interactions in Epidemiology and Toxicology: A Simulation Study of Boosted Regression Trees.” Environmental Health 13 (1). BioMed Central:57.
+Chen, SH, J Sun, L Dimitrov, A Turner, T Adams, D Meyers, BL Chang, et al. 2008. “A Support Vector Machine Approach for Detecting Gene-Gene Interaction.” Genetic Epidemiology 32 (2). Wiley Online Library:152–67.
+Neter, J, M Kutner, C Nachtsheim, and W Wasserman. 1996. Applied Linear Statistical Models. Vol. 4. Irwin Chicago.
+Wu, CF Jeff, and Michael S Hamada. 2011. Experiments: Planning, Analysis, and Optimization. John Wiley & Sons.
+Bairey, E, E Kelsic, and R Kishony. 2016. “High-Order Species Interactions Shape Ecosystem Diversity.” Nature Communications 7:12285.
+Dickhaus, T. 2014. “Simultaneous Statistical Inference.” AMC 10. Springer:12.
+Friedman, J. 2001. “Greedy Function Approximation: A Gradient Boosting Machine.” Annals of Statistics, 1189–1232.
+Shaffer, J. 1995. “Multiple Hypothesis Testing.” Annual Review of Psychology 46 (1):561–84.
+Benjamini, Y, and Y Hochberg. 1995. “Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.” Journal of the Royal Statistical Society. Series B (Methodological). JSTOR, 289–300.
+Hoerl, R, Aand Kennard. 1970. “Ridge Regression: Biased Estimation for Nonorthogonal Problems.” Technometrics 12 (1):55–67.
+Tibshirani, R. 1996. “Regression Shrinkage and Selection via the Lasso.” Journal of the Royal Statistical Society. Series B (Methodological), 267–88.
+Friedman, J, T Hastie, and R Tibshirani. 2010. “Regularization Paths for Generalized Linear Models via Coordinate Descent.” Journal of Statistical Software 33 (1):1.
+Bien, J, J Taylor, and R Tibshirani. 2013. “A Lasso for Hierarchical Interactions.” Annals of Statistics 41 (3):1111.
+Breiman, L, J Friedman, C Stone, and R Olshen. 1984. Classification and Regression Trees. CRC press.
+Breiman, L. 2001. “Random Forests.” Machine Learning 45 (1). Springer:5–32.
+Kuhn, M, and K Johnson. 2013. Applied Predictive Modeling. Vol. 26. Springer.
+Qi, Y. 2012. “Random Forest for Bioinformatics.” In Ensemble Machine Learning, 307–23. Springer.
+Basu, S, K Kumbier, J Brown, and B Yu. 2018. “Iterative Random Forests to Discover Predictive and Stable High-Order Interactions.” Proceedings of the National Academy of Sciences 115 (8):1943–8.
+Friedman, J, and B Popescu. 2008. “Predictive Learning via Rule Ensembles.” The Annals of Applied Statistics 2 (3):916–54.
+Miller, A. 1984. “Selection of Subsets of Regression Variables.” Journal of the Royal Statistical Society. Series A (General), 389–425.
+Hawkins, D. 1994. “The Feasible Solution Algorithm for Least Trimmed Squares Regression.” Computational Statistics & Data Analysis 17 (2):185–96.
+Lambert, J, L Gong, CF Elliot, K Thompson, and A Stromberg. 2018. “An R Package for Finding Best Subsets and Interactions.” The R Journal.
+Friedman, J. 1991. “Multivariate Adaptive Regression Splines.” The Annals of Statistics 19 (1):1–141.
+For this reason, the interaction shown in Figure 7.3 was labeled as “atypical.”
+Although, as noted in Section 3.7, there are Bayesian methods that can be used to compare models without generating p-values.
+This is a feature selection algorithm similar to those discussed in Chapter 11.
+
+
+# 8 处理缺失数据
+缺少数据在实际数据集中并不罕见。事实上，至少有一个数据点丢失的可能性随着数据集大小的增加而增加。丢失的数据可以以多种方式发生，其中一些包括以下方式。
++ 合并源数据集：通过样本标识符(ID)合并两个数据集时，可能会出现一个简单的示例。如果ID仅存在于两个数据集中的第一个中，则合并的数据将包含第二个数据集中所有预测变量的该ID的缺失值。
++ 随机事件：测量通常容易受到随机事件的影响。一个例子是实验室技术人员意外丢弃患者血液样本。然后，不可能测量血液样本的特征，这将导致数据中的缺失值。收集活动记录数据的设备也可能受到随机事件的影响。例如，如果电池在收集装置中死亡，则无法收集测量值，并且最终数据中将丢失测量值。
++ 测量失败：基于图像的测量要求图像处于焦点。当临床研究中的患者错过预定的医生就诊时，将发生测量失败的另一个例子。然后，数据中将缺少在该访问时将进行的测量。
+
+特征工程的目标是将预测变量转换为一种形式，模型可以更好地将预测变量与响应相关联。例如，连续预测变量的投影方法(第6.3节)或自动编码器变换(第6.3.2节)可以显着提高预测性能。同样，分类预测器的可能性编码的特征工程操作(第5.4节)可能是预测性的有益的。这些特征工程技术以及本工作中讨论的许多其他技术要求数据没有缺失值。此外，无论任何特征工程，原始预测变量中的缺失值在多种预测模型中都是不可容忍的。因此，要利用预测变量或特征工程技术，我们必须首先解决数据中的缺失问题。此外，缺失本身可能是响应的重要预测因子。
+
+缺少数据值可能出现在预测变量中或响应中。具有缺失响应值的样本无法用于训练预测模型;本章介绍的方法不适用于缺失的响应值。相反，本章的重点将放在预测变量中的缺失数据上。
+
+
+缺失数据的类型
+
+遇到缺失数据时，第一个也是最重要的问题是“为什么缺少这些值？”有时，答案可能已经知道，或者可以通过研究数据轻松推断出来。如果数据来自科学实验或临床研究，来自实验室笔记本或临床研究日志的信息可能提供与收集的样本或研究的患者的直接联系，这将揭示缺少测量的原因。但对于许多其他数据集，可能无法确定丢失数据的原因。在这种情况下，我们需要一个框架来理解缺失的数据。反过来，该框架将引导我们采用适当的技术来处理缺失的信息。
+
+缺失值通常由三种机制引起：
++ 数据的结构性缺陷
++ 随机发生，或
++ 具体原因。
+
+结构缺陷可以定义为数据中省略的预测变量的缺失部分。一旦确定了必要的组件，这种类型的缺失通常是最容易解决的。Ames住房数据提供了巷子预测器中此类缺失的示例。此预测器采用“砾石”，“铺砌”或缺失的值。在这种情况下，遗失意味着该物业没有小巷。更好地记录Alley预测器可能是用“No Alley”替换缺失值。
+
+Little和Rubin(2014)的两类缺失数据机制是：
++ 随机完全丢失(MCAR)：所有数据点(观察到或未观察到的)结果丢失的可能性相等。换句话说，缺失值与数据无关。这是最好的情况。
++ 随机丢失(MAR)：所有数据点(观察到或未观察到的)结果丢失的可能性不相等。在这种情况下，缺失结果的概率取决于观察到的数据，但不取决于未观察到的数据。
+
+在实践中，很难或不可能区分所有数据是否具有相同的发生可能性，或者对于观察到的或未观察到的数据具有不同的可能性。出于本文的目的，本文描述的方法可适用于任一情况。我们将读者推荐给Little和Rubin(2014)，以便更深入地了解这些细微差别的案例。
+
+由于特定原因(或不随机丢失(NMAR)(Little and Rubin 2014))而丢失的数据也可能发生。这种类型的缺失通常发生在临床研究中，其中患者被定期测量。例如，由于治疗的不良副作用或由于死亡，患者可能退出研究。对于该患者，在辍学后不会记录任何测量值。随机丢失的数据是最难处理的。此处介绍的技术可能适用于此类缺失，也可能不适用。因此，在实施下述任何技术之前，我们必须努力了解缺失数据的性质。
+
+为了说明，将使用来自Reid(2015)的数据。这些数据包含有关在野外采集的动物粪便的信息。对每个样品进行各种测量，包括形态学观察(即形状)，位置/时间信息和实验室测试。对每个样品中的DNA进行基因分型以确定样品的种类(灰狐狸，土狼或山猫)。目标是在散射测量和物种之间建立预测关系。收集新的样本后，该模型将用于预测产生样本的物种。在110个收集的散点样本中，19个具有一个或多个丢失的预测值。
+
+在本章中，我们将说明评估数据中缺失值的性质和严重性的方法，突出显示缺失值时可以使用的模型，以及检查删除或输入缺失数据的技术。
+
+## 8.1 理解缺失信息的性质和严重性
+如本书所示，可视化数据是指导我们实施适当的特征工程技术的重要工具。同样的原则适用于理解整个数据中缺失信息的性质和严重性。可视化和数字摘要是掌握数据集中缺失信息挑战的第一步。对于小到中等(100个样本和100个预测变量)数据，适当的可视化可能足以理解缺失信息的程度。当样本或预测变量的数量超过有效可视化的范围时，数字摘要将更好地用于诊断缺失的性质和程度。
+
+可视化缺失信息
+
+当训练集具有适量的样本和预测变量时，可视化缺失信息的简单方法是使用热图。在该可视化中，该图具有表示当前值和缺失值的两种颜色。图8.1的顶部示出了动物散布数据的缺失信息的热图。可以重新组织热图可视化，以使用预测变量和样本上的层次聚类分析来突出缺失预测变量和样本的共性(Dillon和Goldstein，1984)。该可视化表明大多数预测变量和样本具有完整或接近完整的信息。三种形态预测因子(直径，锥度和锥度指数)更常丢失。另外两个样品缺少所有三个实验室测量值(d13N，d15N和CN)。
+
+共现图可以进一步加深对缺失信息的理解。此类图表显示具有缺失数据的预测变量的频率组合。图8.1的底部显示了散射数据的共现图。这里有六个样本，其中缺少所有三个形态预测因子。
+![Markdown](\images_source\20180621\8-001.PNG)
+
+除了探索缺失信息的全球性质之外，探索可能与缺失相关的数据内的关系也是明智的。当探索预测变量之间的成对关系时，可以在备用轴的边缘上调出一个预测变量的缺失值。例如，图8.2显示了粪便直径和质量之间的关系。任一轴上的散列标记表示具有该预测变量的观测值但具有相应预测变量的缺失值的样本。这些点是由于样品是否是“缺乏其他形态特征的扁平水坑”而着色。由于缺失的直径测量值具有这种难以接受的质量，因此无法确定某些形状属性是有道理的。这可以被认为是结构上缺失的，但是仍然可能存在缺失的随机或信息性成分。
+![Markdown](\images_source\20180621\8-002.PNG)
+
+然而，就结果而言，六个扁平样本分布在灰狐(n = 5)和土狼(n = 1)数据上。鉴于样本量较小，尚不清楚这种缺失是否与结果有关(这将是有问题的)。将咨询主题专家以了解是否属于这种情况。
+
+总结遗失的信息
+
+当数据变得太大而无法进行视觉检查时，简单的数字摘要可有效识别有问题的预测变量和样本。在第一遍中，可以容易地计算预测变量和样本的缺失值的总数或百分比。表8.1按缺失值的数量显示了预测变量。同样，表8.2包含缺失值数量的样本。然后，可以使用这些摘要来调查缺失值的根本原因，或者作为用于删除具有大量缺失值的预测变量或样本的筛选机制。
+![Markdown](\images_source\20180621\8-003.PNG)
+
+
+## 8.2 能够抵抗缺失值的模型
+许多流行的预测模型，如支持向量机，弹性网和神经网络，都不能容忍任何数量的缺失值。但是，有一些预测模型可以在内部处理不完整的数据。基于树的模型的某些实现具有适应不完整数据的聪明过程。CART方法(L. Breiman等，1984)使用了替代分裂的概念。创建树时，会对一组单独的拆分进行编目(使用除当前预测器之外的其他预测器)，如果缺少该预测值，则可以近似原始拆分逻辑。图8.3显示了动物散布数据的递归分区模型。树选择的所有三个预测变量都包含缺失值，如图8.1所示。初始分流基于碳/氮比(CN <8.7)。当样本具有CN的缺失值时，则CART模型使用基于指示符的替代分割来确定散射是否平坦。这两个分裂对数据的80.6％的数据产生相同的分区，并且如果缺少碳/氮比率则可以使用。进一步向下移动树，d13C和质量的替代预测值分别为质量和d13C。这是可能的，因为这些预测因子不会同时丢失。
+![Markdown](\images_source\20180621\8-004.PNG)
+
+C5.0(Quinlan 1993，Kuhn and Johnson(2013))采用了不同的方法。基于具有缺失数据的预测器的分布，在随后的分割中使用分数计数。例如，此模型对散射数据的第一次拆分是d13C> 24.55。当这个陈述成立时，所有13个训练集样本都是土狼。但是，此预测变量只有一个缺失值。然后，由于调整分裂变量的缺失值的数量，后续节点中的每个物种的计数是分数的。这允许模型保持运行帐户中缺失值可能落在分区中的位置。
+
+另一种可以容忍丢失数据的方法是朴素贝叶斯模型。该模型分别模拟每个预测变量的类特定分布。同样，如果缺失的数据机制不是病态的，那么这些分布摘要可以使用每个预测变量的完整观察结果，并避免逐案删除。
+
+
+## 8.3 删除数据
+当需要使用不能容忍丢失数据的模型时，必须从数据中解除缺失值。处理缺失值的最简单方法是删除包含缺失值的整个预测变量和/或样本。但是，在采用这种方法之前，必须仔细考虑数据的许多方面。例如，可以通过删除包含一个或多个缺失值的所有预测变量来消除缺失值。类似地，可以通过删除具有缺失值的所有样本来消除缺失值。这些方法都不适用于所有数据，这可以从“无免费午餐”定理中推断出来。对于某些数据集，特定预测变量可能比其他预测变量更成问题;通过删除这些预测变量，可以解决缺失的数据问题。对于其他数据集，特定样本可能确实在预测变量中始终缺少值;通过删除这些样本，同样可以解决丢失的数据问题。然而，在实践中，特定预测变量和特定样本包含大部分缺失信息。
+
+另一个重要的考虑因素是样本与预测因子相比的内在价值。当难以获得样本或当数据包含少量样本(即行)时，则不希望从数据中移除样本。一般来说，样本比预测变量更重要，应该优先考虑保留尽可能多的样本。鉴于通常对样本赋予较高的优先级，初始策略是首先识别并删除具有足够大量缺失数据的列。当然，不应删除已知有价值和/或预测结果的所述柱。一旦有问题的列被删除，那么注意力可以集中在超过缺失阈值的样本上。
+
+除了丢弃数据之外，删除训练集行的主要问题是它可能会偏向将预测变量与结果相关联的模型。一个典型的例子来自医学研究。在这些研究中，一部分患者被随机分配到当前的护理治疗标准，而另一部分患者被分配到新的治疗。新治疗可能会对某些患者产生不良影响，导致他们退出研究，从而导致未来临床就诊的数据丢失。这种缺失的数据显然不会随意丢失，从分析中消除这些数据会错误地衡量结果，如果将不利结果包括在内，结果会更好。也就是说，Allison(2001)指出，如果数据完全随机丢失，这可能是一种可行的方法。
+
+## 8.4 编码缺失
+当预测变量本质上是离散的时，缺失可以直接编码到预测变量中，就好像它是一个自然发生的类别。这对于结构上缺失的值是有意义的，例如Ames住房数据中的小巷示例。在这里，将缺失值更改为“无胡同”类别是明智的。在其他情况下，缺失值可以简单地编码为“缺失”或“未知”。例如，Kuhn和Johnson(2013)使用目标是预测接受或拒绝拨款提案的数据集。其中一个明确的预测因素是资助赞助商，其中包括“澳大利亚竞争性拨款”，“合作研究中心”，“行业”等价值观。总共有超过245种可能的预测值;大约10％的拨款申请是空的赞助商价值。为了使具有空赞助商的应用程序能够用于建模，空赞助商值被编码为“未知”。对于许多被调查的模型，未知赞助商的指标是授予成功的最重要预测因素之一。事实上，已知与未知赞助商的比值比大于6.在训练集中，与未知赞助商相关的补助成功率为82.2％，否则为42.1％。
+
+这是一个成功的策略吗？显然，导致失去赞助商标签的机制被确定为与拨款接受密切相关，这一点非常重要。不幸的是，不可能知道为什么这种关联如此重要。事情发生在这里的事实很重要，这种编码有助于识别它的发生。然而，接受这种分析作为最终并且意味着某种因果关系会很麻烦。可用于确定编码缺失是否是一个好主意的指导原则是考虑如果该信息对模型变得重要，将如何解释结果。
+
+
+## 8.5 估算方法
+处理缺失值的另一种方法是估算或估计它们。缺失价值估算在统计学方面有着悠久的历史，并已经过深入研究。好的开始是Little和Rubin(2014)，Van Buuren(2012)和Allison(2001)。实质上，估算使用预测变量之间的信息和关系来提供估计以填补缺失值。
+
+从历史上看，缺失数据的统计方法一直关注对推理模型的影响。在这种情况下，估算策略的特征和质量集中在模型产生的测试统计上。这些技术的目标是确保统计分布易于处理并具有足够好的质量以支持随后的假设检验。这种情况下的主要方法是使用多个插补;使用对缺失值的不同估计来创建数据集的若干变体。然后将数据集的变化用作模型的输入，并且为每个估算的数据集计算测试统计重复。从这些重复统计数据中，可以构建适当的假设检验并用于决策。
+
+推理和预测模型之间存在一些影响此过程的差异：
++ 在许多预测模型中，没有分布式假设的概念(或者它们通常是难以处理的)。例如，当构建大多数基于树的模型时，该算法不需要对预测器的任何概率分布规范。因此，许多预测模型即使是主要目标也无法产生推论结果66。鉴于此，传统的多重插补方法可能与这些模型无关。
++ 许多预测模型在计算上都很昂贵。重复插补会大大加剧计算时间和开销。然而，有兴趣获得由插补程序引起的利益(或损害)。为了确保在训练过程中捕获由插补引起的变化，我们建议在重采样过程中进行插补。
++ 由于预测模型是根据其准确性来判断的，而不是统计适当性，因此估算值尽可能接近其真实(未观察到的)值至关重要。
++ 推理模型的一般重点是彻底理解预测器和可用数据响应之间的关系。相反，预测模型的重点是理解预测变量和响应之间的关系，这些关系可以推广到尚未被看到的样本(包括测试集和新的未知样本)。在估计缺失数据之后，多种插补方法不保持插补发生器，这对将这些技术应用于新样本提出了挑战。
+
+最后一点强调了机器学习模型估算的主要目标：产生最准确的缺失数据点预测。预测插补方法应具有的一些其他重要特征是：
++ 在示例数据点中，也可能缺少其他变量。因此，插补方法应该容忍其他缺失数据。
++ Imputation创建嵌入另一个模型的模型。存在与训练集中可能具有丢失数据的每个预测器相关联的预测方程。期望插补方法快速并且具有紧凑的预测方程。
++ 许多数据集通常包含数字和定性预测变量。一个好的插补方法不是生成虚拟变量，而是能够使用各种类型的预测变量作为输入。
++ 用于预测缺失值的模型应该是相对(数值上)稳定的并且不受外围数据点的过度影响。
+
+事实上，任何预测模型都可用于估算数据。在这里，重点将放在几个值得考虑的候选人身上。
+
+估算确实存在多少缺失数据太多而无法估算的问题？虽然在任何意义上都不是一般规则，但列中20％的数据丢失可能是一个很好的“尊严线”。当然，这取决于训练集中的情况和缺失值的模式。
+
+在计算缺失预测变量时的另一个考虑因素：插补可能是任何预处理序列的第一步。在创建指标变量之前，最好先估算定性预测变量，以便保留所得估算的二元性质。此外，估算通常应在涉及参数估计的其他步骤之前进行。例如，如果在插补之前对数据执行居中和缩放，则生成的平均值和标准偏差将继承由于数据删除而产生的潜在偏差和问题。
+
+
+K-Nearest Neighbors
+
+当训练集的规模小或中等时，K-最近邻居可以是一种快速有效的方法来估算缺失值(Eskelson等，2009，Tutz和Ramzan(2015))。此过程标识具有一个或多个缺失值的样本。然后，它识别训练数据中完成的K个最相似的样本(即，在某些列中没有缺失值)。样本的相似性由距离度量定义。当所有预测变量都是数值时，标准欧几里德距离通常用作相似度量。但是，数据集通常包含数字和分类预测变量。如果是这种情况，则欧几里德距离不是适当的度量。相反，高尔的距离是一个很好的选择(Gower 1971)。该指标对定性和定量预测变量使用单独的专用距离度量。对于定性预测器，如果样本具有相同的值，则两个样本之间的距离为1，否则为0。对于定量预测器$x$，样本$i$和$j$之间的距离定义为
+$$d(x_i, x_j) = 1- \frac{|x_i-x_j|}{R_x}$$
+
+其中$R_x$是预测变量的范围。针对每个预测器计算距离度量，并将平均距离用作总距离。找到$K$个邻居后，它们的值将用于估算丢失的数据。该模式用于估算定性预测变量，平均值或中位数用于估算定量预测变量。$K$可以是可调参数，但是大约5到10的值是合理的默认值。
+
+对于动物散布数据，图8.4显示了与图8.2相同的数据，但根据Gower的距离使用5个邻居填充了缺失值。新值主要围绕这两个维度的外围，但在具有完整数据的样本范围内。
+![Markdown](\images_source\20180621\8-005.PNG)
+
+
+树
+
+基于树的模型是插补技术的合理选择，因为树可以在存在其他缺失数据的情况下构建。此外，树木通常具有良好的准确性，并且不会推断超出训练数据范围的值。虽然单个树可以用作插补技术，但已知产生具有低偏差但高方差的结果。然而，树木的集合提供了低变化的替代方案。随机森林就是这样一种技术，并且已经为此目的进行了研究(Stekhoven和Buhlmann 2011)。但是，在预测建模设置中使用此技术时存在一些明显的缺点。首先，在每次拆分时随机选择预测变量需要大量的树木(500到2000)才能获得稳定可靠的模型。这些树中的每一个都是未修剪的，并且所得到的模型通常具有大的计算足迹。由于必须为每个预测变量建立和保留单独的模型，因此缺少数据的预测变量的数量会增加，这可能会带来挑战。具有较小计算足迹的良好替代方案是袋装树。袋装树以与随机森林类似的方式构造。主要区别在于，在袋装模型中，所有预测变量都在每棵树的每个分割中进行评估。使用25-50棵树的袋装树的性能通常在随机森林模型的表现中。当目标是为缺失数据找到合理的估算值时，较少数量的树是明显的优势。
+
+图8.4显示了使用50棵树的袋装集合的散射数据的估算值。当输入直径预测值作为目标时，模型的估计RMSE为4.24(或12.8％的$R^2$)。类似地，当估算质量预测值时，估计的RMSE为8.76(或$R^2$为25.9％)。RMSE和$R^2$指标并不十分令人印象深刻。然而，来自袋装模型的这些估算产生的结果是合理的，在训练数据的范围内，并且可能比逐案删除更好。
+
+线性方法
+
+当完整预测器与需要插补的预测器显示出强线性关系时，直接线性模型可能是最佳方法。线性模型可以非常快速地计算并且具有非常少的保留开销。虽然线性模型确实需要完整的插补模型预测器，但这不是致命的缺陷，因为模型系数(即斜率)使用所有数据进行估计。线性回归可用于需要插补的数字预测器。同样，逻辑回归适用于需要插补的分类预测变量。
+
+为了说明线性回归等简单技术对插补的有用性，让我们重温芝加哥火车乘客数据。在对原始原始数据进行任何其他过滤之前，有15个站点至少包含一个缺失的乘客值。这些站及其随时间丢失的数据模式，如图8.5所示。站点顺序是使用聚类算法设置的，而日期轴是非聚集的。已知时使用实际站名。除了一个月的差距外，有九个台站的数据几乎完整。这些车站都在红线上，符合红线重建项目的时间表，该项目影响了Cermak-Chinatown以北的车站到95街车站。标记为s_41580的另一个站只有一个月的完整数据。另一个异常是站s_40500。这里数据收集在数据集的中途停止。还有其他几个站点，数据开始在数据集的后期收集。最后，音乐学院站的模式反映了该站于2001年开放。这些模式似乎与乘客无关，而且主要是结构性的。
+![Markdown](\images_source\20180621\8-006.PNG)
+
+
+许多这些站的处置是明确的;在分析集中存在太多连续数据。其他站点，例如红线上的站点，不太清楚。可以将数据集中的一个月差距归为一类。然而，鉴于台站之间的高度相关性，决定将本文中所有分析中缺失数据的所有台站排除在外并不会造成太大损失。
+
+然而，可以想象，可能从整个数据集中以随机方式丢失一个或多个未来乘客值。为了模拟潜在的缺失数据，Halsted站点的乘客量已经导致缺失值。如图4.8所示，一站内乘客的14天滞后与当天的乘客量高度相关。图8.6(a)显示了2010年Halsted止损的这些预测变量与x轴上突出显示的当前缺失值之间的关系。大多数数据显示这些预测变量之间存在线性关系，少数几天的值具有远离整体趋势的值。稳健线性模型与这些数据的拟合由虚线表示。图8.6(b)将估算值与原始真实乘客值进行比较。除了一天之外，强大的线性模型可以很好地计算缺失值。这一天有不同寻常的乘客，因为这是一个假期。将假期作为稳健模型的预测因子将有助于改善估算。
+![Markdown](\images_source\20180621\8-007.PNG)
+
+线性插补的概念可以扩展到高维数据。例如，Audigier，Husson和Josse(2016)已经开发出基于相似性度量和主成分分析来估算缺失数据的方法。
+
+
+## 8.6 特别案例
+在某些情况下，数据点不会丢失但也不完整。例如，当测量直到事件的持续时间时，可能已知持续时间至少是某个时间T(因为事件尚未发生)。这些类型的值称为censored。已经开发了各种统计方法来分析这种类型的数据。
+
+持续时间通常是正确的审查，因为我们不知道终止值。在其他情况下，可能会发生左审查。例如，实验室测量可能具有检测下限，这意味着测量仪器不能可靠地量化低于阈值X的值。该阈值通常在开发测量系统的过程中通过实验确定。当预测变量的值低于检测下限时，这些值通常报告为“<$X$”。当这些数据包含在预测模型中时，通常存在如何处理删失值的问题。一种被广泛接受的做法是使用X的下限值作为结果。虽然这不会对某些分区模型(例如树或规则)产生负面影响，但它可能会对其他模型产生不利影响，因为它假设这些是真正的值。截尾值会影响衡量变异性的指标。具体而言，可变性将被低估。这种效果在6.2.2节中以分箱的方式类似，并且模型可能过度拟合到具有相同值的数据点集群。
+
+为了缓解这个问题，可以使用零和$X$之间的随机统一值来估算删失值。在$X$下面有关于分布的良好信息的情况下，可以使用更好地表示分布的其他随机值分配方案。例如，可能存在一些科学或生理原因，即最小可能值大于零(但小于$X$)。虽然以这种方式输入会给数据增加随机噪声，但是通过为数据赋值$X$可能会发生潜在的过度拟合问题。
+
+当数据具有强时间分量时，会出现另一种非典型情况。在这种情况下，为了保留数据的这些特征，可以使用简单的移动平均平滑器来估算数据，以便不中断任何时间效果。如前面第6.1节所述，最需要注意的是，不要使用测试(或其他)数据来估算训练集值。
+
+
+## References
+Little, R, and D Rubin. 2014. Statistical Analysis with Missing Data. John Wiley; Sons.
+Reid, R. 2015. “A Morphometric Modeling Approach to Distinguishing Among Bobcat, Coyote and Gray Fox Scats.” Wildlife Biology 21 (5). BioOne:254–62.
+Dillon, W, and M Goldstein. 1984. Multivariate Analysis Methods and Applications. Wiley.
+Breiman, L., J. Friedman, R. Olshen, and C. Stone. 1984. Classification and Regression Trees. New York: Chapman; Hall.
+Quinlan, R. 1993. C4.5: Programs for Machine Learning. Morgan Kaufmann Publishers.
+Kuhn, M, and K Johnson. 2013. Applied Predictive Modeling. Vol. 26. Springer.
+Allison, P. 2001. Missing Data. Sage publications.
+Van Buuren, S. 2012. Flexible Imputation of Missing Data. Chapman; Hall/CRC.
+Eskelson, B, H Temesgen, V Lemay, TT Barrett, N Crookston, and A Hudak. 2009. “The Roles of Nearest Neighbor Methods in Imputing Missing Data in Forest Inventory and Monitoring Databases.” Scandinavian Journal of Forest Research 24 (3). Taylor AND Francis:235–46.
+Tutz, G, and S Ramzan. 2015. “Improved Methods for the Imputation of Missing Data by Nearest Neighbor Methods.” Computational Statistics and Data Analysis 90. Elsevier:84–99.
+Gower, J. 1971. “A General Coefficient of Similarity and Some of Its Properties.” Biometrics, 857–71.
+Stekhoven, D, and P Buhlmann. 2011. “MissForest — Non-Parametric Missing Value Imputation for Mixed-Type Data.” Bioinformatics 28 (1). Oxford University Press:112–18.
+Audigier, Vincent, François Husson, and Julie Josse. 2016. “A Principal Component Method to Impute Missing Values for Mixed Data.” Advances in Data Analysis and Classification 10 (1). Springer:5–26.
+This is true provided that the mechanism that causes the missing data are not pathological.
+A perhaps more difficult situation would be explaining to the consumers of the model that “We know that this is important but we don’t know why!”
+Obviously, there are exceptions such as linear and logistic regression, Naive Bayes models, etc.
+However, many implementations do not have this property.
+In cases where the data are not defined outside of lower or upper bounds, the data would be considered truncated.
+
+
+
+
+
+# 9 展平配置文件数据
+# 10 没有过拟合的特征工程
+# 11 特征选择
+
+
+# 参考文献
+
+
+-->
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" rel="tag"># 特征工程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/07/metaphysics-ML/" rel="prev" title="玄学与机器学习">
+                  <i class="fa fa-chevron-left"></i> 玄学与机器学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/06/21/feature-engineering_%E5%AE%8C%E6%95%B4%E7%89%88/" rel="next" title="机器学习中的特征工程-译">
+                  机器学习中的特征工程-译 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>

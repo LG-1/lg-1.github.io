@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="类似于人名&#x2F;地名&#x2F;组织机构名的命名体识别数据集,我花了几天时间标注了大约10000条视频&#x2F;音乐&#x2F;书籍数据. 数据的意义希冀能够基于此训练NLP模型识别句子中的视频&#x2F;音乐&#x2F;书籍等名称信息. 数据的标注过程:  先纯手动提取标记了一部分(大约5000条),基于标注数据训练一个base模型,基于base模型重新审视校正标注数据. 基于校正后的数据再训练一个模型,基于模型标注了另外约5000条数据.并对数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视频音乐书籍标注数据">
+<meta property="og:url" content="https://www.ourantech.club/2019/08/31/029_%E8%A7%86%E9%A2%91%E9%9F%B3%E4%B9%90%E4%B9%A6%E7%B1%8D%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="类似于人名&#x2F;地名&#x2F;组织机构名的命名体识别数据集,我花了几天时间标注了大约10000条视频&#x2F;音乐&#x2F;书籍数据. 数据的意义希冀能够基于此训练NLP模型识别句子中的视频&#x2F;音乐&#x2F;书籍等名称信息. 数据的标注过程:  先纯手动提取标记了一部分(大约5000条),基于标注数据训练一个base模型,基于base模型重新审视校正标注数据. 基于校正后的数据再训练一个模型,基于模型标注了另外约5000条数据.并对数">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-08-31T02:03:00.000Z">
+<meta property="article:modified_time" content="2019-11-09T15:00:52.988Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="数据">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.ourantech.club/2019/08/31/029_%E8%A7%86%E9%A2%91%E9%9F%B3%E4%B9%90%E4%B9%A6%E7%B1%8D%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>视频音乐书籍标注数据 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Copyrights-amp-Cite"><span class="nav-text">Copyrights &amp; Cite</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/08/31/029_%E8%A7%86%E9%A2%91%E9%9F%B3%E4%B9%90%E4%B9%A6%E7%B1%8D%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          视频音乐书籍标注数据
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-31 10:03:00" itemprop="dateCreated datePublished" datetime="2019-08-31T10:03:00+08:00">2019-08-31</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:00:52" itemprop="dateModified" datetime="2019-11-09T23:00:52+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>类似于人名/地名/组织机构名的命名体识别数据集,我花了几天时间标注了大约10000条视频/音乐/书籍数据.</p>
+<p>数据的意义希冀能够基于此训练NLP模型识别句子中的视频/音乐/书籍等名称信息.</p>
+<p>数据的标注过程:</p>
+<ul>
+<li>先纯手动提取标记了一部分(大约5000条),基于标注数据训练一个base模型,基于base模型重新审视校正标注数据.</li>
+<li>基于校正后的数据再训练一个模型,基于模型标注了另外约5000条数据.并对数据进行人工审核校验.</li>
+<li>最终数据集包含9632条数据.</li>
+</ul>
+<p>理论上来说,任务也会是标准的NER任务.<br>难点:同一个名称可能是书籍也可能是视频(电视电影可能是由小说改编而来,有些场景关注书籍,另外一些可能关注视频),有些句子则只是提供了一长串并列的名称,可能没有更多的辅助信息;</p>
+<p>示例:<br><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">放暑假了，最近剧荒，陈情令也才一个星期更新三次，根本不够看，问问大家有什么好看的电视剧或电影推荐吗？最好是那种搞笑，温暖的那种，日剧也可以，好像道骏枝佑的剧还不错！</span><br><span class="line">label: 陈情令/video</span><br><span class="line"></span><br><span class="line">最近有没有好看的电视剧推荐，国内国外的都可以，前两天再追少年派，但剧情走向越来越扯，非常想给编剧寄刀片，现在想看些正常三观的剧，大家有没有推荐哒？</span><br><span class="line">label: 少年派/video</span><br><span class="line"></span><br><span class="line">最近有些剧荒啊，有什么好看的电视剧或者电影可以推荐么？我看的也比较杂，权力的游戏，黑色止血钳，最近看的韩剧囚犯医生是大爱啊，类似这种类型的可以给我推荐一些么？</span><br><span class="line">label: 权力的游戏/video	黑色止血钳/video	囚犯医生/video</span><br><span class="line"></span><br><span class="line">我个人比较喜欢听古风歌曲，然后呢，我歌单里面可以给你推荐几首，归去来兮琵琶行清明上河图好可以去试着搜索一些古装剧的主题曲或者插曲</span><br><span class="line">label: 归去来兮/music	琵琶行/music	清明上河图好/music</span><br><span class="line"></span><br><span class="line">不知道你喜欢什么类型的小说，最近在看十宗罪，悬疑烧脑类的，讲述的是公安部门打击违法犯罪的故事，现在已经出到第六部了，估计够你看一个月了。大冰写的书也可以尝试看一下，文艺小清新类型的</span><br><span class="line">label: 十宗罪/book</span><br></pre></td></tr></table></figure></p>
+<p>最终提供的数据集转换成了标准的BIO标注格式,欢迎尝试使用.</p>
+<h1 id="Copyrights-amp-Cite"><a href="#Copyrights-amp-Cite" class="headerlink" title="Copyrights &amp; Cite"></a>Copyrights &amp; Cite</h1><p>LG: <a href="mailto:ourantech@163.com">ourantech@163.com</a><br>Blog: <a href="https://www.ourantech.club/2019/08/31/029_视频音乐书籍标注数据/">https://www.ourantech.club/2019/08/31/029_视频音乐书籍标注数据/</a><br>Github: <a target="_blank" rel="noopener" href="https://github.com/LG-1/video_music_book_datasets">https://github.com/LG-1/video_music_book_datasets</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE/" rel="tag"># 数据</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/06/025_Ubuntu%20%E5%BC%80%E5%90%AF%20cron%20job/" rel="prev" title="Ubuntu 开启 cron job">
+                  <i class="fa fa-chevron-left"></i> Ubuntu 开启 cron job
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98/" rel="next" title="Python的路径引用问题">
+                  Python的路径引用问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>

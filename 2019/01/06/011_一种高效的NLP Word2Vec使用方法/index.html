@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="综述本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧w2vembeddings。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。 问题在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。12345678def embedding_matrix_p(embeddings_index, word_in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种高效的NLP Word2Vec使用方法">
+<meta property="og:url" content="https://www.ourantech.club/2019/01/06/011_%E4%B8%80%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84NLP%20Word2Vec%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="综述本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧w2vembeddings。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。 问题在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。12345678def embedding_matrix_p(embeddings_index, word_in">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-01-06T08:00:00.000Z">
+<meta property="article:modified_time" content="2019-11-09T15:02:36.868Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Word2Vec">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.ourantech.club/2019/01/06/011_%E4%B8%80%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84NLP%20Word2Vec%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>一种高效的NLP Word2Vec使用方法 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%BC%E8%BF%B0"><span class="nav-text">综述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">解决方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF"><span class="nav-text">优势</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98-1"><span class="nav-text">问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/01/06/011_%E4%B8%80%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84NLP%20Word2Vec%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一种高效的NLP Word2Vec使用方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-01-06 16:00:00" itemprop="dateCreated datePublished" datetime="2019-01-06T16:00:00+08:00">2019-01-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 23:02:36" itemprop="dateModified" datetime="2019-11-09T23:02:36+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><p>本文主要介绍一个在进行NLP领域深度学习任务时的词嵌入小技巧<a target="_blank" rel="noopener" href="https://github.com/LG-1/w2vembeddings">w2vembeddings</a>。减少不必要的内存占用以及95%的加载时间。也大大加强了词嵌入库的管理能力及复用性。</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在进行NLP任务的时候，一般会利用Word2Vec进行嵌入。生成一个基于当前任务的词向量矩阵。正如下面这样。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">embedding_matrix_p</span>(<span class="params">embeddings_index, word_index, max_features</span>):            </span><br><span class="line">    embed_size = embeddings_index.get(<span class="string">&#x27;a&#x27;</span>).shape[<span class="number">0</span>]</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_vector = embeddings_index.get(word, np.zeros(embed_size))</span><br><span class="line">        embedding_matrix[i] = embedding_vector</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EMBEDDING_FILE = <span class="string">&#x27;../input/embeddings/glove.840B.300d/glove.840B.300d.txt&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_coefs</span>(<span class="params">word,*arr</span>): <span class="keyword">return</span> word, np.asarray(arr, dtype=<span class="string">&#x27;float32&#x27;</span>)</span><br><span class="line">embeddings_index = <span class="built_in">dict</span>(get_coefs(*o.split(<span class="string">&quot; &quot;</span>)) <span class="keyword">for</span> o <span class="keyword">in</span> <span class="built_in">open</span>(EMBEDDING_FILE))</span><br><span class="line">embedding_matrix, embed_size = embedding_matrix_p(embeddings_index, word_index, max_features)</span><br></pre></td></tr></table></figure>
+<p>但是这样就会有一个问题，如果每次都从文件(txt/bin)中load的话需要解析，是比较费时间的，而且load进内存中向量又不都用得到。假如某次任务分词下来只有2万个，而词向量文件一般都是几百万的级别，所以真正发挥作用的其实只有百分之几。那么如何解决这部分不必要的时间浪费及内存占用呢？</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>了解了一些部署word2vec的方法之后，发现大概是这么两种：<br>    1、从本地load到内存。<br>    2、起服务，调用REST API。<br>方案1也就上面讲的模式。每次load需要时间，且会占用运行内存。<br>方案2也就是为请求词向量单独起个服务，这个架构会比较清晰。但是如果需要使用到全局词向量的话也会比较麻烦，而且，真的有必要起个服务这么麻烦吗？</p>
+<p>在闲暇时参考<a target="_blank" rel="noopener" href="https://github.com/vzhong/embeddings">embeddings</a>的实现重新封装了一个包<a target="_blank" rel="noopener" href="https://github.com/LG-1/w2vembeddings">w2vembeddings</a>。<br>主要是将词向量内容迁移到SQLite中，本质上来讲也就是将word2vec换了一种存储格式。但是由于SQLite是数据库，且无服务器。所以方便高效，查询快速（也不需要用到写入功能，除了第一次转换格式的时候）。</p>
+<p>主要有以下功能：<br>    词向量库管理<br>    词向量即时调用，随取随用</p>
+<p>主要解决内存占用和加载耗时的问题。还可以将多个词向量库放在一起管理。<br>使用方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> w2vembeddings.w2vemb <span class="keyword">import</span> EMB</span><br><span class="line">emb = EMB(name=<span class="string">&#x27;tencent&#x27;</span>, dimensions=<span class="number">200</span>)  <span class="comment"># 加载词向量库，相当于原来从文件加载的步骤</span></span><br><span class="line"><span class="comment"># 按需提取词向量矩阵</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">embedding_matrix_p</span>(<span class="params">emb, word_index, max_features</span>):    </span><br><span class="line">    embed_size = <span class="built_in">len</span>(emb.get_vector(<span class="string">&#x27;a&#x27;</span>))</span><br><span class="line">    embedding_matrix = np.random.normal(<span class="number">0</span>, <span class="number">0</span>, (max_features, embed_size))</span><br><span class="line">    <span class="keyword">for</span> word, i <span class="keyword">in</span> word_index.items():</span><br><span class="line">        <span class="keyword">if</span> i &gt;= max_features: <span class="keyword">continue</span></span><br><span class="line">        embedding_matrix[i] = np.array(emb.get_vector(word))</span><br><span class="line">    <span class="keyword">return</span> embedding_matrix</span><br></pre></td></tr></table></figure>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p> 可以节约掉几乎所有的不必要的内存占用，以及95%的时间。</p>
+<h1 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h1><p>当然这个方案也有问题，跟REST API一样，想要使用词向量全局信息的时候也不方便。如果有这种需求，建议参考gensim。<br>这个方法主要面向那些经常使用word2vec做研究的人，以及小型的线上部署场景。<br><a href="https://www.ourantech.club/2019/01/06/011_一种高效的NLP%20Word2Vec使用方法/">原文发表于</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+              <a href="/tags/Word2Vec/" rel="tag"># Word2Vec</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/01/010_%E5%BC%80%E5%8F%91%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="prev" title="开发杂七杂八">
+                  <i class="fa fa-chevron-left"></i> 开发杂七杂八
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/08/013_%E8%B5%84%E6%BA%90%E9%93%BE%E6%8E%A5/" rel="next" title="资源链接">
+                  资源链接 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>

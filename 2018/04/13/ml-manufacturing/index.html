@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="本文整理自：原文参考 绪论新一代的云计算&#x2F;大数据技术正在给传统工业发展方式带来颠覆性、革命性的影响。传感器、工控系统、物联网等技术的广泛应用，推动工业企业实现生产流程各环节的互联互通，促进互联网与工业融合发展。 大数据+制造业随着信息化与工业化的深度融合，工业制造企业已经积累和拥有了日益丰富的工业数据。工业大数据呈现出大体量、多源性、连续采样、价值密度低、动态性强等特点。 一般大数据分析在工业制造">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用大数据和机器学习提升制造业良品率">
+<meta property="og:url" content="https://www.ourantech.club/2018/04/13/ml-manufacturing/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="本文整理自：原文参考 绪论新一代的云计算&#x2F;大数据技术正在给传统工业发展方式带来颠覆性、革命性的影响。传感器、工控系统、物联网等技术的广泛应用，推动工业企业实现生产流程各环节的互联互通，促进互联网与工业融合发展。 大数据+制造业随着信息化与工业化的深度融合，工业制造企业已经积累和拥有了日益丰富的工业数据。工业大数据呈现出大体量、多源性、连续采样、价值密度低、动态性强等特点。 一般大数据分析在工业制造">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.ourantech.club/2018/04/13/ml-manufacturing//images_source/20180413/001.png">
+<meta property="og:image" content="https://www.ourantech.club/2018/04/13/ml-manufacturing//images_source/20180413/002.png">
+<meta property="og:image" content="https://www.ourantech.club/2018/04/13/ml-manufacturing//images_source/20180413/003.png">
+<meta property="article:published_time" content="2018-04-13T10:07:37.000Z">
+<meta property="article:modified_time" content="2019-11-09T14:51:25.016Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="转载">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.ourantech.club/2018/04/13/ml-manufacturing//images_source/20180413/001.png">
+
+
+<link rel="canonical" href="https://www.ourantech.club/2018/04/13/ml-manufacturing/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>利用大数据和机器学习提升制造业良品率 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%AA%E8%AE%BA"><span class="nav-text">绪论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE-%E5%88%B6%E9%80%A0%E4%B8%9A"><span class="nav-text">大数据+制造业</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%89%AF%E7%8E%87%E5%88%86%E6%9E%90"><span class="nav-text">良率分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E5%88%86%E6%9E%90"><span class="nav-text">业务分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80%E5%B9%B3%E5%8F%B0%EF%BC%9A"><span class="nav-text">大数据基础平台：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%B9%B3%E5%8F%B0%EF%BC%9A"><span class="nav-text">大数据分析平台：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/04/13/ml-manufacturing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用大数据和机器学习提升制造业良品率
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-04-13 18:07:37" itemprop="dateCreated datePublished" datetime="2018-04-13T18:07:37+08:00">2018-04-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 22:51:25" itemprop="dateModified" datetime="2019-11-09T22:51:25+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E4%B8%9A%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">业务</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文整理自：<a target="_blank" rel="noopener" href="https://www.xingkongmt.com/message/65231511934183406?from=ed291268">原文参考</a></p>
+<h2 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h2><p>新一代的云计算/大数据技术正在给传统工业发展方式带来颠覆性、革命性的影响。传感器、工控系统、物联网等技术的广泛应用，推动工业企业实现生产流程各环节的互联互通，促进互联网与工业融合发展。</p>
+<h2 id="大数据-制造业"><a href="#大数据-制造业" class="headerlink" title="大数据+制造业"></a>大数据+制造业</h2><p>随着信息化与工业化的深度融合，工业制造企业已经积累和拥有了日益丰富的工业数据。工业大数据呈现出大体量、多源性、连续采样、价值密度低、动态性强等特点。</p>
+<p>一般大数据分析在工业制造行业主要有两个应用领域：</p>
+<ol>
+<li><p>利用大数据进行建模仿真：传统生产企业在测试、验证环节需要生产出实物来评测其性能等指标，成本随测试次数增加而不断提升。利用虚拟仿真技术，可以实现对原有研发设计环节过程的模拟、分析、评估、验证和优化，从而减少工程更改量，优化生产工艺，降低成本和能耗。 </p>
+</li>
+<li><p>利用大数据提升良品率：实际工作中，对失效/残次品的个案分析往往无疾而终，有价值的信息淹没在量测误差、实验噪声或者不科学的实验设计里。而通过对于大量数据的分析，噪声信息会消失，差异点会叠加放大。生产的过程数据越多，分析就越细致，在信息充足的情况下，工程师甚至可以将异常定位到机台的某个机构，从而实验设计也能合理化，目的化，极大地加速良率提升的脚步。</p>
+</li>
+</ol>
+<p>但在具体大数据应用领域上，工业企业普遍面临：不知道如何把大数据和企业自身业务结合起来；大数据人才匮乏；数据采集和治理不完善，未形成闭环；工业领域有其独特的领域知识，需要行业知识结合数据分析等困难和挑战。</p>
+<h2 id="良率分析"><a href="#良率分析" class="headerlink" title="良率分析"></a>良率分析</h2><p>利用大数据分析和机器学习来研究提升生产制造的良品率。具体包括：对生产线上数以万计的传感器进行工业数据(温度、压力、振动和噪声等)采集和存储，通过建模分析识别出生产流程作业过程中的关键缺陷因子指标；建立告警预警系统实现传感器数据流指标的实时监控，一旦偏离关键因子设定的阈值，就会触发报警信号，快速地发现错误或者瓶颈所在。通过关键因子与产品合格数据之间的联动，跟踪识别关键因子的变化趋势，从而优化提高产品良品率，达到提升生产效率、降低成本的目标。</p>
+<p>一般如何利用数据分析逻辑来实现缺陷因子的识别？又是如何通过技术手段落地实现这样的工业数据分析处理的呢？数据存储和数据分析两大核心平台又分别提供那些核心功能呢？</p>
+<p>以下提供了业务分析、基础平台、分析平台的一般架构参考。</p>
+<h3 id="业务分析"><a href="#业务分析" class="headerlink" title="业务分析"></a>业务分析</h3><p><img src="\images_source\20180413\001.png" alt="Markdown"><br>通过业务分析，利用样本数据收集、建模仿真等手段识别出了如下的缺陷因子分析逻辑：</p>
+<ul>
+<li>不同缺陷在时间上的聚集性</li>
+<li>不同缺陷在不同因素上的分布倾向</li>
+<li>过程异常与缺陷的相关性</li>
+<li>不同缺陷在不同成分含量上的分布倾向</li>
+</ul>
+<p>此后，算法工程师可以将分析逻辑映射为数据算法(逻辑回归、聚类、关联分析等)实现在分析平台上对基础平台中存储的数据集进行分布式计算处理，获得输出结果(关键因子集、因子阈值参数等)。</p>
+<h3 id="大数据基础平台："><a href="#大数据基础平台：" class="headerlink" title="大数据基础平台："></a>大数据基础平台：</h3><p><img src="\images_source\20180413\002.png" alt="Markdown"><br>基于工具和基础架构，实现自动的数据收集、整理、转换和存储。充分利用 Hadoop/Spark 集群提供海量数据存储能力。</p>
+<h3 id="大数据分析平台："><a href="#大数据分析平台：" class="headerlink" title="大数据分析平台："></a>大数据分析平台：</h3><p><img src="\images_source\20180413\003.png" alt="Markdown"><br>充分利用基础平台上存储的数据，在数据建模、模型训练上采用深度学习(Deep Learning)模式。通过数据逻辑层上针对工业制造细分领域的生产流程，提供监督学习、和非监督学习两种模式的模型训练机制的支持，进行数据清洗、数据仓库、特征工程、机器学习、图分析等应用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>企业在工业生产过程中管理和应用大数据。首先是利用云平台、物联网等技术实时监测工业生产中的一系列设备，通过从设备中监控到的数据，再结合生产过程中的环境因素、产品质量、过程控制等数据，给出数据驱动的生产优化解决方案，实现提高精准制造、高端制造、敏捷制造的能力，加速智能车间、智能工厂等现代化生产体系建立，实现智能生产。</p>
+<p><a target="_blank" rel="noopener" href="https://www.xingkongmt.com/message/65231511934183406?from=ed291268">原文参考</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag"># 转载</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/04/12/jupyter-ext/" rel="prev" title="一个jupyter插件">
+                  <i class="fa fa-chevron-left"></i> 一个jupyter插件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/04/16/Viterbi/" rel="next" title="维特比算法小解">
+                  维特比算法小解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>

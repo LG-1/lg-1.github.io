@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="pytest 上手比较简单. 环境Python最好在工作目录建个虚拟环境:12python -m venv venvsource venv&#x2F;bin&#x2F;activate pytest安装1pip install pytest 资源文档在线文档PDF想要运行示例,看在线文档第一页就行.想要系统学习,个人感觉看PDF文档比较好. 帮助1pytest --help 可以看到所有的命令行参数及输入输出控制.其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytest 使用">
+<meta property="og:url" content="https://www.ourantech.club/2020/05/12/039_pytest%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="pytest 上手比较简单. 环境Python最好在工作目录建个虚拟环境:12python -m venv venvsource venv&#x2F;bin&#x2F;activate pytest安装1pip install pytest 资源文档在线文档PDF想要运行示例,看在线文档第一页就行.想要系统学习,个人感觉看PDF文档比较好. 帮助1pytest --help 可以看到所有的命令行参数及输入输出控制.其">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.ourantech.club/2020/05/12/039_pytest%E4%BD%BF%E7%94%A8//images_source/39/Report.PNG">
+<meta property="article:published_time" content="2020-05-12T00:40:00.000Z">
+<meta property="article:modified_time" content="2020-05-17T05:10:25.439Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="测试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.ourantech.club/2020/05/12/039_pytest%E4%BD%BF%E7%94%A8//images_source/39/Report.PNG">
+
+
+<link rel="canonical" href="https://www.ourantech.club/2020/05/12/039_pytest%E4%BD%BF%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>pytest 使用 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-text">环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pytest"><span class="nav-text">pytest</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B5%84%E6%BA%90"><span class="nav-text">资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3"><span class="nav-text">文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%AE%E5%8A%A9"><span class="nav-text">帮助</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E9%97%A8%E4%BE%8B%E5%AD%90"><span class="nav-text">入门例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Report-%E7%A4%BA%E4%BE%8B"><span class="nav-text">Report 示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Feature"><span class="nav-text">Feature</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%A5%E5%91%8A"><span class="nav-text">报告</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E6%95%B0%E6%8D%AE"><span class="nav-text">生成测试结果数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E7%BB%93%E6%9E%9C%E6%B8%B2%E6%9F%93%E5%88%B0%E9%A1%B5%E9%9D%A2"><span class="nav-text">将结果渲染到页面</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2020/05/12/039_pytest%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          pytest 使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-05-12 08:40:00" itemprop="dateCreated datePublished" datetime="2020-05-12T08:40:00+08:00">2020-05-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-05-17 13:10:25" itemprop="dateModified" datetime="2020-05-17T13:10:25+08:00">2020-05-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>pytest 上手比较简单.</p>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>最好在工作目录建个虚拟环境:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m venv venv</span><br><span class="line">source venv/bin/activate</span><br></pre></td></tr></table></figure></p>
+<h2 id="pytest"><a href="#pytest" class="headerlink" title="pytest"></a>pytest</h2><p>安装<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pytest</span><br></pre></td></tr></table></figure></p>
+<h1 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h1><h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://docs.pytest.org/en/latest/#">在线文档</a><br><a target="_blank" rel="noopener" href="https://buildmedia.readthedocs.org/media/pdf/pytest/latest/pytest.pdf">PDF</a><br>想要运行示例,看在线文档第一页就行.<br>想要系统学习,个人感觉看PDF文档比较好.</p>
+<h2 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest --help</span><br></pre></td></tr></table></figure>
+<p>可以看到所有的命令行参数及输入输出控制.<br>其中有一个比较重要的参数可以详细看看:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">general:</span><br><span class="line">  -k EXPRESSION         only run tests which match the given substring expression. An</span><br><span class="line">                        expression is a python evaluatable expression where all names</span><br><span class="line">                        are substring-matched against test names and their parent</span><br><span class="line">                        classes. Example: -k &#x27;test_method or test_other&#x27; matches all</span><br><span class="line">                        test functions and classes whose name contains &#x27;test_method&#x27;</span><br><span class="line">                        or &#x27;test_other&#x27;, while -k &#x27;not test_method&#x27; matches those</span><br><span class="line">                        that don&#x27;t contain &#x27;test_method&#x27; in their names. -k &#x27;not</span><br><span class="line">                        test_method and not test_other&#x27; will eliminate the matches.</span><br><span class="line">                        Additionally keywords are matched to classes and functions</span><br><span class="line">                        containing extra names in their &#x27;extra_keyword_matches&#x27; set,</span><br><span class="line">                        as well as functions which have names assigned directly to</span><br><span class="line">                        them. The matching is case-insensitive.</span><br></pre></td></tr></table></figure>
+<p>pytest 默认会collect test_<em>.py 或者 </em>_test.py module 中 以test为前缀的function 或者以Test为前缀的class中以test为前缀的function(no <strong>init</strong>),<br>通过这个参数可以自定义控制</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h2 id="入门例子"><a href="#入门例子" class="headerlink" title="入门例子"></a>入门例子</h2><p>在工作目录新建:test_sample.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test_sample.py</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inc</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_answer</span>():</span><br><span class="line">    <span class="keyword">assert</span> inc(<span class="number">3</span>) == <span class="number">5</span></span><br></pre></td></tr></table></figure><br>当前目录运行:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest</span><br></pre></td></tr></table></figure><br>便可以看到report.</p>
+<h2 id="Report-示例"><a href="#Report-示例" class="headerlink" title="Report 示例"></a>Report 示例</h2><!-- /Users/liguang/WrokSpace/99_Python_interview/learning_projects -->
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">(venv) ➜  ln_pytest pytest</span><br><span class="line">=========================== test session starts ============================</span><br><span class="line">platform darwin -- Python <span class="number">3.6</span><span class="number">.5</span>, pytest-<span class="number">5.4</span><span class="number">.2</span>, py-<span class="number">1.8</span><span class="number">.1</span>, pluggy-<span class="number">0.13</span><span class="number">.1</span></span><br><span class="line">rootdir: ../ln_pytest</span><br><span class="line">collected <span class="number">5</span> items</span><br><span class="line"></span><br><span class="line">test_cases1.py FF.                                                   [ <span class="number">60</span>%]</span><br><span class="line">test_cases2.py F.                                                    [<span class="number">100</span>%]</span><br><span class="line"></span><br><span class="line">================================= FAILURES =================================</span><br><span class="line">_______________________________ test_answer ________________________________</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_answer</span>():</span><br><span class="line">&gt;   	<span class="keyword">assert</span> inc(<span class="number">3</span>) == <span class="number">5</span></span><br><span class="line">E    <span class="keyword">assert</span> <span class="number">4</span> == <span class="number">5</span></span><br><span class="line">E     +  where <span class="number">4</span> = inc(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">test_cases1.py:<span class="number">10</span>: AssertionError</span><br><span class="line">_______________________________ test_answer2 _______________________________</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_answer2</span>():</span><br><span class="line">&gt;   	<span class="keyword">assert</span> inc(<span class="number">3</span>) == <span class="number">5</span></span><br><span class="line">E    <span class="keyword">assert</span> <span class="number">4</span> == <span class="number">5</span></span><br><span class="line">E     +  where <span class="number">4</span> = inc(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">test_cases1.py:<span class="number">14</span>: AssertionError</span><br><span class="line">_______________________________ test_answer ________________________________</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_answer</span>():</span><br><span class="line">&gt;       <span class="keyword">assert</span> inc(<span class="number">3</span>) == <span class="number">5</span></span><br><span class="line">E       <span class="keyword">assert</span> <span class="number">4</span> == <span class="number">5</span></span><br><span class="line">E        +  where <span class="number">4</span> = inc(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">test_cases2.py:<span class="number">10</span>: AssertionError</span><br><span class="line">========================= short test summary info ==========================</span><br><span class="line">FAILED test_cases1.py::test_answer - <span class="keyword">assert</span> <span class="number">4</span> == <span class="number">5</span></span><br><span class="line">FAILED test_cases1.py::test_answer2 - <span class="keyword">assert</span> <span class="number">4</span> == <span class="number">5</span></span><br><span class="line">FAILED test_cases2.py::test_answer - <span class="keyword">assert</span> <span class="number">4</span> == <span class="number">5</span></span><br><span class="line">======================= <span class="number">3</span> failed, <span class="number">2</span> passed <span class="keyword">in</span> <span class="number">0.39</span>s ========================</span><br></pre></td></tr></table></figure>
+<h1 id="Feature"><a href="#Feature" class="headerlink" title="Feature"></a>Feature</h1><pre><code>用例(进入) 默认情况下自动发现关键词:“test”,
+断言(判断) 灵活易懂
+</code></pre><h1 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h1><h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install allure-pytest</span><br><span class="line">brew install allure</span><br></pre></td></tr></table></figure>
+<h2 id="生成测试结果数据"><a href="#生成测试结果数据" class="headerlink" title="生成测试结果数据"></a>生成测试结果数据</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pytest --alluredir ./result/</span><br></pre></td></tr></table></figure>
+<h2 id="将结果渲染到页面"><a href="#将结果渲染到页面" class="headerlink" title="将结果渲染到页面"></a>将结果渲染到页面</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allure serve result -h 127.0.0.1 -p 8080</span><br></pre></td></tr></table></figure>
+<p><img src="\images_source\39\Report.PNG" alt="Markdown"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag"># 测试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/09/033_kg_construct_ideas/" rel="prev" title="知识图谱构建思路">
+                  <i class="fa fa-chevron-left"></i> 知识图谱构建思路
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/12/044_%E5%9C%A8%E8%87%AA%E5%8A%A8%E5%88%B6%E5%9B%BE%E4%B8%AD%E6%9C%89%E7%82%B9%E7%94%A8%E7%9A%84%E7%AE%97%E6%B3%95/" rel="next" title="在自动制图中有点用的算法">
+                  在自动制图中有点用的算法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>

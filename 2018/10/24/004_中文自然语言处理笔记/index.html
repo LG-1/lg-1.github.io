@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="学习小笔记 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="中文自然语言处理小笔记">
+<meta property="og:url" content="https://www.ourantech.club/2018/10/24/004_%E4%B8%AD%E6%96%87%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="学习小笔记 情感分析因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-10-24T09:50:00.000Z">
+<meta property="article:modified_time" content="2019-11-09T14:43:39.523Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.ourantech.club/2018/10/24/004_%E4%B8%AD%E6%96%87%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%AC%94%E8%AE%B0/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>中文自然语言处理小笔记 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90"><span class="nav-text">情感分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tfidf"><span class="nav-text">tfidf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word2vec"><span class="nav-text">word2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec%E7%BA%BF%E4%B8%8A%E9%83%A8%E7%BD%B2%E6%80%9D%E8%B7%AF"><span class="nav-text">word2vec线上部署思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec-%E4%B8%8E-fasttext"><span class="nav-text">word2vec 与 fasttext</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%AF%8D%E5%90%91%E9%87%8F%E7%9A%84%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B"><span class="nav-text">基于词向量的主题模型</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2018/10/24/004_%E4%B8%AD%E6%96%87%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          中文自然语言处理小笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-10-24 17:50:00" itemprop="dateCreated datePublished" datetime="2018-10-24T17:50:00+08:00">2018-10-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-09 22:43:39" itemprop="dateModified" datetime="2019-11-09T22:43:39+08:00">2019-11-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>学习小笔记</p>
+<h2 id="情感分析"><a href="#情感分析" class="headerlink" title="情感分析"></a>情感分析</h2><p>因为没有历史情感数据进行建模，无法导入机器学习算法形成模型。<br>所以利用了情感倾向词表进行规则计算。规则是：否定词+程度副词+情感词<br>其中每个部分都需要维护一个基础数据表，在新句子中搜索组成此结构，然后计算每个结构的情感得分。<br>一般来讲传统方法会对整个句子计算整体的情感得分，就是将所有的最小单元求和。<br>我做了一点改进的是：将每个最小单元的各项值保留，形成句子的$3xN$情感矩阵，这样做的好处是不仅可以计算整个句子的得分，还可以计算每个单元的得分。这样将有可能计算句子的局部情感信息，以及局部信息与全部信息的关系，势必将可以捕捉到更多的特征。例如：某个句子的一个极度负面的用词，对于整体长句是否应该一票否决？不知道，或许不同场景不一样，但特征捕捉出来，然后进行实验就可以知道了。</p>
+<h2 id="tfidf"><a href="#tfidf" class="headerlink" title="tfidf"></a>tfidf</h2><p>统计词频并用全局词频进行降权。</p>
+<h2 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h2><p>生成方法还没有去做具体研究。<br>理解是基于语料库的词组搭配关系自动生成词语向量量用于刻画语义，可以刻画词语间的相似性。<br>在后续的使用上有一点小思考，看到的应用都是将句子的所有的词语的向量求和，然后计算句子间的相似性，这样的话就会是两个向量求余弦的操作。<br>这样固然简单，但我有一个一个疑问，这样不就将顺序所包含的信息给丢掉了吗？<br>难道不能够用词语向量所组成的矩阵计算相似性？难点在哪里？还在思考。。。<br>可能是$MxN$与$KxL$矩阵的相似性计算在数学上不好操作？有没有近似操作？</p>
+<p>训练词向量的两种方式：<br>    Skip-gram<br>    CBOW<br>训练词向量的核心在于使用贝叶斯推理公式</p>
+<h3 id="word2vec线上部署思路"><a href="#word2vec线上部署思路" class="headerlink" title="word2vec线上部署思路"></a>word2vec线上部署思路</h3><p>初步的一些思路是：<br>    本地load,加载到内存中,当然如果每次调用都需要load的话，必定很慢.这也就对应用服务器的内存提出更高要求,一般word2vec至少有5G-10G大小.<br>    调用REST API，为请求词向量单独起个服务，感觉这个架构会比较清晰简单，但是如果需要使用到所有的词向量的话也会比较麻烦<br>    加载到本地数据库中，即时调用。Sqlite或许是个不错的选择,但是由于Sqlite的容错性没有做检查,所以并发比较高的情况下在不同的操作系统下可能会有问题.<br>    文件映射,或许可以参考一下annoy.C++写的一个框架,单次调用时间在20us左右,也不暂用内存.</p>
+<h3 id="word2vec-与-fasttext"><a href="#word2vec-与-fasttext" class="headerlink" title="word2vec 与 fasttext"></a>word2vec 与 fasttext</h3><p>这篇文章讲得很好，可以参考：<a target="_blank" rel="noopener" href="https://towardsdatascience.com/word-embedding-with-word2vec-and-fasttext-a209c1d3e12c">Word2Vec and FastText Word Embedding with Gensim</a><br>讲得简洁清晰。</p>
+<p>对于英文来说，使用fasttext可以训练的w2v可以识别到未出现过的词，因为他会考虑子元组，词未在训练集中出现过，子元组却极有可能是出现过的。</p>
+<h2 id="基于词向量的主题模型"><a href="#基于词向量的主题模型" class="headerlink" title="基于词向量的主题模型"></a>基于词向量的主题模型</h2><p>基于词袋的LDA主题模型，无法考虑词语顺序、词意，仅能表示相同词语在不同句子中的存在与否、存在频率关系。所以在对问题进行主题分类的任务中应该不会有很好的表现，在实际测试中也确实表现不如人意。</p>
+<p>可以基于词向量对模型进行修改，进行主题建模的根本还是衡量句子间距离（在整个句子空间上），将所有句子分成若干类。能将句子有效表示成向量，就变成了经典的聚类问题。<br>在基于词向量表示句子向量时，使用了tfidf对各词语进行了加权平均得到句子向量表示，然后再进一步将从句子中得到关键词（一个）的向量加到加权平均句子向量上。（这一步相当于再次加权）。得到最终句子平均向量。</p>
+<p>对得到向量表示句子进行无监督聚类，效果不错。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/28/003_%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87/" rel="prev" title="机器学习中的评价指标理解">
+                  <i class="fa fa-chevron-left"></i> 机器学习中的评价指标理解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/12/005_Kaggle%E7%AB%9E%E8%B5%9B%E6%80%BB%E7%BB%93/" rel="next" title="Kaggle竞赛总结">
+                  Kaggle竞赛总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>

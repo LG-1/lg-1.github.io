@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.ourantech.club","root":"/","images":"/images","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="本来,我以为这是一个不太需要关注的问题,之前也遇到过几次了,但是都是搜索引擎一搜然后解决了就没管了. 然后今天在写一个包的过程中又遇到了,又坑了我半天时间,而且搜索引擎找到的解释也大都模凌两可(包括Google),这让我深深的觉得自己离理解这个bug还有点距离,故要记录一下.感觉不搞清楚一点以后还会被坑. 状况我觉这里的状况还有几个层级,但是导致的结果都是[你的包不能用啦!你走错路啦!](因为原来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的路径引用问题">
+<meta property="og:url" content="https://www.ourantech.club/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="险峰风景">
+<meta property="og:description" content="本来,我以为这是一个不太需要关注的问题,之前也遇到过几次了,但是都是搜索引擎一搜然后解决了就没管了. 然后今天在写一个包的过程中又遇到了,又坑了我半天时间,而且搜索引擎找到的解释也大都模凌两可(包括Google),这让我深深的觉得自己离理解这个bug还有点距离,故要记录一下.感觉不搞清楚一点以后还会被坑. 状况我觉这里的状况还有几个层级,但是导致的结果都是[你的包不能用啦!你走错路啦!](因为原来">
+<meta property="og:locale">
+<meta property="og:image" content="https://www.ourantech.club/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98//images_source/31/001.PNG">
+<meta property="og:image" content="https://www.ourantech.club/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98//images_source/31/002.PNG">
+<meta property="article:published_time" content="2019-09-03T07:00:00.000Z">
+<meta property="article:modified_time" content="2019-11-10T02:17:53.716Z">
+<meta property="article:author" content="LG">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.ourantech.club/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98//images_source/31/001.PNG">
+
+
+<link rel="canonical" href="https://www.ourantech.club/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'default'
+  };
+</script>
+<title>Python的路径引用问题 | 险峰风景</title>
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f95014efec3872e56078487ae6afdc70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">险峰风景</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>About</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8A%B6%E5%86%B5"><span class="nav-text">状况</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%843%E7%A7%8D%E6%83%85%E5%86%B5"><span class="nav-text">遇到的3种情况</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Debug"><span class="nav-text">Debug</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%98main%E2%80%98-is-not-a-package"><span class="nav-text">‘main‘ is not a package</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unresolved-reference"><span class="nav-text">Unresolved reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleNotFoundError-No-module-named-%E2%80%98dir1%E2%80%99"><span class="nav-text">ModuleNotFoundError: No module named ‘dir1’</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">LG</p>
+  <div class="site-description" itemprop="description">不要说是为什么 燕过留声 风去留痕</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://www.kaggle.com/xffjlg" title="Kaggle → https://www.kaggle.com/xffjlg" rel="noopener" target="_blank">Kaggle</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5594215928" title="Weibo → https://weibo.com/u/5594215928" rel="noopener" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/LG-1" title="GitHub → https://github.com/LG-1" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/wechat.jpg" title="Wechat → /uploads/wechat.jpg"><i class="wechat fa-fw"></i>Wechat</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/uploads/donate.png" title="Donate → /uploads/donate.png">Donate</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="default">
+    <link itemprop="mainEntityOfPage" href="https://www.ourantech.club/2019/09/03/031_python%20%E5%8C%85%E7%9A%84%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LG">
+      <meta itemprop="description" content="不要说是为什么 燕过留声 风去留痕">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="险峰风景">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python的路径引用问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-03 15:00:00" itemprop="dateCreated datePublished" datetime="2019-09-03T15:00:00+08:00">2019-09-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-10 10:17:53" itemprop="dateModified" datetime="2019-11-10T10:17:53+08:00">2019-11-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本来,我以为这是一个不太需要关注的问题,之前也遇到过几次了,但是都是搜索引擎一搜然后解决了就没管了.</p>
+<p>然后今天在写一个包的过程中又遇到了,又坑了我半天时间,而且搜索引擎找到的解释也大都模凌两可(包括Google),这让我深深的觉得自己离理解这个bug还有点距离,故要记录一下.感觉不搞清楚一点以后还会被坑.</p>
+<h1 id="状况"><a href="#状况" class="headerlink" title="状况"></a>状况</h1><p>我觉这里的状况还有几个层级,但是导致的结果都是[你的包不能用啦!你走错路啦!]<br>(因为原来会把这个问题想得很简单,找到一个方案之后,感觉自己似乎已经解决了,但还是报错,就会一直盯着看直到怀疑人生)</p>
+<p>目前主要有3点,及解决方式.</p>
+<h3 id="遇到的3种情况"><a href="#遇到的3种情况" class="headerlink" title="遇到的3种情况"></a>遇到的3种情况</h3><ul>
+<li>‘<strong>main</strong>‘ is not a package</li>
+</ul>
+<ul>
+<li>Unresolved reference</li>
+</ul>
+<ul>
+<li>ModuleNotFoundError: No module named ‘dir1’</li>
+</ul>
+<p>接下来我要比较详细的记录一下几个问题的过程及处理步骤,主要是深化自己的理解,也希望会对遇到同样问题的同学能有帮助.<br>当然我的理解可能也不是基础理解,可能会有错漏,所以也请谨慎参考,欢迎拍砖交流.</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">testmodule</span><br><span class="line">├── dir1</span><br><span class="line">│   ├── dir1_1_f.py</span><br><span class="line">│   └── dir1_2_f.py</span><br><span class="line">├── dir2</span><br><span class="line">│   └── dir2_f.py</span><br><span class="line">└── test_main.py</span><br></pre></td></tr></table></figure>
+<p>整个目录放在testmodule的根目录下,有一个主测试文件test_main.py和两个子文件夹,内容分别如下:<br>testmodule/test_main.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dir1.dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"><span class="keyword">from</span> dir2.dir2_f <span class="keyword">import</span> dir2_fun</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_main</span>():</span><br><span class="line">    dir1_1_fun()</span><br><span class="line">    dir2_fun()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test_main()</span><br></pre></td></tr></table></figure></p>
+<p>testmodule/dir1/dir1_1_f.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">dir1_1_fun</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;dir1_1_fun&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<p>testmodule/dir1/dir1_2_f.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dir1_2_fun</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;dir1_2_fun&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    dir1_1_fun()</span><br></pre></td></tr></table></figure></p>
+<p>testmodule/dir2/dir2_f.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">dir2_fun</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;dir2_fun&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h1><p><img src="\images_source\31\001.PNG" alt="Markdown"><br><img src="\images_source\31\002.PNG" alt="Markdown"><br>可以看出其实不加__init__.py文件也是可以跑的,使用的是相对路径.<br>所以不打包时,有无__init__.py都不重要,因为相关的执行文件都在,是都可以执行的.</p>
+<p>但是如果打包的时候没有__init__.py的话,那么相关的子模块是不打包的,所以肯定会报错.</p>
+<h2 id="‘main‘-is-not-a-package"><a href="#‘main‘-is-not-a-package" class="headerlink" title="‘main‘ is not a package"></a>‘<strong>main</strong>‘ is not a package</h2><p>使用相对路径导入且通过 python xxx/xxx.py调用时会出现<br>例如:将test_main.py中<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> dir1.dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"><span class="keyword">from</span> dir2.dir2_f <span class="keyword">import</span> dir2_fun</span><br></pre></td></tr></table></figure><br>改成:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .dir1.dir1_1_f <span class="keyword">import</span> dir1_1_fun</span><br><span class="line"><span class="keyword">from</span> .dir2.dir2_f <span class="keyword">import</span> dir2_fun</span><br></pre></td></tr></table></figure><br>通过<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python testmodule/test_main.py</span><br></pre></td></tr></table></figure><br>调用便会报上面错误.<br>需要通过<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m testmodule.test_main</span><br></pre></td></tr></table></figure><br>调用</p>
+<h2 id="Unresolved-reference"><a href="#Unresolved-reference" class="headerlink" title="Unresolved reference"></a>Unresolved reference</h2><p>“项目结构”中的代码在pycharm中应该会提示如上信息,因为示例代码中的引用还是绝对引用,但是却没有根目录信息,虽然可以执行,但是会有如上提示.<br>一是改成相对路径,二是在前面再加上根目录名称,三是在Django中将根文件夹设置成source(但是这一步只是消除提示,并不解决代码结构问题)</p>
+<h2 id="ModuleNotFoundError-No-module-named-‘dir1’"><a href="#ModuleNotFoundError-No-module-named-‘dir1’" class="headerlink" title="ModuleNotFoundError: No module named ‘dir1’"></a>ModuleNotFoundError: No module named ‘dir1’</h2><p>这个就是在代码目录中使用了相对路径,但是在包调用的时候只将包名import了,使用的时候希望将其它函数索引出来便会遇到这个问题,因为是相对引用,所以仅导入包名时并不能索引到其下层函数.<br>这个代码结构不用改,需要在import的时候使用全路径import.<br>例如:<br>使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> testmodule.test_main <span class="keyword">import</span> test_main</span><br></pre></td></tr></table></figure><br>而不是<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> testmodule</span><br><span class="line">testmodule.test_main.test_main  <span class="comment"># 这个便会报错: ModuleNotFoundError: No module named &#x27;test_main&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><a target="_blank" rel="noopener" href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c10/p03_import_submodules_by_relative_names.html">参考:使用相对路径导入包中子模块</a></p>
+<p>在本地执行(不通过setup.py打包)的时候,有无__init__.py是没关系的,但是如果要打包且要使用子模块的话就必须含有__init__.py才能被视为子模块</p>
+<p>建议都是用相对路径引用,在子模块之间使用“.”,“..”<br>使用相对路径后:<br>在本地测试的时候不能用python xxx/xxx.py来运行单元测试.需要改成python -m xxx.xxx<br>在打包后使用时,需要在import时使用全路径,不能是只导入顶层包名,然后通过包名索引</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/31/029_%E8%A7%86%E9%A2%91%E9%9F%B3%E4%B9%90%E4%B9%A6%E7%B1%8D%E6%A0%87%E6%B3%A8%E6%95%B0%E6%8D%AE/" rel="prev" title="视频音乐书籍标注数据">
+                  <i class="fa fa-chevron-left"></i> 视频音乐书籍标注数据
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/06/032_weilidai_repayment/" rel="next" title="微粒贷还款问题">
+                  微粒贷还款问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">LG</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>
